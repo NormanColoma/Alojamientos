@@ -1,0 +1,25 @@
+.task-list-container{
+
+	margin-top: 20px;
+}
+
+.task-list-container ul{
+
+	padding: 0;
+	list-style: none;
+
+}
+
+.task-list-container ul li{
+	margin-bottom: 25px;
+	border-bottom: 1px solid #ccc;
+}
+
+.delete-icon{
+	float:right;
+}
+
+.delete-icon span{
+	color:red;
+	cursor: pointer;
+}
