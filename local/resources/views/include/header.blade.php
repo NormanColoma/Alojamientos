@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Laravel</title>
+
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        <link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="./local/resources/assets/styles/styles.css">
+        <link rel="stylesheet" type="text/css" href="./local/resources/assets/styles/datepicker/bootstrap-datepicker.min.css">
+        <link rel="stylesheet" type="text/css" href="./local/resources/assets/styles/datepicker/bootstrap-datepicker.css">
+        <script type="text/javascript" src="./local/resources/assets/scripts/jquery-2.1.4.min.js" ></script>
+        <script type="text/javascript" src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="./local/resources/assets/scripts/datepicker/bootstrap-datepicker.min.js"></script>
+        <script type="text/javascript" src="./local/resources/assets/scripts/datepicker/bootstrap-datepicker.js"></script>
+    </head>
+    <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Project name</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="hover">Log in</a>
+                    </li>
+                    <li>
+                        <a class="hover">Anuncia tu alojamiento</a>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    </body>
+</html>
