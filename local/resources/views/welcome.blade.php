@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
         <title>Laravel</title>
         <meta name="csrf-token" content="<?= csrf_token() ?>">
-        <script src="code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <link rel="stylesheet" href="/resources/demos/style.css">
+        <link rel="stylesheet" type="text/css" href="./local/resources/assets/styles/search.css">
         <script>
             $(function() {
                 $( "#datepicker" ).datepicker();
@@ -12,11 +12,89 @@
         </script>
     </head>
     <body>
-		@include("include.header");
-        <div class="container container-top">
+		@include("include.header")
+        <div class="container-top">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#myCarousel" data-slide-to="3"></li>
+                </ol>
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                        <img src="http://c50039.r39.cf3.rackcdn.com/uploads/homepage_header/41/bg_1.jpg" alt="Chania">
+
+                    </div>
+
+                    <div class="item">
+                        <img src="./local/resources/assets/img/carousel-2.jpg" alt="Chania">
+
+                    </div>
+
+                    <div class="item">
+                        <img src="http://c50039.r39.cf3.rackcdn.com/uploads/homepage_header/41/bg_1.jpg" alt="Flower">
+
+                    </div>
+
+                    <div class="item">
+                        <img src="http://c50039.r39.cf3.rackcdn.com/uploads/homepage_header/41/bg_1.jpg" alt="Flower">
+
+                    </div>
+                </div>
+            </div>
 
             <div class="search-cont">
-                <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" value="">
+                    <form method="post" action="#">
+                    <div class="inner">
+                        <ul>
+                            <li>
+                                <h4>Destino</h4>
+                                <div class='form-div'>
+                                    <span class="glyphicon glyphicon-map-marker"></span><input class="form-control" type="text" placeholder="Ciudad">
+                                </div>
+                            </li>
+                            <li>
+
+                                <div class='form-div date date-margin'>
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                                </div>
+                                <div class='form-div date'>
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Salida">
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <input type="submit" class="form-control btn-primary btn-search" value="BUSCAR">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    </form>
+            </div>
+            <div class="container highlights">
+                <h3>Destacados</h3>
+                <ul>
+                    <li>
+                        <div class="accom">
+                            <img src="~/Content/img/@Html.DisplayFor(modelItem => flat.Profile)">
+                            <div class="description">
+                                <span class="city">Alicante</span>
+                                <p>Aquí irá una pequeña descripción sobre el alojamiento</p>
+                                <span class="price">250 €</span>
+                                <span class="hidden-id" hidden="hidden">1</span>
+                            </div>
+                            <div class="show_details">
+                                <a href="" class="btn btn-sm btn-success btn-hire">Ver detalles</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </body>

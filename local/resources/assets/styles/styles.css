@@ -1,11 +1,19 @@
-.container-top{
-	margin-top: 50px;
-}
 
 body{
 	font-family: 'Open Sans', sans-serif !important;
+	min-height: 2000px;
+	padding-top: 70px;
 }
 
+.form-control{
+	border-radius: 2px;
+}
+
+
+ul{
+	padding: 0;
+	list-style: none;
+}
 /*region header*/
 .navbar{
 	background-color: #006cb7 !important;
@@ -28,3 +36,85 @@ body{
 	background-color: #359cd6 !important;
 }
 /*endregion header*/
+
+
+/*region carousel*/
+	.carousel{
+		position: static;
+		margin-top: -20px;
+	}
+
+	.carousel-indicators {
+		bottom: 180px;
+	}
+
+	.carousel-indicators li {
+		box-shadow: 0 1px 2px rgba(33,33,33,0.2);
+		border: 2px solid #fff;
+		background-color: #fff;
+	}
+
+	.carousel-indicators .active {
+		background-color: rgb(230, 230, 230);
+	}
+
+/*endregion carousel*/
+
+/*region highlights*/
+.highlights h3{
+	border-bottom: 1px solid rgba(33,33,33,0.1);
+}
+
+.highlights .accom{
+	width:25%;
+	border:1px solid #dce0e0;
+	border-radius:2px;
+	float: left;
+	margin-right: 90px;
+	margin-bottom: 40px;
+	height:364px !important;
+	cursor: pointer;
+}
+
+.highlights .accom:hover{
+	box-shadow: 0 0 6px #757475;
+	-webkit-box-shadow: 0px 0 6px #757475;
+}
+
+.highlights .accom img{
+	width:100%;
+	height: 182px;
+}
+
+.highlights .accom .description{
+	padding-top:15px;
+	padding-bottom:15px;
+	width:90%;
+	margin:0 auto;
+	font-size:12px;
+	color: #555;
+	height: 145px;
+}
+
+.highlights .accom .description p{
+
+}
+
+.highlights .accom .city{
+	color: #357ebd;
+	font-weight:700;
+	font-size:14px;
+}
+
+.highlights .accom .price{
+	font-weight:700;
+}
+
+.highlights .accom .show_details{
+	float: right;
+	padding-bottom: 10px;
+	margin-top: -15px;
+	margin-right: 15px;
+
+}
+/*endregion highlights*/
