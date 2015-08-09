@@ -82,7 +82,7 @@
         <ul>
             <li>
                 <div class="accom">
-                    <img src="~/Content/img/@Html.DisplayFor(modelItem => flat.Profile)">
+                    <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
                     <div class="description">
                         <span class="city">Alicante</span>
                         <p>Aquí irá una pequeña descripción sobre el alojamiento</p>
@@ -91,6 +91,34 @@
                     </div>
                     <div class="show_details">
                         <a href="" class="btn btn-sm btn-success btn-hire">Ver detalles</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="accom">
+                    <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
+                    <div class="description">
+                        <span class="city">Alicante</span>
+                        <p>Aquí irá una pequeña descripción sobre el alojamiento</p>
+                        <span class="price">250 €</span>
+                        <span class="hidden-id" hidden="hidden">1</span>
+                    </div>
+                    <div class="show_details">
+                        <a href="" class="btn btn-sm btn-success btn-hire">Ver detalles</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="accom">
+                    <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
+                    <div class="description">
+                        <span class="city">Alicante</span>
+                        <p>Aquí irá una pequeña descripción sobre el alojamiento</p>
+                        <span class="price">250 €</span>
+                        <span class="hidden-id" hidden="hidden">1</span>
+                    </div>
+                    <div class="show_details">
+                        <a href="" class="btn btn-sm btn-success btn-details">Ver detalles</a>
                     </div>
                 </div>
             </li>
