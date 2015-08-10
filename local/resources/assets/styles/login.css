@@ -23,6 +23,13 @@
 .input-group label{
     font-weight: 700 !important;
 }
+
+.text-danger{
+    float: left;
+    margin-top: -15px;
+    margin-left: 25px;
+}
+
 #btn-login{
     width: 100%;
 }

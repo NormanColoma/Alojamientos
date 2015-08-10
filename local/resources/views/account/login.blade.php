@@ -19,18 +19,24 @@
 
                     <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 
-                    <form id="loginform" class="form-horizontal" role="form">
+                    {!! Form::open(['url' => 'login','class'=>'form-horizontal']) !!}
 
                         <div style="margin-bottom: 25px" class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                             <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="email">
+
+                        </div>
+                        <div class="form-group">
+                            <span class="text-danger">{{ $errors->first('username') }}</span>
                         </div>
 
                         <div style="margin-bottom: 25px" class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                             <input id="login-password" type="password" class="form-control" name="password" placeholder="contraseña">
                         </div>
-
+                        <div class="form-group">
+                            <span class="text-danger">{{ $errors->first('password') }}</span>
+                        </div>
 
 
                         <div class="input-group">
@@ -46,7 +52,7 @@
                             <!-- Button -->
 
                             <div class="col-sm-12 controls">
-                                <a id="btn-login" href="#" class="btn btn-success">Login  </a>
+                                <input type="submit" id="btn-login" class="btn btn-success" value="Login">
                             </div>
                         </div>
 
@@ -61,7 +67,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    {!! Form::close() !!}
 
 
 

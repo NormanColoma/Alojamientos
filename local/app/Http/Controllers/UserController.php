@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Task;
+use Validator;
 
-
-class HomeController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +17,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view("index");
+        //
     }
 
     /**
@@ -38,10 +36,26 @@ class HomeController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function login(Request $request)
     {
+        $messages = [
+            'required' => 'El campo :attribute es obligatorio.',
+            'username.email' => 'El email introducido no es correcto',
+            'password.regex' => 'La contraseña introducida no es correcta. Debe empezar con una letra y tener un mínimo de 6 caracteres, y un máximo de 15.'
+        ];
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|email',
+            'password' => 'required|regex:[^[a-zA-Z]\w{6,14}$]',
+        ],$messages);
 
-        
+        if ($validator->fails()) {
+            return redirect('/login')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        else {
+            //echo "Paco";
+        }
     }
 
     /**
@@ -86,6 +100,6 @@ class HomeController extends Controller
      */
     public function destroy($id)
     {
-       
+        //
     }
 }
