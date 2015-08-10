@@ -54,7 +54,11 @@ class UserController extends Controller
                 ->withInput();
         }
         else {
-            //echo "Paco";
+
+            $pass= $request->input('password');
+            $hashed = bcrypt($pass);
+            $email = $request->input('username');
+            echo $hashed;
         }
     }
 
