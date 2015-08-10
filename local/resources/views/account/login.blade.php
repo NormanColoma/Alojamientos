@@ -23,11 +23,11 @@
 
                         <div style="margin-bottom: 25px" class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="email">
+                            <input id="login-username" type="text" class="form-control" name="email" value="" placeholder="email">
 
                         </div>
                         <div class="form-group">
-                            <span class="text-danger">{{ $errors->first('username') }}</span>
+                            <span class="text-danger">{{ $errors->first('email') }}</span>
                         </div>
 
                         <div style="margin-bottom: 25px" class="input-group">

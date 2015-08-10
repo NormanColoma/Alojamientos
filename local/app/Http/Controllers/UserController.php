@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Validator;
+use Auth;
 
 class UserController extends Controller
 {
@@ -40,12 +41,12 @@ class UserController extends Controller
     {
         $messages = [
             'required' => 'El campo :attribute es obligatorio.',
-            'username.email' => 'El email introducido no es correcto',
-            'password.regex' => 'La contraseña introducida no es correcta. Debe empezar con una letra y tener un mínimo de 6 caracteres, y un máximo de 15.'
+            'email.email' => 'El email introducido no es correcto',
         ];
         $validator = Validator::make($request->all(), [
-            'username' => 'required|email',
-            'password' => 'required|regex:[^[a-zA-Z]\w{6,14}$]',
+            'email' => 'required|email',
+            //'password' => 'required|regex:[^[a-zA-Z]\w{6,14}$]',
+            'password' => 'required',
         ],$messages);
 
         if ($validator->fails()) {
@@ -55,10 +56,6 @@ class UserController extends Controller
         }
         else {
 
-            $pass= $request->input('password');
-            $hashed = bcrypt($pass);
-            $email = $request->input('username');
-            echo $hashed;
         }
     }
 
