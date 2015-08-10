@@ -1,0 +1,45 @@
+.panel-info>.panel-heading {
+    color: inherit !important;
+    background-color: white !important;
+    border: none;
+}
+
+.panel-info {
+    border-color: #eeeeee !important;
+}
+
+.panel-heading h3{
+    margin: 0;
+}
+.clickeable{
+    cursor: pointer;
+}
+
+.input-group {
+    margin-left: 10px;
+    margin-bottom: 15px;
+}
+
+.input-group label{
+    font-weight: 700 !important;
+}
+#btn-login{
+    width: 100%;
+}
+
+#btn-signup{
+    width: 100%;
+    background-color: #359cd6 !important;
+    border-color: #3890d6 !important;
+}
+
+#btn-signup:hover{
+    background-color: #006cb7 !important;
+    border-color: #0562b7 !important;
+}
+
+@media (min-width: 992px) {
+    .col-md-6 {
+        width: 38% !important;
+    }
+}
