@@ -28,7 +28,7 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="hover" href="Login">Log in</a>
+                        <a class="hover" href="login">Log in</a>
                     </li>
                     <li>
                         <a class="hover">Anuncia tu alojamiento</a>

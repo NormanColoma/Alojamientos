@@ -41,11 +41,9 @@ class UserController extends Controller
     {
         $messages = [
             'required' => 'El campo :attribute es obligatorio.',
-            'email.email' => 'El email introducido no es correcto',
         ];
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            //'password' => 'required|regex:[^[a-zA-Z]\w{6,14}$]',
             'password' => 'required',
         ],$messages);
 
@@ -55,7 +53,7 @@ class UserController extends Controller
                 ->withInput();
         }
         else {
-
+            //TODO logic for login
         }
     }
 
