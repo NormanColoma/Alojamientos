@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="041b1c7b-cb77-4c27-b80f-66c8d9370fdf" name="Default" comment="" />
+    <list default="true" id="041b1c7b-cb77-4c27-b80f-66c8d9370fdf" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local/database/migrations/2015_08_11_093020_create_users_table.php" afterPath="$PROJECT_DIR$/local/database/migrations/2015_08_11_093020_create_users_table.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="laravel_example.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -83,8 +86,8 @@
       <file leaf-file-name="2015_08_11_093020_create_users_table.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/local/database/migrations/2015_08_11_093020_create_users_table.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.15652174">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.6">
+              <caret line="34" column="30" selection-start-line="34" selection-start-column="30" selection-end-line="34" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -145,6 +148,7 @@
         <option value="$PROJECT_DIR$/local/resources/views/account/login.blade.php" />
         <option value="$PROJECT_DIR$/local/resources/views/include/header.blade.php" />
         <option value="$PROJECT_DIR$/local/app/Http/Controllers/UserController.php" />
+        <option value="$PROJECT_DIR$/local/database/migrations/2015_08_11_093020_create_users_table.php" />
       </list>
     </option>
   </component>
@@ -694,12 +698,12 @@
       <workItem from="1439148423690" duration="2236000" />
       <workItem from="1439204063176" duration="5695000" />
       <workItem from="1439222600181" duration="9234000" />
-      <workItem from="1439278872301" duration="2798000" />
+      <workItem from="1439278872301" duration="3526000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58010000" />
+    <option name="totallyTimeSpent" value="58738000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1148,8 +1152,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/local/database/migrations/2015_08_11_093020_create_users_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.15652174">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.6">
+          <caret line="34" column="30" selection-start-line="34" selection-start-column="30" selection-end-line="34" selection-end-column="30" />
           <folding />
         </state>
       </provider>
