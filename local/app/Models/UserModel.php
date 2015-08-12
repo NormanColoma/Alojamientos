@@ -14,12 +14,12 @@ use Illuminate\Database\Eloquent\Model;
 class UserModel extends Model implements IDAOUser
 {
     protected $table = 'users';
-
+    public $timestamps = false;
     protected $fillable = array('name', 'password', 'email', 'surname', 'phone', 'owner', 'admin');
 
     public function createUser(AbstractUser $user){
 
-        return UserModel::create([
+        $u = UserModel::create([
             'name' => $user->getName(),
             'password' => $user->getPassword(),
             'email' => $user->getEmail(),
@@ -28,13 +28,17 @@ class UserModel extends Model implements IDAOUser
             'owner' => $user->getOwner(),
             'admin' => $user->getAdmin(),
         ]);
+
+        if($u != null)
+            return true;
+        return false;
     }
 
-    public function update($id, $user){
+    public function updateUser($id, $user){
 
     }
 
-    public function delete($id){
+    public function deleteUser($id){
 
     }
 

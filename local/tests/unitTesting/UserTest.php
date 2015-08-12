@@ -13,7 +13,7 @@ use App\Models\DTO\Owner;
 use App\Models\DTO\Traveler;
 use App\Models\UserModel;
 
-class UserTest extends PHPUnit_Framework_TestCase
+class UserTest extends TestCase
 {
     /**
      * A basic functional test example.
@@ -103,7 +103,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         $owner = new Owner();
 
         $admin->setName('Jose');
-        $admin->setEmail('jose@email.com');
+        $admin->setEmail('joe@email.com');
         $admin->setPassword("password");
 
         $owner->setEmail('owner@email.com');
@@ -114,22 +114,22 @@ class UserTest extends PHPUnit_Framework_TestCase
         $owner->setPhone('654321987');
         $owner->setSurname('Apellido');
 
-        /*$traveler->setEmail('traveler@email.com');
+        $traveler->setEmail('traveler@email.com');
         $traveler->setAdmin(false);
         $traveler->setPassword('123456');
         $traveler->setName('Traveler');
         $traveler->setOwner(false);
         $traveler->setPhone('654321987');
-        $traveler->setSurname('Apellido2');*/
-        $traveler = factory(Traveler::class)->create([
+        $traveler->setSurname('Apellido2');
+        /*$traveler = factory(Traveler::class)->create([
             'name' => 'Javi',
         ]);
 
-        $this->assertEquals('Javi', $traveler->name);
+        $this->assertEquals('Javi', $traveler->name);*/
 
-        //$userModel->createUser($admin);
+        $ok= $userModel->createUser($admin);
 
-        //$this->assertEquals(true, $ok);
+        $this->assertEquals(true, $ok);
         //$this->assertEquals(true, $userModel->createUser($traveler));
         //$this->assertEquals(true, $userModel->createUser($owner));
     }
