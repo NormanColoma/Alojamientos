@@ -11,8 +11,14 @@
 |
 */
 
-$factory->define(App\Task::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\DTO\Traveler::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
+        'password' => $faker->password,
+        'email' => $faker->email,
+        'surname' => $faker->name,
+        'phone' => $faker->phoneNumber,
+        'owner' => false,
+        'admin' => false,
     ];
 });
