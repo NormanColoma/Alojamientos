@@ -12,5 +12,9 @@
 */
 
 Route::get('/', "HomeController@index");
-Route::get('/login',"AccountController@login");
+Route::get('/home', "HomeController@index");
+Route::get('/login',['middleware' => 'guest',function(){
+    return view("account/login");
+}]);
 Route::post('/login',"UserController@login");
+Route::get('/logout',"UserController@logout");

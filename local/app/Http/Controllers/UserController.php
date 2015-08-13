@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DTO\Owner;
+use App\Models\UserModel;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -28,7 +30,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -53,8 +54,28 @@ class UserController extends Controller
                 ->withInput();
         }
         else {
-            //TODO logic for login
+            $credentials = $request->only('email','password');
+            if (Auth::attempt($credentials, $request->has('remember'))) {
+                return redirect()->intended('/');
+            }
+            return redirect('/login')
+                ->withInput()
+                ->withErrors([
+                    'email' => 'El usuario o la contraseña no son correctos',
+                ]);
         }
+    }
+
+    public function logout(){
+        Auth::logout();
+        //flash()->success("You've logged out successfully");
+        return redirect('/');
+    }
+
+
+    public function register(Request $request){
+        Auth::login($this->create($request->all()));
+        return redirect('/');
     }
 
     /**
