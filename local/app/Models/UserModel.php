@@ -1,25 +1,25 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: Javier
- * Date: 12/08/2015
- * Time: 20:54
- */
 
 namespace App\Models;
 
-use App\Models\DTO\AbstractUser;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\DTO\AbstractUser;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class UserModel extends Model implements IDAOUser
+class UserModel extends Model implements AuthenticatableContract, CanResetPasswordContract, IDAOUser
 {
+    use Authenticatable, CanResetPassword;
     protected $table = 'users';
-
+    public $timestamps = false;
     protected $fillable = array('name', 'password', 'email', 'surname', 'phone', 'owner', 'admin');
 
-    public function createUser(AbstractUser $user){
+    public function createUser(AbstractUser $user)
+    {
 
-        return UserModel::create([
+        $u = UserModel::create([
             'name' => $user->getName(),
             'password' => $user->getPassword(),
             'email' => $user->getEmail(),
@@ -28,29 +28,39 @@ class UserModel extends Model implements IDAOUser
             'owner' => $user->getOwner(),
             'admin' => $user->getAdmin(),
         ]);
+
+        if ($u != null)
+            return true;
+        return false;
     }
 
-    public function update($id, $user){
-
-    }
-
-    public function delete($id){
-
-    }
-
-    public function userByEmail($email){
+    public function updateUser($id, $user)
+    {
 
     }
 
-    public function userByName($name){
+    public function deleteUser($id)
+    {
 
     }
 
-    public function allBookings($user){
+    public function userByEmail($email)
+    {
 
     }
 
-    public function allPreBookings($user){
+    public function userByName($name)
+    {
+
+    }
+
+    public function allBookings($user)
+    {
+
+    }
+
+    public function allPreBookings($user)
+    {
 
     }
 

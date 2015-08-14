@@ -15,8 +15,8 @@ interface IDAOUser
 {
 
     public function createUser(AbstractUser $user);
-    public function update($id, $user);
-    public function delete($id);
+    public function updateUser($id, $user);
+    public function deleteUser($id);
     public function userByEmail($email);
     public function userByName($name);
     public function allBookings($user);
