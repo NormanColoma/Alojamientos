@@ -52,7 +52,7 @@
                             <!-- Button -->
 
                             <div class="col-sm-12 controls">
-                                <input type="submit" id="btn-login" class="btn btn-success" value="Login">
+                                <input type="submit" id="btn-login" class="btn btn-success" value="Login" name="btn-login">
                             </div>
                         </div>
 

@@ -121,17 +121,40 @@ class UserTest extends TestCase
         $traveler->setOwner(false);
         $traveler->setPhone('654321987');
         $traveler->setSurname('Apellido2');
-        /*$traveler = factory(Traveler::class)->create([
-            'name' => 'Javi',
-        ]);
-
-        $this->assertEquals('Javi', $traveler->name);*/
 
         $ok= $userModel->createUser($admin);
 
         $this->assertEquals(true, $ok);
         //$this->assertEquals(true, $userModel->createUser($traveler));
         //$this->assertEquals(true, $userModel->createUser($owner));
+    }
+
+    /**
+     * A basic functional test example.
+     *
+     * @return void
+     * @group login
+     * @test
+     */
+    public function login_with_existing_user(){
+        $request =(['email'=>'ua.norman@gmail.com', 'password'=>'capulleitor']);
+        $this->call('Post','login',$request);
+        $this->assertRedirectedTo('/');
+
+    }
+
+    /**
+     * A basic functional test example.
+     *
+     * @return void
+     * @group login
+     * @test
+     */
+    public function login_with_non_existing_user(){
+        $request =(['email'=>'ua.norman@gmail.com', 'password'=>'pepe']);
+        $this->call('Post','login',$request);
+        $this->assertRedirectedTo('/login');
+
     }
 
 }
