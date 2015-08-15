@@ -13,10 +13,18 @@
 
 Route::get('/', "HomeController@index");
 Route::get('/home', "HomeController@index");
-Route::get('/login',['middleware' => 'guest',function(){
-    return view("account/login");
-}]);
+Route::group(['middleware' => ['guest']], function()
+{
+    Route::get('/login',function(){
+        return view("account/login");
+    });
+    Route::get('/register',function(){
+        return view("account/register");
+    });
+});
+
 Route::post('/login',"UserController@login");
+Route::post('/register',"UserController@register");
 Route::get('/logout',"UserController@logout");
 
 Route::group(['middleware' => ['auth']], function()
