@@ -19,7 +19,7 @@ Route::get('/login',['middleware' => 'guest',function(){
 Route::post('/login',"UserController@login");
 Route::get('/logout',"UserController@logout");
 
-Route::group(['middleware' => ['auth']], function()
+Route::group(['middleware' => ['auth','traveler']], function()
 {
     Route::get('/manage/traveler', function()
     {
