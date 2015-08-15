@@ -21,17 +21,14 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
 
         $u = UserModel::create([
             'name' => $user->getName(),
-            'password' => $user->getPassword(),
+            'password' =>  bcrypt($user->getPassword()),
             'email' => $user->getEmail(),
             'surname' => $user->getSurname(),
             'phone' => $user->getPhone(),
             'owner' => $user->getOwner(),
             'admin' => $user->getAdmin(),
         ]);
-
-        if ($u != null)
-            return true;
-        return false;
+        return $u;
     }
 
     public function updateUser($id, $user)

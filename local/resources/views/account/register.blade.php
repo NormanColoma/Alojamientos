@@ -28,7 +28,7 @@
                     <div class="form-group">
                         <label for="email" class="col-md-3 control-label">Email</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="email" placeholder="Email Address">
+                            <input type="text" class="form-control" name="email" placeholder="Email Address" value="{{ old('email') }}">
                         </div>
 
                     </div>
@@ -38,7 +38,7 @@
                     <div class="form-group">
                         <label for="firstname" class="col-md-3 control-label">Nombre</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="name" placeholder="First Name">
+                            <input type="text" class="form-control" name="name" placeholder="First Name" value="{{ old('name') }}">
                         </div>
                     </div>
                     <div class="form-group form-error" hidden="true">
@@ -47,7 +47,7 @@
                     <div class="form-group">
                         <label for="lastname" class="col-md-3 control-label">Apellidos</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="surname" placeholder="Last Name">
+                            <input type="text" class="form-control" name="surname" placeholder="Last Name" value="{{ old('surname') }}">
                         </div>
                     </div>
                     <div class="form-group form-error" hidden="true">
@@ -65,7 +65,7 @@
                     <div class="form-group">
                         <label for="icode" class="col-md-3 control-label">Teléfono</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="phone" placeholder="">
+                            <input type="text" class="form-control" name="phone" placeholder="" value="{{ old('phone') }}">
                         </div>
                     </div>
                     <div class="form-group form-error" hidden="true">
