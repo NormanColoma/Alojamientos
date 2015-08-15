@@ -19,20 +19,20 @@ Route::get('/login',['middleware' => 'guest',function(){
 Route::post('/login',"UserController@login");
 Route::get('/logout',"UserController@logout");
 
-Route::group(['middleware' => ['auth','traveler']], function()
+Route::group(['middleware' => ['auth']], function()
 {
-    Route::get('/manage/traveler', function()
+    Route::get('/manage/traveler',['middleware' => 'traveler', function()
     {
         return "Aquí irá el panel de control del viajero";
-    });
+    }]);
 
-    Route::get('/manage/owner', function()
+    Route::get('/manage/owner',['middleware' => 'owner', function()
     {
         return "Aquí irá el panel de control del propietario";
-    });
-    Route::get('/manage/admin', function()
+    }]);
+    Route::get('/manage/admin', ['middleware' => 'admin', function()
     {
         return "Aquí irá el panel de administración";
-    });
+    }]);
 
 });

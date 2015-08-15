@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class RedirectIfNotTraveler
+class RedirectIfNotOwner
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class RedirectIfNotTraveler
      */
     public function handle($request, Closure $next)
     {
-        if($request->user()->admin || $request->user()->owner){
+        if($request->user()->admin || $request->user()->owner == null){
             return redirect('/');
         }
         return $next($request);
