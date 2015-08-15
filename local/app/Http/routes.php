@@ -18,7 +18,7 @@ Route::group(['middleware' => ['guest']], function()
     Route::get('/login',function(){
         return view("account/login");
     });
-    Route::get('/login',function(){
+    Route::get('/register',function(){
         return view("account/register");
     });
 });
