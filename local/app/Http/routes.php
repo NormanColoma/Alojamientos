@@ -18,3 +18,21 @@ Route::get('/login',['middleware' => 'guest',function(){
 }]);
 Route::post('/login',"UserController@login");
 Route::get('/logout',"UserController@logout");
+
+Route::group(['middleware' => ['auth']], function()
+{
+    Route::get('/manage/traveler', function()
+    {
+        return "Aquí irá el panel de control del viajero";
+    });
+
+    Route::get('/manage/owner', function()
+    {
+        return "Aquí irá el panel de control del propietario";
+    });
+    Route::get('/manage/admin', function()
+    {
+        return "Aquí irá el panel de administración";
+    });
+
+});
