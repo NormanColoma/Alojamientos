@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Login page</title>
+    <title>Register page</title>
     <meta name="csrf-token" content="<?= csrf_token() ?>">
-    <link rel="stylesheet" type="text/css" href="./local/resources/assets/styles/login.css">
+    <link rel="stylesheet" type="text/css" href="./local/resources/assets/styles/register.css">
 </head>
 <body>
 @include("include.header")
@@ -16,8 +16,8 @@
                 <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" class="clickeable" href="login">Log In</a></div>
             </div>
             <div class="panel-body" >
-                <form id="signupform" class="form-horizontal" role="form">
-
+                <form id="signupform" class="form-horizontal" role="form" action="register" method="post">
+                    {!! csrf_field() !!}
                     <div id="signupalert" style="display:none" class="alert alert-danger">
                         <p>Error:</p>
                         <span></span>
@@ -30,19 +30,28 @@
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="email" placeholder="Email Address">
                         </div>
-                    </div>
 
+                    </div>
+                    <div class="form-group form-error" hidden="true">
+                        <span class="text-danger">{{ $errors->first('email') }}</span>
+                    </div>
                     <div class="form-group">
                         <label for="firstname" class="col-md-3 control-label">Nombre</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="firstname" placeholder="First Name">
+                            <input type="text" class="form-control" name="name" placeholder="First Name">
                         </div>
+                    </div>
+                    <div class="form-group form-error" hidden="true">
+                        <span class="text-danger">{{ $errors->first('name') }}</span>
                     </div>
                     <div class="form-group">
                         <label for="lastname" class="col-md-3 control-label">Apellidos</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="lastname" placeholder="Last Name">
+                            <input type="text" class="form-control" name="surname" placeholder="Last Name">
                         </div>
+                    </div>
+                    <div class="form-group form-error" hidden="true">
+                        <span class="text-danger">{{ $errors->first('surname') }}</span>
                     </div>
                     <div class="form-group">
                         <label for="password" class="col-md-3 control-label">Password</label>
@@ -50,14 +59,18 @@
                             <input type="password" class="form-control" name="password" placeholder="Password">
                         </div>
                     </div>
-
+                    <div class="form-group form-error" hidden="true">
+                        <span class="text-danger">{{ $errors->first('password') }}</span>
+                    </div>
                     <div class="form-group">
                         <label for="icode" class="col-md-3 control-label">Teléfono</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="phone" placeholder="">
                         </div>
                     </div>
-
+                    <div class="form-group form-error" hidden="true">
+                        <span class="text-danger">{{ $errors->first('phone') }}</span>
+                    </div>
                     <div class="input-group">
                         <div class="checkbox">
                             <label>
@@ -74,6 +87,13 @@
                     </div>
                 </form>
             </div>
+            <script>
+                $(".form-error").each(function(){
+                    var error = $(this).find(".text-danger").text();
+                    if(error != "")
+                        $(this).show();
+                })
+            </script>
         </div>
     </div>
 </div>

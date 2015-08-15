@@ -74,8 +74,41 @@ class UserController extends Controller
 
 
     public function register(Request $request){
-        Auth::login($this->create($request->all()));
-        return redirect('/');
+
+        $messages = [
+            'email.required' => 'El email es obligatorio',
+            'name.required' => 'El nombre es obligatorio',
+            'surname.required' => 'Los apellidos son obligatorios',
+            'password.required' => 'La contraseña es obligatoria',
+            'phone.required' => 'El teléfono es obligatorio',
+            'email.email' => 'El email introducido no es correcto',
+            'password.regex' => 'La contraseña introducida no es correcta. Debe tener un mínimo de 6 caractares, y un máximo de 15. Debe empezar por una letra, y solo puede ser alfanumérica',
+            'name.regex' => 'El nombre solo puede contener letras',
+            'surname.regex' => 'Los apellidos solo puede contener letras',
+            'numeric' => 'El teléfono solo puede contener números',
+        ];
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
+            'surname' => 'required|regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
+            'email' => 'required|email',
+            'password' => 'required|regex:[^[a-zA-Z]\w{5,14}$]',
+            'phone' => 'required|numeric',
+
+        ],$messages);
+        if ($validator->fails()) {
+            return redirect('/register')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        else{
+            try{
+                Auth::login($this->create($request->all()));
+                return redirect('/');
+            }catch(QueryException $ex){
+                flash()->error("El email introducido ya está registrado");
+                return redirect('/register');
+            }
+        }
     }
 
     /**

@@ -24,6 +24,7 @@ Route::group(['middleware' => ['guest']], function()
 });
 
 Route::post('/login',"UserController@login");
+Route::post('/register',"UserController@register");
 Route::get('/logout',"UserController@logout");
 
 Route::group(['middleware' => ['auth']], function()
