@@ -11,71 +11,18 @@ use App\Models\DTO\Admin;
 use App\Models\DTO\Owner;
 use App\Models\DTO\Traveler;
 use App\Models\UserModel;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserAcceptanceTest extends TestCase
 {
 
-    /**
-     * Cargamos los usuarios que vamos a utilizar en las pruebas
-     *
-     * @return void
-     * @group loginPage
-     * @test
-     */
-    public function loadUsersTest(){
-        /*$userModel = new UserModel();
-
-        $traveler = factory(Traveler::class)->make([
-            'email' => 'traveler@email.com',
-            'password' => bcrypt('123456'),
-        ]);
-        $admin = factory(Admin::class)->make([
-            'email' => 'admin@email.com',
-            'password' => bcrypt('123456'),
-        ]);
-        $owner = factory(Owner::class)->make([
-            'email' => 'owner@email.com',
-            'password' => bcrypt('123456'),
-        ]);*/
-
-        $userModel = new UserModel();
-        $admin = new Admin();
-        $traveler = new Traveler();
-        $owner = new Owner();
-
-
-        $admin->setName('Admin');
-        $admin->setEmail('admin@email.com');
-        $admin->setPassword("123456");
-        $admin->setAdmin(true);
-        $admin->setOwner(false);
-
-        $owner->setEmail('owner@email.com');
-        $owner->setAdmin(false);
-        $owner->setPassword('123456');
-        $owner->setName('Owner');
-        $owner->setOwner(true);
-        $owner->setPhone('654321987');
-        $owner->setSurname('Apellido');
-
-        $traveler->setEmail('traveler@email.com');
-        $traveler->setAdmin(false);
-        $traveler->setPassword('123456');
-        $traveler->setName('Traveler');
-        $traveler->setOwner(false);
-        $traveler->setPhone('654321987');
-        $traveler->setSurname('Apellido2');
-
-        $userModel->createUser($admin);
-        $userModel->createUser($traveler);
-        $userModel->createUser($owner);
-    }
+    use DatabaseTransactions;
 
     /**
      * Test para visitar la página login.
      *
      * @return void
-     * @group loginPage
+     * @group userAcceptance
      * @test
      */
     public function see_login_page(){
@@ -90,10 +37,20 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo obtener el panel de control de un usuario del tipo Viajero
      *
      * @return void
-     * @group loginPage
+     * @group userAcceptance
      * @test
      */
     public function try_login_with_existing_user(){
+        $userModel = new UserModel();
+        $traveler = new Traveler();
+        $traveler->setEmail('traveler@email.com');
+        $traveler->setAdmin(false);
+        $traveler->setPassword('123456');
+        $traveler->setName('Traveler');
+        $traveler->setOwner(false);
+        $traveler->setPhone('654321987');
+        $traveler->setSurname('Apellido2');
+        $userModel->createUser($traveler);
         $this->visit('/login')
             ->type('traveler@email.com', 'email')->type('123456','password')
             ->press('btn-login')
@@ -108,10 +65,22 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo obtener el panel de control de un usuario del tipo Propietario
      *
      * @return void
-     * @group loginPage
+     * @group userAcceptance
      * @test
      */
     public function try_login_with_existing_user2(){
+        $userModel = new UserModel();
+        $owner = new Owner();
+
+        $owner->setEmail('owner@email.com');
+        $owner->setAdmin(false);
+        $owner->setPassword('123456');
+        $owner->setName('Owner');
+        $owner->setOwner(true);
+        $owner->setPhone('654321987');
+        $owner->setSurname('Apellido');
+
+        $userModel->createUser($owner);
         $this->visit('/login')
             ->type('owner@email.com', 'email')->type('123456','password')
             ->press('btn-login')
@@ -126,10 +95,20 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo obtener el panel de control de un usuario del tipo Administrador
      *
      * @return void
-     * @group loginPage
+     * @group userAcceptance
      * @test
      */
     public function try_login_with_existing_user3(){
+        $userModel = new UserModel();
+        $admin = new Admin();
+
+        $admin->setName('Admin');
+        $admin->setEmail('admin@email.com');
+        $admin->setPassword("123456");
+        $admin->setAdmin(true);
+        $admin->setOwner(false);
+
+        $userModel->createUser($admin);
         $this->visit('/login')
             ->type('admin@email.com', 'email')->type('123456','password')
             ->press('btn-login')
@@ -145,14 +124,14 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'El E-mail y/o la Contraseña no son válidos'
      *
      * @return void
-     * @group loginPage
+     * @group userAcceptance
      * @test
      */
     public function try_login_with_non_existing_user(){
         $this->visit('/login')
             ->type('traveler@gmail.com', 'email')->type('capul','password')
             ->press('btn-login')
-            ->see('El usuario o la contraseña no son correctos');//seePageIs('/login');
+            ->see('El usuario o la contraseña no son correctos');
     }
 
     /**
@@ -162,33 +141,29 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo ser redireccionado a la página Home
      *
      * @return void
-     * @group loginPage
+     * @group userAcceptance
      * @test
      */
     public function try_visit_login_page_once_authenticated(){
+        $userModel = new UserModel();
+        $traveler = new Traveler();
+
+        $traveler->setEmail('traveler@email.com');
+        $traveler->setAdmin(false);
+        $traveler->setPassword('123456');
+        $traveler->setName('Traveler');
+        $traveler->setOwner(false);
+        $traveler->setPhone('654321987');
+        $traveler->setSurname('Apellido2');
+
+        $userModel->createUser($traveler);
+
         $this->visit('/login')
             ->type('traveler@email.com', 'email')->type('123456','password')
             ->press('btn-login')
             ->seePageIs('/manage/traveler')->visit('login')->seePageIs('/home');
     }
 
-    /**
-     * Escenario: Login ya realizado
-     * Dado que soy un usuario del sistema y ya estoy logueado
-     * Cuando intento acceder de nuevo a la página del login
-     * Entonces debo ser redireccionado a la página Home
-     *
-     * @return void
-     * @group loginPage2
-     * @test
-     */
-    /*public function try_logout(){
-        $this->visit('/login')
-            ->type('traveler@gmail.com', 'email')->type('123456','password')
-            ->press('btn-login')
-            ->seePageIs('/manage/traveler')
-            ->press('btn-logout');
-    }*/
 
     /**
      * Escenario: Registro con campo email vacío
@@ -198,7 +173,7 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'El email es obligatorio'
      *
      * @return void
-     * @group registerPage
+     * @group userAcceptance
      * @test
      */
     public function try_register_valid(){
@@ -217,14 +192,14 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'El email es obligatorio'
      *
      * @return void
-     * @group registerPage
+     * @group userAcceptance
      * @test
      */
     public function try_register_email_empty(){
         $this->visit('/register')
             ->type('Javi', 'name')->type('Comino', 'surname')->type('prueba1','password')->type('654987321', 'phone')
             ->press('btn-register')
-            ->see('El email es obligatorio');//seePageIs('/login');
+            ->see('El email es obligatorio');
     }
 
     /**
@@ -235,14 +210,14 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'El nombre es obligatorio'
      *
      * @return void
-     * @group registerPage
+     * @group userAcceptance
      * @test
      */
     public function try_register_name_empty(){
         $this->visit('/register')
             ->type('registro@email.com', 'email')->type('Comino', 'surname')->type('prueba1','password')->type('654987321', 'phone')
             ->press('btn-register')
-            ->see('El nombre es obligatorio');//seePageIs('/login');
+            ->see('El nombre es obligatorio');
     }
 
     /**
@@ -253,14 +228,14 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'Los apellidos son obligatorios'
      *
      * @return void
-     * @group registerPage
+     * @group userAcceptance
      * @test
      */
     public function try_register_surname_empty(){
         $this->visit('/register')
             ->type('registro@email.com', 'email')->type('Javi', 'name')->type('prueba1','password')->type('654987321', 'phone')
             ->press('btn-register')
-            ->see('Los apellidos son obligatorios');//seePageIs('/login');
+            ->see('Los apellidos son obligatorios');
     }
 
     /**
@@ -271,7 +246,7 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'La contraseña es obligatoria'
      *
      * @return void
-     * @group registerPage
+     * @group userAcceptance
      * @test
      */
     public function try_register_password_empty(){
@@ -289,14 +264,14 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'El teléfono es obligatorio'
      *
      * @return void
-     * @group registerPage
+     * @group userAcceptance
      * @test
      */
     public function try_register_phone_empty(){
         $this->visit('/register')
             ->type('registro@email.com', 'email')->type('Javi', 'name')->type('Comino','surname')->type('prueba1', 'password')
             ->press('btn-register')
-            ->see('El teléfono es obligatorio');//seePageIs('/login');
+            ->see('El teléfono es obligatorio');
     }
 
     /**
@@ -307,7 +282,7 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'El email introducido no es correcto'
      *
      * @return void
-     * @group registerPage
+     * @group userAcceptance
      * @test
      */
     public function try_register_email_notValid(){
@@ -315,7 +290,7 @@ class UserAcceptanceTest extends TestCase
             ->type('registro', 'email')->type('Javi', 'name')->type('Comino','surname')->type('prueba1', 'password')
             ->type('654987321', 'phone')
             ->press('btn-register')
-            ->see('El email introducido no es correcto');//seePageIs('/login');
+            ->see('El email introducido no es correcto');
     }
 
     /**
@@ -326,7 +301,7 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'La contraseña introducida no es correcta. Debe tener un mínimo de 6 caractares, y un máximo de 15. Debe empezar por una letra, y solo puede ser alfanumérica'
      *
      * @return void
-     * @group registerPage
+     * @group userAcceptance
      * @test
      */
     public function try_register_password_notValid(){
@@ -345,7 +320,7 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'El nombre solo puede contener letras'
      *
      * @return void
-     * @group registerPage
+     * @group userAcceptance
      * @test
      */
     public function try_register_name_notValid(){
@@ -353,7 +328,7 @@ class UserAcceptanceTest extends TestCase
             ->type('registro@email.com', 'email')->type('123456', 'name')->type('Comino','surname')->type('prueba1', 'password')
             ->type('654987321', 'phone')
             ->press('btn-register')
-            ->see('El nombre solo puede contener letras');//seePageIs('/login');
+            ->see('El nombre solo puede contener letras');
     }
 
     /**
@@ -364,7 +339,7 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'Los apellidos solo puede contener letras'
      *
      * @return void
-     * @group registerPage
+     * @group userAcceptance
      * @test
      */
     public function try_register_surname_notValid(){
@@ -372,7 +347,7 @@ class UserAcceptanceTest extends TestCase
             ->type('registro@email.com', 'email')->type('Javi', 'name')->type('123456','surname')->type('prueba1', 'password')
             ->type('654987321', 'phone')
             ->press('btn-register')
-            ->see('Los apellidos solo puede contener letras');//seePageIs('/login');
+            ->see('Los apellidos solo puede contener letras');
     }
 
     /**
@@ -383,7 +358,7 @@ class UserAcceptanceTest extends TestCase
      * Entonces debo mostrar el siguiente mensaje 'El teléfono solo puede contener números, y debe ser correcto'
      *
      * @return void
-     * @group registerPage
+     * @group userAcceptance
      * @test
      */
     public function try_register_phone_notValid(){
@@ -394,10 +369,5 @@ class UserAcceptanceTest extends TestCase
             ->see('El teléfono solo puede contener números, y debe ser correcto');//seePageIs('/login');
     }
 
-    public function tearDown(){
-        DB::table('users')->where('email','traveler@email.com')->delete();  //Borramos lo que hemos insertado;
-        DB::table('users')->where('email','owner@email.com')->delete();
-        DB::table('users')->where('email','admin@email.com')->delete();
-        DB::table('users')->where('email','registro@email.com')->delete();
-    }
+
 }
