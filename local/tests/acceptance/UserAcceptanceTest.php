@@ -12,35 +12,43 @@ use App\Models\DTO\Owner;
 use App\Models\DTO\Traveler;
 use App\Models\UserModel;
 
-class UserSystemTest extends TestCase
+class UserAcceptanceTest extends TestCase
 {
 
-    /*
-    * Insertamos en la base de datos los ususario
-    * que vamos a utilizar en las pruebas
-    */
-    public function setUp(){
+    /**
+     * Cargamos los usuarios que vamos a utilizar en las pruebas
+     *
+     * @return void
+     * @group loginPage
+     * @test
+     */
+    public function loadUsersTest(){
+        /*$userModel = new UserModel();
 
-        /*$user = factory(Traveler::class)->make([
+        $traveler = factory(Traveler::class)->make([
             'email' => 'traveler@email.com',
-            'password' => '123456',
+            'password' => bcrypt('123456'),
         ]);
-        $user2 = factory(Admin::class)->make([
+        $admin = factory(Admin::class)->make([
             'email' => 'admin@email.com',
-            'password' => '123456',
+            'password' => bcrypt('123456'),
         ]);
-        $user3 = factory(Owner::class)->make([
+        $owner = factory(Owner::class)->make([
             'email' => 'owner@email.com',
-            'password' => '123456',
+            'password' => bcrypt('123456'),
         ]);*/
+
         $userModel = new UserModel();
         $admin = new Admin();
         $traveler = new Traveler();
         $owner = new Owner();
 
+
         $admin->setName('Admin');
         $admin->setEmail('admin@email.com');
         $admin->setPassword("123456");
+        $admin->setAdmin(true);
+        $admin->setOwner(false);
 
         $owner->setEmail('owner@email.com');
         $owner->setAdmin(false);
@@ -61,7 +69,6 @@ class UserSystemTest extends TestCase
         $userModel->createUser($admin);
         $userModel->createUser($traveler);
         $userModel->createUser($owner);
-
     }
 
     /**
@@ -88,7 +95,7 @@ class UserSystemTest extends TestCase
      */
     public function try_login_with_existing_user(){
         $this->visit('/login')
-            ->type('traveler@gmail.com', 'email')->type('123456','password')
+            ->type('traveler@email.com', 'email')->type('123456','password')
             ->press('btn-login')
             ->seePageIs('/manage/traveler');
     }
@@ -160,9 +167,9 @@ class UserSystemTest extends TestCase
      */
     public function try_visit_login_page_once_authenticated(){
         $this->visit('/login')
-            ->type('traveler@gmail.com', 'email')->type('123456','password')
+            ->type('traveler@email.com', 'email')->type('123456','password')
             ->press('btn-login')
-            ->seePageIs('/')->visit('login')->seePageIs('/home');
+            ->seePageIs('/manage/traveler')->visit('login')->seePageIs('/home');
     }
 
     /**

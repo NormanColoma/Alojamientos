@@ -63,7 +63,7 @@ class UserController extends Controller
                     return redirect()->intended('/manage/traveler');
                 else if(Auth::user()->owner)
                     return redirect()->intended('/manage/owner');
-                else if(Auth::user()->admin)
+                else
                     return redirect()->intended('/manage/admin');
             }
             return redirect('/login')
