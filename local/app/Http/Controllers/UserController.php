@@ -121,7 +121,6 @@ class UserController extends Controller
                 ->withInput();
         }
         else{
-            try{
                 $user = null;
                 if($request->input('owner'))
                     $user = new Owner();
@@ -134,15 +133,19 @@ class UserController extends Controller
                 $user->setPhone($request->input('phone'));
                 $user->setOwner($request->input('owner'));
                 $uModel = new UserModel();
-                Auth::login($uModel->createUser($user));
-                if(!Auth::user()->admin && !Auth::user()->owner)
-                    return redirect()->intended('/manage/traveler');
-                else
-                    return redirect()->intended('/manage/owner');
-            }catch(QueryException $ex){
-                flash()->error("El email introducido ya está registrado");
-                return redirect('/register');
-            }
+                $uCreated = $uModel->createUser($user);
+                if($uCreated !=null) {
+                    Auth::login($uCreated);
+                    if (!Auth::user()->admin && !Auth::user()->owner)
+                        return redirect()->intended('/manage/traveler');
+                    else
+                        return redirect()->intended('/manage/owner');
+                }
+                return redirect('/register')
+                    ->withErrors([
+                        'email' => 'El email introducido ya se encuentra registrado',
+                    ])
+                    ->withInput();
         }
     }
 

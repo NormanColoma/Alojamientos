@@ -8,6 +8,7 @@
  */
 class UserSystemTest extends TestCase
 {
+
     /**
      * Test para visitar la página login.
      *
@@ -63,7 +64,7 @@ class UserSystemTest extends TestCase
      * Entonces debo obtener el panel de control de un usuario del tipo Administrador
      *
      * @return void
-     * @group loginPage2
+     * @group loginPage
      * @test
      */
     public function try_login_with_existing_user3(){
