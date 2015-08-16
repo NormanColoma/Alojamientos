@@ -124,8 +124,11 @@ class UserTest extends TestCase
         //$ok= $userModel->createUser($admin);
 
         $this->assertNotEquals(null, $userModel->createUser($admin));
-        //$this->assertNotEquals(null, $userModel->createUser($traveler));
-        //$this->assertNotEquals(null, $userModel->createUser($owner));
+        $this->assertEquals(null, $userModel->createUser($admin));
+        $this->assertNotEquals(null, $userModel->createUser($traveler));
+        $this->assertEquals(null, $userModel->createUser($traveler));
+        $this->assertNotEquals(null, $userModel->createUser($owner));
+        $this->assertEquals(null, $userModel->createUser($owner));
     }
 
     /**
@@ -154,6 +157,12 @@ class UserTest extends TestCase
         $this->call('Post','login',$request);
         $this->assertRedirectedTo('/login');
 
+    }
+
+    public function tearDown(){
+        DB::table('users')->where('email','admin@email.com')->delete();  //Borramos lo que hemos insertado
+        DB::table('users')->where('email','traveler@email.com')->delete();
+        DB::table('users')->where('email','owner@email.com')->delete();
     }
 
 }

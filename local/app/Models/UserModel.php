@@ -8,6 +8,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\QueryException;
 
 class UserModel extends Model implements AuthenticatableContract, CanResetPasswordContract, IDAOUser
 {
@@ -18,16 +19,20 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
 
     public function createUser(AbstractUser $user)
     {
-
-        $u = UserModel::create([
-            'name' => $user->getName(),
-            'password' =>  bcrypt($user->getPassword()),
-            'email' => $user->getEmail(),
-            'surname' => $user->getSurname(),
-            'phone' => $user->getPhone(),
-            'owner' => $user->getOwner(),
-            'admin' => $user->getAdmin(),
-        ]);
+        $u = null;
+        try {
+            $u = UserModel::create([
+                'name' => $user->getName(),
+                'password' => bcrypt($user->getPassword()),
+                'email' => $user->getEmail(),
+                'surname' => $user->getSurname(),
+                'phone' => $user->getPhone(),
+                'owner' => $user->getOwner(),
+                'admin' => $user->getAdmin(),
+            ]);
+        }catch(QueryException $ex){
+            return $u;
+        }
         return $u;
     }
 

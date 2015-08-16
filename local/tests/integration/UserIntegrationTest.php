@@ -44,15 +44,20 @@ class UserIntegrationTest extends TestCase
         $traveler2->setEmail('javier@email.com');
         $traveler2->setAdmin(false);
         $traveler2->setPassword('123456');
-        $traveler2->setName('Javier');
+        $traveler2->setName('Javi');
         $traveler2->setOwner(false);
         $traveler2->setPhone('654321987');
         $traveler2->setSurname('Vera');
 
+        $userModel->createUser($traveler2);
+
+        $this->notSeeInDatabase('users', ['name' => 'Javi']);
+
     }
 
+
     public function tearDown(){
-        DB::table('tasks')->where('name','Joan')->delete();  //Borramos lo que hemos insertado;
+        DB::table('users')->where('email', 'javier@email.com')->delete();  //Borramos lo que hemos insertado;
     }
 
 }
