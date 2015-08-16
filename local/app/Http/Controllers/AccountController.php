@@ -2,24 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Task;
 
-
-class HomeController extends Controller
+class AccountController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index()
+    public function login()
     {
-        return view("index");
+        return view("account/login");
     }
 
     /**
@@ -40,8 +37,7 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
-
-        
+        //
     }
 
     /**
@@ -86,6 +82,6 @@ class HomeController extends Controller
      */
     public function destroy($id)
     {
-       
+        //
     }
 }

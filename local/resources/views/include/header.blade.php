@@ -22,16 +22,25 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Project name</a>
+                <a class="navbar-brand navbar-img" href="home"><img src="./local/resources/assets/img/alojablanco.png"></a>
 
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="hover">Log in</a>
+                        @if (Auth::check())
+                            <a class="hover" href="">{!! Auth::user()->name !!}</a>
+                        @else
+                            <a class="hover" href="login">Log in</a>
+                        @endif
+
                     </li>
                     <li>
-                        <a class="hover">Anuncia tu alojamiento</a>
+                        @if (Auth::check())
+                            <a class="hover" href="logout">Logout</a>
+                        @else
+                            <a class="hover">Anuncia tu alojamiento</a>
+                        @endif
                     </li>
                 </ul>
             </div><!--/.nav-collapse -->
