@@ -8,11 +8,12 @@
  */
 
 use App\Models\DTO\Traveler;
+use App\Models\DTO\Admin;
+use App\Models\DTO\Owner;
 use App\Models\UserModel;
 
 class UserIntegrationTest extends TestCase
 {
-
     /**
      * Insertamos un usuario en la base de datos
      *
@@ -38,6 +39,20 @@ class UserIntegrationTest extends TestCase
 
         $this->seeInDatabase('users', ['email' => 'javier@email.com']);
 
+        $traveler2 = new Traveler();
+
+        $traveler2->setEmail('javier@email.com');
+        $traveler2->setAdmin(false);
+        $traveler2->setPassword('123456');
+        $traveler2->setName('Javier');
+        $traveler2->setOwner(false);
+        $traveler2->setPhone('654321987');
+        $traveler2->setSurname('Vera');
+
+    }
+
+    public function tearDown(){
+        DB::table('tasks')->where('name','Joan')->delete();  //Borramos lo que hemos insertado;
     }
 
 }

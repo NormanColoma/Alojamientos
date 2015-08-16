@@ -14,7 +14,7 @@
 $factory->define(App\Models\DTO\Traveler::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
-        'password' => $faker->password,
+        'password' => bcrypt($faker->password),
         'email' => $faker->email,
         'surname' => $faker->name,
         'phone' => $faker->phoneNumber,

@@ -8,6 +8,28 @@
  */
 class UserSystemTest extends TestCase
 {
+
+    /*
+    * Insertamos en la base de datos los ususario
+    * que vamos a utilizar en las pruebas
+    */
+    public function setUp(){
+
+        $user = factory(Traveler::class)->make([
+            'email' => 'traveler@email.com',
+            'password' => '123456',
+        ]);
+        $user2 = factory(Admin::class)->make([
+            'email' => 'admin@email.com',
+            'password' => '123456',
+        ]);
+        $user3 = factory(Owner::class)->make([
+            'email' => 'owner@email.com',
+            'password' => '123456',
+        ]);
+
+    }
+
     /**
      * Test para visitar la página login.
      *
@@ -63,7 +85,7 @@ class UserSystemTest extends TestCase
      * Entonces debo obtener el panel de control de un usuario del tipo Administrador
      *
      * @return void
-     * @group loginPage2
+     * @group loginPage
      * @test
      */
     public function try_login_with_existing_user3(){
