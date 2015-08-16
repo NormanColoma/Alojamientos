@@ -59,7 +59,7 @@ class UserController extends Controller
         else {
             $credentials = $request->only('email','password');
             if (Auth::attempt($credentials, $request->has('remember'))) {
-                if(!Auth::user()->admin || !Auth::user()->owner)
+                if(!Auth::user()->admin && !Auth::user()->owner)
                     return redirect()->intended('/manage/traveler');
                 else if(Auth::user()->owner)
                     return redirect()->intended('/manage/owner');
@@ -135,7 +135,7 @@ class UserController extends Controller
                 $user->setOwner($request->input('owner'));
                 $uModel = new UserModel();
                 Auth::login($uModel->createUser($user));
-                if(!Auth::user()->admin || !Auth::user()->owner)
+                if(!Auth::user()->admin && !Auth::user()->owner)
                     return redirect()->intended('/manage/traveler');
                 else
                     return redirect()->intended('/manage/owner');
