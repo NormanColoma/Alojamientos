@@ -95,7 +95,7 @@
                 </div>
             </li>
             <li>
-                <div class="accom">
+                <div class="accom accom-right">
                     <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
                     <div class="description">
                         <span class="city">Alicante</span>
@@ -109,7 +109,7 @@
                 </div>
             </li>
             <li>
-                <div class="accom">
+                <div class="accom accom-last">
                     <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
                     <div class="description">
                         <span class="city">Alicante</span>
