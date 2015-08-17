@@ -13,10 +13,24 @@ use Illuminate\Database\QueryException;
 class UserModel extends Model implements AuthenticatableContract, CanResetPasswordContract, IDAOUser
 {
     use Authenticatable, CanResetPassword;
+
+    //Tabla con la que se interactua y se bindea el modelo
     protected $table = 'users';
+
+    //Por defecto laravel crea dos campos timestamps, en este caso no los queremos
     public $timestamps = false;
+
+    //Cuando hacemos una asignación múltiple (mass assignament), necesitamos especificar un array con los campos
     protected $fillable = array('name', 'password', 'email', 'surname', 'phone', 'owner', 'admin');
 
+
+    /**
+     * Recibe el AbstractUser que será insertado en la bd. Si el usuario no existe (no está ya ese email registrado)
+     * lo inserta en la bd y devuelve el objeto. Si existe, lo devolverá null.
+     *
+     * @param  AbstractUser $user
+     * @return AbstractUser
+     */
     public function createUser(AbstractUser $user)
     {
         $u = null;
