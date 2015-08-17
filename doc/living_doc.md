@@ -11,13 +11,13 @@ En este apartado trataremos todo lo relativo a la base de datos, y la forma en q
 
 Las migraciones se encuentra bajo el directorio \local\database\migrations. En estos archivos se especifican las tablas
 tal y cual irán en la bd. Posteriormente, ejecutando desde terminal y bajo \local  php artisan migrate, se crearán todas
-las tablas que se encuentren en las migraciones. Podemos encontrar más información en [migrations]("http://laravel.com/docs/5.1/migrations").
+las tablas que se encuentren en las migraciones. Podemos encontrar más información en [migrations](http://laravel.com/docs/5.1/migrations).
 
 
 ##Middlewares
 
 A menudo necesitamos comprobar (para actuar en consecuencia) los roles del usario. Por ejemplo, en este caso tenemos varios roles,
-y según estos, los usuarios podrán acceder a diferentes secciones. Este es el motivo principal del uso de los [middlewares]("http://laravel.com/docs/5.1/middleware"). Para no
+y según estos, los usuarios podrán acceder a diferentes secciones. Este es el motivo principal del uso de los [middlewares](http://laravel.com/docs/5.1/middleware). Para no
 tener que realizar estás comprobaciones siempre, los usamos. Los podemos encontrar en \local\app\Http\Middleware.
 
 
@@ -29,6 +29,6 @@ BDD para nuestro flujo de desarrollo. Cabe recordar que las pruebas exhaustivas 
 ######Transactions
 
 Cuando estamos realizando pruebas, es necesario insertar, modificar, borrar, datos de la base de datos. Para no tener que interferir con la misma,
-y poder dejar los mismos datos que habían antes de realizar un test (cada método del mismo) hacemos uso de las [transactions]("http://laravel.com/docs/5.1/testing").
+y poder dejar los mismos datos que habían antes de realizar un test (cada método del mismo) hacemos uso de las [transactions](http://laravel.com/docs/5.1/testing).
 
 
