@@ -34,7 +34,7 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
     public function createUser(AbstractUser $user)
     {
         $u = null;
-        try {
+
             $u = UserModel::create([
                 'name' => $user->getName(),
                 'password' => bcrypt($user->getPassword()),
@@ -44,9 +44,7 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
                 'owner' => $user->getOwner(),
                 'admin' => $user->getAdmin(),
             ]);
-        }catch(QueryException $ex){
-            return $u;
-        }
+
         return $u;
     }
 

@@ -13,6 +13,8 @@ class Traveler extends AbstractUser
 {
 
     function __construct() {
+        $this->admin= false;
+        $this->owner = false;
     }
 
 }
