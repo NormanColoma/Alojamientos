@@ -24,13 +24,23 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand navbar-img" href="{!! URL::to('home')!!}"> {!! Html::image('/local/resources/assets/img/alojablanco.png') !!}</a>
-
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
+                        <?php
+                            $url= "";
+                            if(Auth::check()){
+                                if(Auth::user()->admin)
+                                    $url = "manage/admin";
+                                else if(Auth::user()->owner)
+                                    $url = "manage/owner";
+                                else
+                                    $url = "manage/traveler";
+                            }
+                        ?>
                         @if (Auth::check())
-                            <a class="hover" href="">{!! Auth::user()->name !!}</a>
+                            <a class="hover" href="{!! URL::to($url)!!}">{!! Auth::user()->name !!}</a>
                         @else
                             <a class="hover" href="login">Log in</a>
                         @endif
