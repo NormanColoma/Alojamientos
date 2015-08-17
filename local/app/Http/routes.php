@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth']], function()
 
     Route::get('/manage/owner',['middleware' => 'owner', function()
     {
-        return "Aquí irá el panel de control del propietario";
+        return view("account/owner_panel");
     }]);
     Route::get('/manage/admin', ['middleware' => 'admin', function()
     {

@@ -4,14 +4,15 @@
         <title>Laravel</title>
         <meta charset="utf-8">
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-        <link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" type="text/css" href="./local/resources/assets/styles/styles.css">
-        <link rel="stylesheet" type="text/css" href="./local/resources/assets/styles/datepicker/bootstrap-datepicker.min.css">
-        <link rel="stylesheet" type="text/css" href="./local/resources/assets/styles/datepicker/bootstrap-datepicker.css">
-        <script type="text/javascript" src="./local/resources/assets/scripts/jquery-2.1.4.min.js" ></script>
-        <script type="text/javascript" src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="./local/resources/assets/scripts/datepicker/bootstrap-datepicker.min.js"></script>
-        <script type="text/javascript" src="./local/resources/assets/scripts/datepicker/bootstrap-datepicker.js"></script>
+        {!! Html::style('/bower_components/bootstrap/dist/css/bootstrap.min.css') !!}
+        {!! Html::style('/local/resources/assets/styles/styles.css') !!}
+        {!! Html::style('/local/resources/assets/styles/datepicker/bootstrap-datepicker.min.css') !!}
+        {!! Html::style('/local/resources/assets/styles/datepicker/bootstrap-datepicker.css') !!}
+        {!! Html::style('/local/resources/assets/styles/datepicker/bootstrap-datepicker.css') !!}
+        {!! Html::script('/local/resources/assets/scripts/jquery-2.1.4.min.js') !!}
+        {!! Html::script('/bower_components/bootstrap/dist/js/bootstrap.min.js') !!}
+        {!! Html::script('/local/resources/assets/scripts/datepicker/bootstrap-datepicker.js') !!}
+        {!! Html::script('/local/resources/assets/scripts/datepicker/bootstrap-datepicker.min.js') !!}
     </head>
     <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -22,7 +23,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand navbar-img" href="home"><img src="./local/resources/assets/img/alojablanco.png"></a>
+                <a class="navbar-brand navbar-img" href="{!! URL::to('home')!!}"> {!! Html::image('/local/resources/assets/img/alojablanco.png') !!}</a>
 
             </div>
             <div id="navbar" class="navbar-collapse collapse">
@@ -37,7 +38,7 @@
                     </li>
                     <li>
                         @if (Auth::check())
-                            <a class="hover" href="logout">Logout</a>
+                            {!! HTML::link('logout', 'log out', array('class' => 'hover'))!!}
                         @else
                             <a class="hover">Anuncia tu alojamiento</a>
                         @endif
