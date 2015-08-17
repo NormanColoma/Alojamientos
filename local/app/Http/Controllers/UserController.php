@@ -131,7 +131,8 @@ class UserController extends Controller
                 $user->setEmail($request->input('email'));
                 $user->setPassword($request->input('password'));
                 $user->setPhone($request->input('phone'));
-                $user->setOwner($request->input('owner'));
+                if($request->input('owner')!=null)
+                    $user->setOwner($request->input('owner'));
                 $uModel = new UserModel();
                 $uCreated = $uModel->createUser($user);
                 if($uCreated !=null) {
