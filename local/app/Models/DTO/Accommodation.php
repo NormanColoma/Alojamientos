@@ -9,7 +9,7 @@
 namespace App\Models\DTO;
 
 
-class Accomodation
+class Accommodation
 {
     private $id;
     private $title;
@@ -112,5 +112,12 @@ class Accomodation
 
     public function setProvince($province){
         $this->province = $province;
+    }
+
+    public function getPhotos(){
+        return $this->photos;
+    }
+    public function setPhotos($photos){
+        $this->photos = $photos;
     }
 }
