@@ -41,6 +41,7 @@
                         ?>
                         @if (Auth::check())
                             <a class="hover" href="{!! URL::to($url)!!}">{!! Auth::user()->name !!}</a>
+                                <a class="hover" href="{!! URL::to($url)!!}">{!! Auth::user()->name !!}</a>
                         @else
                             <a class="hover" href="login">Log in</a>
                         @endif

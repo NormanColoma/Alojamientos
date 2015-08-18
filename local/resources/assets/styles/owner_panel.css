@@ -1,3 +1,8 @@
+/*region panel-options*/
+
+/*endregion*/
+
+
 /*region accomodation-list*/
 
 .accomodation{
@@ -40,5 +45,182 @@
 .btn-delete-accom{
     margin-left: 20px;
     float:right;
+}
+/*endregion*/
+
+/*region newAccom*/
+
+#newAccom .form-default{
+    width:50%;
+}
+
+#newAccom .new-accom-city, #newAccom .new-accom-province{
+
+
+}
+
+#newAccom .col-xs-6{
+    padding-right: 0px;
+}
+
+#newAccom .form-desc{
+    height:200px;
+}
+/*endregion*/
+
+
+/*region responsive*/
+@media screen and (min-width: 1004px) and (max-width: 1215px) {
+    .accomodation img {
+        height: 255px;
+    }
+
+    .accom-descrip {
+        width: 55%;
+    }
+
+    .accomodation h3 {
+        width: 100%;
+    }
+
+    .accom-description{
+        margin-bottom: 30px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1003px) {
+    .accomodation img {
+        width: 300px;
+        height: 255px;
+    }
+
+    .accom-descrip {
+        width: 55%;
+    }
+
+    .accomodation h3 {
+        width: 100%;
+    }
+
+    .accom-description{
+        margin-bottom: 30px;
+    }
+
+    .nav-tabs>li {
+        width: 100%;
+    }
+
+    .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+        border: none !important;
+        background-color: #eee !important;
+    }
+}
+
+@media screen and (min-width: 450px) and (max-width: 767px) {
+    .accomodation img {
+        width: 100%;
+        height: none;
+    }
+
+    .accom-descrip {
+        width: 100%;
+    }
+
+    .accomodation h3 {
+        width: 100%;
+    }
+
+    .accom-description{
+        margin-bottom: 30px;
+    }
+
+    .nav-tabs>li {
+        width: 100%;
+    }
+
+    .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+        border: none !important;
+        background-color: #eee !important;
+    }
+
+    @media screen and (min-width: 450px) and (max-width: 591px) {
+        .col-xs-4 {
+            width: 100% !important;
+        }
+    }
+
+    @media screen and (min-width: 450px) and (max-width: 550px) {
+        .btn-primary {
+            width: 100%;
+            margin-bottom: 15px !important;
+        }
+
+        .btn-success{
+            width: 100%;
+        }
+        .accomodation img {
+            width: 100%;
+            height: 150px;
+        }
+    }
+
+    .form-default{
+        width: 100% !important;
+    }
+
+    #newAccom .col-xs-6 {
+        padding-right: 15px;
+    }
+}
+
+@media screen and (min-width: 0px) and (max-width: 449px) {
+    .accomodation img {
+        width: 100%;
+        height: 150px;
+    }
+
+    .accom-descrip {
+        width: 100%;
+    }
+
+    .accomodation h3 {
+        width: 100%;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .accom-description{
+        margin-bottom: 30px;
+    }
+
+    .nav-tabs>li {
+        width: 100%;
+    }
+
+    .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+        border: none !important;
+        background-color: #eee !important;
+    }
+
+    .btn-primary {
+        width: 100%;
+        margin-bottom: 15px !important;
+    }
+
+    .btn-success{
+        width: 100%;
+    }
+
+    .col-xs-4 {
+        width: 100% !important;
+    }
+
+    .form-default{
+        width: 100% !important;
+    }
+
+    #newAccom .col-xs-6 {
+        padding-right: 15px;
+    }
 }
 /*endregion*/
