@@ -50,7 +50,7 @@
                         </div>
                         <div id="newAccom" class="tab-pane fade">
                             <h3>Nuevo Alojamiento</h3>
-                            {!! Form::open(['url' => 'accommodation/publish']) !!}
+                            {!! Form::open(['url' => 'accommodation/publish', 'files' => true]) !!}
                             <div class="form-group form-default">
                                 <label>Título del anuncio</label>
                                 <input type="text" name="new-accom-title" class="form-control">
@@ -161,10 +161,59 @@
                                 <label>Descripción del anuncio</label>
                                 <textarea class="form-control form-desc" name="new-accom-desc"></textarea>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <label>Selecciona la imagen princiapl</label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-primary btn-file">
+                                                Principal&hellip; <input type="file" name="new-accom-main-img">
+                                            </span>
+                                        </span>
+                                        <input type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <label>Selecciona las imágenes de la galería</label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-primary btn-file">
+                                                Galería&hellip; <input type="file" multiple name="new-accom-images">
+                                            </span>
+                                        </span>
+                                        <input type="text" class="form-control" readonly>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="form-group form-submit">
                                 <input type="submit" class="btn btn-primary" value="Anunciar">
                             </div>
+
                             {!! Form::close() !!}
+                            <script>
+                                $(document).on('change', '.btn-file :file', function() {
+                                    var input = $(this),
+                                            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                                            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                                    input.trigger('fileselect', [numFiles, label]);
+                                });
+
+                                $(document).ready( function() {
+                                    $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+
+                                        var input = $(this).parents('.input-group').find(':text'),
+                                                log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+                                        if( input.length ) {
+                                            input.val(log);
+                                        } else {
+                                            if( log ) alert(log);
+                                        }
+
+                                    });
+                                });
+                            </script>
                         </div>
                 </div>
         </div>
