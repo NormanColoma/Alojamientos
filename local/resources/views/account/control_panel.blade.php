@@ -10,14 +10,26 @@
         <div class="container">
                   <h2>Tu cuenta</h2>
                   <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#accoms">Mis alojamientos  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
-                      <li><a data-toggle="tab" href="#newAccom">Añadir alojamiento  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
-                    <li><a data-toggle="tab" href="#pers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
-                    <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">4</span></a></li>
-                    <li><a data-toggle="tab" href="#menu3">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
+                      @if(Auth::user()->owner)
+                        <li class="active"><a data-toggle="tab" href="#accoms">Mis alojamientos  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+                          <li><a data-toggle="tab" href="#newAccom">Añadir alojamiento  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
+                        <li><a data-toggle="tab" href="#pers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+                        <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">4</span></a></li>
+                        <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
+                          @elseif(Auth::user()->admin)
+                          <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">4</span></a></li>
+                          <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
+                          @else
+                          <li class="active"><a data-toggle="tab" href="#preBookings">Mis Prereservas  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+                          <li><a data-toggle="tab" href="#bookings">Mis Reservas  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
+                          <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">4</span></a></li>
+                          <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
+                          @endif
+
                   </ul>
 
                   <div class="tab-content">
+                        @if(Auth::user()->owner)
                          <div id="accoms" class="tab-pane fade in active">
                                  <h3>Alojamientos</h3>
 
@@ -37,17 +49,24 @@
                                  </ul>
                         </div>
                         <div id="pers" class="tab-pane fade">
-                                <h3>Menu 1</h3>
-                                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                                <h3>Clientes</h3>
                         </div>
+                        @endif
+                        @if(!Auth::user()->owner && !Auth::user()->admin)
+                                <div id="preBookings" class="tab-pane fade active in">
+                                    <h3>Prereservas realizadas</h3>
+                                </div>
+                                <div id="bookings" class="tab-pane fade">
+                                    <h3>Reservas realizadas</h3>
+                                </div>
+                            @endif
                         <div id="messages" class="tab-pane fade">
-                                <h3>Menu 2</h3>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                                <h3>Mensajes</h3>
                         </div>
-                        <div id="menu3" class="tab-pane fade">
-                                <h3>Menu 3</h3>
-                                <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                        <div id="account" class="tab-pane fade">
+                                <h3>Configuración de la cuenta</h3>
                         </div>
+                            @if(Auth::user()->owner)
                         <div id="newAccom" class="tab-pane fade">
                             <h3>Nuevo Alojamiento</h3>
                             {!! Form::open(['url' => 'accommodation/publish', 'files' => true]) !!}
@@ -179,7 +198,7 @@
                                     <div class="input-group">
                                         <span class="input-group-btn">
                                             <span class="btn btn-primary btn-file">
-                                                Galería&hellip; <input type="file" multiple name="new-accom-images">
+                                                Galería&hellip; <input type="file" multiple name="galery[]">
                                             </span>
                                         </span>
                                         <input type="text" class="form-control" readonly>
@@ -215,6 +234,7 @@
                                 });
                             </script>
                         </div>
+                                @endif
                 </div>
         </div>
 </body>

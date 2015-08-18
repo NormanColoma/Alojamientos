@@ -31,16 +31,18 @@ Route::group(['middleware' => ['auth']], function()
 {
     Route::get('/manage/traveler',['middleware' => 'traveler', function()
     {
-        return "Aquí irá el panel de control del viajero";
+        return view("account/control_panel");
     }]);
 
     Route::get('/manage/owner',['middleware' => 'owner', function()
     {
-        return view("account/owner_panel");
+        return view("account/control_panel");
     }]);
     Route::get('/manage/admin', ['middleware' => 'admin', function()
     {
-        return "Aquí irá el panel de administración";
+        return view("account/control_panel");
     }]);
 
 });
+
+Route::post('accommodation/publish',"AccommodationController@addAccommodation");
