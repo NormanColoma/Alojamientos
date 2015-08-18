@@ -6,13 +6,17 @@
  * Time: 12:20
  */
 
-namespace app\Models;
+namespace App\Models;
 
 
 use App\Models\DTO\Accommodation;
+use App\Models\DTO\Photo;
 
 interface IDAOAccommodation
 {
-    public function createAccom(Accommodation $accom);
+    public function createAccom(Accommodation $accom, $id);
     public function accommodationByID($id);
+    public function addPhoto(Photo $photo, $id);
+    public function allPhotos($id);
+    public function getID($idUser);
 }

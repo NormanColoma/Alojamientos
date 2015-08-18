@@ -16,7 +16,7 @@ class Accommodation
     private $desc;
     private $capacity;
     private $beds;
-    private $baths;
+    private $bathrooms;
     private $inside;
     private $outside;
     private $price_per_person;
@@ -33,6 +33,9 @@ class Accommodation
         return $this->id;
     }
 
+    public function setID($id){
+        $this->id = $id;
+    }
 
     public function getTitle(){
         return $this->title;
@@ -67,11 +70,11 @@ class Accommodation
     }
 
     public function getBaths(){
-        return $this->baths;
+        return $this->bathrooms;
     }
 
     public function setBaths($baths){
-        $this->baths = $baths;
+        $this->bathrooms = $baths;
     }
 
     public function getInside(){
@@ -95,7 +98,7 @@ class Accommodation
     }
 
     public function setPrice($p){
-        $this->price = $p;
+        $this->price_per_person = $p;
     }
 
     public function getCity(){

@@ -11,9 +11,13 @@ use App\Models\DTO\Traveler;
 use App\Models\DTO\Admin;
 use App\Models\DTO\Owner;
 use App\Models\UserModel;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserIntegrationTest extends TestCase
 {
+
+    use DatabaseTransactions;
+
     /**
      * Insertamos un usuario en la base de datos
      *
