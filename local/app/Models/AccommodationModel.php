@@ -104,6 +104,35 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
         return $acom;
     }
 
+    public function accommodationByOwner($owner_id)
+    {
+        $accomm = null;
+        $accommodations = [];
+
+        try{
+            $accomm = AccommodationModel::all()->where('user_id', $owner_id);
+            foreach($accomm as $ac) {
+                $a = new Accommodation();
+                $a->setID($ac->id);
+                $a->setBaths($ac->bathrooms);
+                $a->setBeds($ac->beds);
+                $a->setCapacity($ac->capacity);
+                $a->setCity($ac->city);
+                $a->setDesc($ac->desc);
+                $a->setInside($ac->inside);
+                $a->setOutside($ac->outside);
+                $a->setPhotos($this->allPhotos($ac->id));
+                $a->setPrice($ac->price_per_person);
+                $a->setProvince($ac->province);
+                $a->setTitle($ac->title);
+                $accommodations [] = $a;
+            }
+        }catch(QueryException $ex){
+            return $accomm;
+        }
+        return $accommodations;
+    }
+
     public function addPhoto(Photo $photo, $id)
     {
         $p = null;

@@ -19,4 +19,5 @@ interface IDAOAccommodation
     public function addPhoto(Photo $photo, $id);
     public function allPhotos($id);
     public function getID($idUser);
+    public function accommodationByOwner($owner_id);
 }
