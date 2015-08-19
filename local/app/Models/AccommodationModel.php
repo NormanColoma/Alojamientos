@@ -64,7 +64,7 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
             }
 
         }catch(QueryException $ex){
-            throw $ex;
+            throw new \Exception("Ha fallado la inserción");
         }
 
 
@@ -80,6 +80,10 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
             $accomm = DB::table('accommodations')->select('*')
                 ->where('id', $id)
                 ->get();
+
+            if($accomm == null){
+                return null;
+            }
 
             foreach($accomm as $ac) {
                 $a = new Accommodation();
@@ -98,7 +102,7 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
                 $acom = $a;
             }
         }catch(QueryException $ex){
-            return $accomm;
+            throw new \Exception("No existe el alojamiento");
         }
 
         return $acom;
@@ -111,6 +115,11 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
 
         try{
             $accomm = AccommodationModel::all()->where('user_id', $owner_id);
+
+            if($accomm->count() == 0) {
+                return null;
+            }
+
             foreach($accomm as $ac) {
                 $a = new Accommodation();
                 $a->setID($ac->id);
@@ -128,7 +137,7 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
                 $accommodations [] = $a;
             }
         }catch(QueryException $ex){
-            return $accomm;
+            return null;
         }
         return $accommodations;
     }
@@ -172,11 +181,4 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
 
     }
 
-    public function getID($idUser){
-
-        $a = AccommodationModel::where('user_id', $idUser)->first();
-
-        return (int)$a['id'];
-
-    }
 }
