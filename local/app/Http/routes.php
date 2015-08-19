@@ -36,7 +36,8 @@ Route::group(['middleware' => ['auth']], function()
 
     Route::get('/manage/owner',['middleware' => 'owner', function()
     {
-        return view("account/control_panel");
+        $am = new \App\Models\AccommodationModel();
+        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id)]);
     }]);
     Route::get('/manage/admin', ['middleware' => 'admin', function()
     {

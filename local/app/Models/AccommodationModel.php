@@ -60,7 +60,7 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
             ]);
 
             foreach($accom->getPhotos() as $photo){
-                $this->addPhoto($photo, $a->getID($id));
+                $this->addPhoto($photo, $a['id']);
             }
 
         }catch(QueryException $ex){

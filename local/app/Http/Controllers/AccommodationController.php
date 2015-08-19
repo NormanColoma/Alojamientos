@@ -91,9 +91,7 @@ class AccommodationController extends Controller
             'new-accom-title' => 'required|regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
             'new-accom-city' => 'required|regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
             'new-accom-province' => 'required|regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
-            'new-accom-inside' => 'regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
-            'new-accom-outside' => 'regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
-            'new-accom-desc' => 'required|regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
+            'new-accom-desc' => 'required',
             'new-accom-price' => 'required|numeric',
             'new-accom-main-img' => 'required|image|mimes:jpeg,jpg,bmp,png,gif',
         ],$this->messages);
@@ -126,10 +124,12 @@ class AccommodationController extends Controller
                         }
                     }
                 }
+                flash()->overlay('Tu alojamiento se ha anunciado correctamente. Puedes comprobarlo desde tu panel de control.','Publicado');
                 return redirect("/manage/owner");
             } catch (QueryException $ex) {
                 echo $ex;
             }
+
         }
 
 

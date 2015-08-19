@@ -31,22 +31,33 @@
                   <div class="tab-content">
                         @if(Auth::user()->owner)
                          <div id="accoms" class="tab-pane fade in active">
+                                 @include('flash::message')
                                  <h3>Alojamientos</h3>
 
                                  <p>Aquí se te mostrarán todos los alojamientos que hayas anunciado hasta el momento.</p>
                                  <ul>
-                                     <li>
-                                         <div class="accomodation">
-                                             {!! Html::image('/local/resources/assets/img/accoms/accom1.jpg') !!}
-                                             <div class="accom-descrip">
-                                                 <h3 class="accom-title">Casa rural con vistas preciosas</h3>
-                                                 <p class="accom-description">Aquí se mostrará una breve descripción sobre el alojamiento. Donde se podrá contar algo acerca del alojamiento. Será el mismo que se muestre cuando los usarios entren a ver el detalle de un alojamiento, aunque se limitará el número de caracteres.</p>
-                                                 <a href="#" class="btn btn-primary btn-delete-accom"><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
-                                                 <a href="#" class="btn btn-success btn-update-accom"><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
+                                     @foreach($accommodations as $accom)
+                                         @foreach($accom->getPhotos() as $photo)
+                                             @if($photo->getMain())
+                                                 <?php $img = $photo->getUrl() ?>
+                                             @endif
+                                         @endforeach
+                                         <li>
+                                             <div class="accomodation">
+                                                 {!! Html::image('/local/resources/assets/img/accoms/' . $img) !!}
+                                                 <div class="accom-descrip">
+                                                     <h3 class="accom-title">{!! $accom->getTitle() !!}</h3>
+                                                     <p class="accom-description">{!! $accom->getDesc() !!}</p>
+                                                     <a href="#" class="btn btn-primary btn-delete-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
+                                                     <a href="#" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
+                                                 </div>
                                              </div>
-                                         </div>
-                                     </li>
-                                 </ul>
+                                         </li>
+                                     @endforeach
+                             </ul>
+                             <script>
+                                 $('#flash-overlay-modal').modal();
+                             </script>
                         </div>
                         <div id="pers" class="tab-pane fade">
                                 <h3>Clientes</h3>
