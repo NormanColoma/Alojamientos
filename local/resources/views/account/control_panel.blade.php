@@ -36,24 +36,26 @@
 
                                  <p>Aquí se te mostrarán todos los alojamientos que hayas anunciado hasta el momento.</p>
                                  <ul>
-                                     @foreach($accommodations as $accom)
-                                         @foreach($accom->getPhotos() as $photo)
-                                             @if($photo->getMain())
-                                                 <?php $img = $photo->getUrl() ?>
-                                             @endif
-                                         @endforeach
-                                         <li>
-                                             <div class="accomodation">
-                                                 {!! Html::image('/local/resources/assets/img/accoms/' . $img) !!}
-                                                 <div class="accom-descrip">
-                                                     <h3 class="accom-title">{!! $accom->getTitle() !!}</h3>
-                                                     <p class="accom-description">{!! $accom->getDesc() !!}</p>
-                                                     <a href="#" class="btn btn-primary btn-delete-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
-                                                     <a href="#" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
+                                     @if(count($accommodations) > 0)
+                                         @foreach($accommodations as $accom)
+                                             @foreach($accom->getPhotos() as $photo)
+                                                 @if($photo->getMain())
+                                                     <?php $img = $photo->getUrl() ?>
+                                                 @endif
+                                             @endforeach
+                                             <li>
+                                                 <div class="accomodation">
+                                                     {!! Html::image('/local/resources/assets/img/accoms/' . $img) !!}
+                                                     <div class="accom-descrip">
+                                                         <h3 class="accom-title">{!! $accom->getTitle() !!}</h3>
+                                                         <p class="accom-description">{!! $accom->getDesc() !!}</p>
+                                                         <a href="#" class="btn btn-primary btn-delete-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
+                                                         <a href="#" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
+                                                     </div>
                                                  </div>
-                                             </div>
-                                         </li>
-                                     @endforeach
+                                             </li>
+                                         @endforeach
+                                     @endif
                              </ul>
                              <script>
                                  $('#flash-overlay-modal').modal();
