@@ -109,14 +109,14 @@ class AccommIntegrationTest extends TestCase
         $a1->setTitle('Casa rural');
 
         //Testeamos el método createAccom que inserta tanto en la tabla accommodations como en la tabla photos
-        $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $accom = $am->createAccom($a1, $um->getID($owner->getEmail()));
 
         $this->SeeInDatabase('accommodations', ['title' => 'Casa rural']);
         $this->SeeInDatabase('photos', ['url' => 'url/photo1']);
         $this->SeeInDatabase('photos', ['url' => 'url/photo2']);
 
         //Testeamos el método AllPhotos
-        $this->assertEquals(2, count($am->allPhotos($am->getID($um->getID($owner->getEmail())))));
+        $this->assertEquals(2, count($am->allPhotos($accom['id'])));
 
     }
 
