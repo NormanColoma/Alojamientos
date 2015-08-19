@@ -73,21 +73,24 @@
                             <div class="form-group form-default">
                                 <label>Título del anuncio</label>
                                 <input type="text" name="new-accom-title" class="form-control">
+                                <span class="text-danger">{{ $errors->first('new-accom-title') }}</span>
                             </div>
                             <div class="row">
                                 <div class="form-group form-default col-xs-6">
                                     <label>Ciudad</label>
                                     <input type="text" name="new-accom-city" class="form-control new-accom-city">
-
+                                    <span class="text-danger">{{ $errors->first('new-accom-city') }}</span>
                                 </div>
                                 <div class="form-group form-default col-xs-6">
                                     <label>Provincia</label>
                                     <input type="text" name="new-accom-province" class="form-control new-accom-province">
+                                    <span class="text-danger">{{ $errors->first('new-accom-province') }}</span>
                                 </div>
                             </div>
                             <div class="form-group form-default">
                                 <label>Precio por persona</label>
                                 <input type="text" name="new-accom-price" class="form-control">
+                                <span class="text-danger">{{ $errors->first('new-accom-price') }}</span>
                             </div>
                             <div class="row">
                                 <div class="form-group col-xs-4">
@@ -170,15 +173,18 @@
                                 <div class="form-group form-default col-xs-6">
                                     <label>Interior</label>
                                     <textarea class="form-control" placeholder="Introduce una breve descripción del interior del alojamiento. Este campo no es obligatorio" name="new-accom-inside"></textarea>
-                                </div>
+                                    <span class="text-danger">{{ $errors->first('new-accom-inside') }}</span>
+                                    </div>
                                 <div class="form-group form-default col-xs-6">
                                     <label>Exterior</label>
                                     <textarea class="form-control" placeholder="Introduce una breve descripción del exterior del alojamiento. Este campo no es obligatorio" name="new-accom-outside"></textarea>
+                                    <span class="text-danger">{{ $errors->first('new-accom-outside') }}</span>
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <label>Descripción del anuncio</label>
                                 <textarea class="form-control form-desc" name="new-accom-desc"></textarea>
+                                <span class="text-danger">{{ $errors->first('new-accom-desc') }}</span>
                             </div>
                             <div class="row">
 
@@ -192,6 +198,7 @@
                                         </span>
                                         <input type="text" class="form-control" readonly>
                                     </div>
+                                    <span class="text-danger">{{ $errors->first('new-accom-main-img') }}</span>
                                 </div>
                                 <div class="col-lg-6 col-sm-6 col-12">
                                     <label>Selecciona las imágenes de la galería</label>
@@ -202,7 +209,8 @@
                                             </span>
                                         </span>
                                         <input type="text" class="form-control" readonly>
-                                </div>
+                                    </div>
+                                    <span class="text-danger">{{ $errors->first('galery') }}</span>
                             </div>
                             </div>
                             <div class="form-group form-submit">
@@ -211,6 +219,10 @@
 
                             {!! Form::close() !!}
                             <script>
+                                var url = document.location.toString();
+                                if (url.match('#')) {
+                                    $('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show') ;
+                                }
                                 $(document).on('change', '.btn-file :file', function() {
                                     var input = $(this),
                                             numFiles = input.get(0).files ? input.get(0).files.length : 1,

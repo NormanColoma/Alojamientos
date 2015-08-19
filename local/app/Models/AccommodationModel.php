@@ -64,7 +64,7 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
             }
 
         }catch(QueryException $ex){
-            return $a;
+            throw $ex;
         }
 
 
