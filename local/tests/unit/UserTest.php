@@ -131,21 +131,6 @@ class UserTest extends TestCase
         $this->assertEquals(null, $userModel->createUser($owner));
     }
 
-    /**
-     * A basic functional test example.
-     *
-     * @return void
-     * @group login
-     * @test
-     */
-    public function login_with_existing_user(){
-
-        $request =(['email'=>'ua.norman@gmail.com', 'password'=>'capulleitor']);
-        $this->call('Post','login',$request);
-        $this->assertRedirectedTo('/');
-
-    }
-
 
     public function tearDown(){
         DB::table('users')->where('email','admin@email.com')->delete();  //Borramos lo que hemos insertado
