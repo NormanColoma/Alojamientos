@@ -11,8 +11,8 @@
                   <h2>Tu cuenta</h2>
                   <ul class="nav nav-tabs">
                       @if(Auth::user()->owner)
-                        <li class="active"><a data-toggle="tab" href="#accoms">Mis alojamientos  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
-                          <li><a data-toggle="tab" href="#newAccom">Añadir alojamiento  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
+                        <li class="active"><a data-toggle="tab" href="#accoms" id="btn-display-accoms">Mis alojamientos  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+                          <li><a data-toggle="tab" href="#newAccom" id="btn-add-accom">Añadir alojamiento  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#pers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">4</span></a></li>
                         <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
