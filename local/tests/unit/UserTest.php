@@ -139,25 +139,13 @@ class UserTest extends TestCase
      * @test
      */
     public function login_with_existing_user(){
+
         $request =(['email'=>'ua.norman@gmail.com', 'password'=>'capulleitor']);
         $this->call('Post','login',$request);
         $this->assertRedirectedTo('/');
 
     }
 
-    /**
-     * A basic functional test example.
-     *
-     * @return void
-     * @group login
-     * @test
-     */
-    public function login_with_non_existing_user(){
-        $request =(['email'=>'ua.norman@gmail.com', 'password'=>'pepe']);
-        $this->call('Post','login',$request);
-        $this->assertRedirectedTo('/login');
-
-    }
 
     public function tearDown(){
         DB::table('users')->where('email','admin@email.com')->delete();  //Borramos lo que hemos insertado
