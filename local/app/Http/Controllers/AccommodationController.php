@@ -136,10 +136,11 @@ class AccommodationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Sube las imágenes del usuario a la carpeta correspondiente. Devuelte true en caso de que la subida sea correcta, y false
+     * en caso contrario.
      *
-     * @param  Request  $request
-     * @return Response
+     * @param  $file
+     * @return Boolean
      */
     public function uploadPhoto($file)
     {
@@ -196,14 +197,5 @@ class AccommodationController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-
-    public function checkRequest(Request $request){
-
-
-
-
-        return true;
     }
 }
