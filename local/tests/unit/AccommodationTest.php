@@ -67,7 +67,7 @@ class AccommodationTest extends TestCase
         $this->assertEquals($arrayPhoto2, $accomm->getPhotos());
 
     }
-
+    
 
 
 }

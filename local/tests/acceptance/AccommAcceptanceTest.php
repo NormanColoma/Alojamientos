@@ -471,7 +471,7 @@ class AccommAcceptanceTest extends TestCase
      * @group accommAcceptance2
      * @test
      */
-    /*public function inserting_new_accommodation_main_invalid(){
+    public function inserting_new_accommodation_main_invalid(){
         $userModel = new UserModel();
         $owner = new Owner();
         $owner->setEmail('owner@email.com');
@@ -490,7 +490,7 @@ class AccommAcceptanceTest extends TestCase
         $this->visit("/manage/owner#newAccom")->see("Nuevo Alojamiento")->type("Alojamiento", "new-accom-title")
             ->type("Alicante","new-accom-city")->type("1", "new-accom-province")->type("150","new-accom-price")
             ->type("Esto es la descripción del anuncio","new-accom-desc")->attach(base_path() ."/resources/assets/img/img_test/falloFormato.txt","new-accom-main-img")->press("Anunciar")
-            ->see("El archivo debe ser una imagen (jpeg, png, bmp, gif, or jpg)");
-    }*/
+            ->see("Nuevo Alojamiento");
+    }
 
 }

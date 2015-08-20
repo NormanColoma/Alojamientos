@@ -59,9 +59,4 @@ class UserIntegrationTest extends TestCase
 
     }
 
-
-    public function tearDown(){
-        DB::table('users')->where('email', 'javier@email.com')->delete();  //Borramos lo que hemos insertado;
-    }
-
 }
