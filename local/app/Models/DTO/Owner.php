@@ -13,7 +13,8 @@ class Owner extends AbstractUser
 {
 
     function __construct() {
-        $this->admin= false;
+        $this->setAdmin(false);
+        $this->setOwner(true);
     }
 
 }

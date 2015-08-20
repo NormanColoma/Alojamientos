@@ -21,5 +21,6 @@ interface IDAOUser
     public function userByName($name);
     public function allBookings($user);
     public function allPreBookings($user);
+    public function getID($email);
 
 }

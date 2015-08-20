@@ -11,9 +11,13 @@ use App\Models\DTO\Traveler;
 use App\Models\DTO\Admin;
 use App\Models\DTO\Owner;
 use App\Models\UserModel;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserIntegrationTest extends TestCase
 {
+
+    use DatabaseTransactions;
+
     /**
      * Insertamos un usuario en la base de datos
      *
@@ -53,11 +57,6 @@ class UserIntegrationTest extends TestCase
 
         $this->notSeeInDatabase('users', ['name' => 'Javi Missed']);
 
-    }
-
-
-    public function tearDown(){
-        DB::table('users')->where('email', 'javier@email.com')->delete();  //Borramos lo que hemos insertado;
     }
 
 }

@@ -80,4 +80,12 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
 
     }
 
+    public function getID($email){
+
+        $user = UserModel::where('email', $email)->first();
+
+        return (int)$user['id'];
+
+    }
+
 }
