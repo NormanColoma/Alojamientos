@@ -54,8 +54,14 @@ class SystemController extends Controller
         if($request->has("check-in") && $request->has("check-out")) {
             //TODO:Implement logic for search including dates
         }
-        else
-            return redirect("search/accommodations/".$request->input("city")."/page/1");
+        else{
+            if($request->has("city"))
+                return redirect("search/accommodations/".$request->input("city")."/page/1");
+            else
+                return view("search/display",["total" => 0]);
+
+        }
+
     }
 
 

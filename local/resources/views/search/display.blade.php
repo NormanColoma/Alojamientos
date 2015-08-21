@@ -34,6 +34,9 @@
                         <input type="submit" class="btn btn-primary btn-search-bar" value="Buscar">
                     </div>
                 </form>
+                <script>
+                    $('#flash-overlay-modal').modal();
+                </script>
             </div>
 
         </div>
@@ -42,7 +45,9 @@
 
     <div class="container">
       <div class="sorted-bar">
-          <div class="accom-number">{!! $total !!} resultados</div>
+          <div class="accom-number">
+                {!! $total !!} resultados
+          </div>
           <div class="accom-sort">
               <div class="dropdown">
                   <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
