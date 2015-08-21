@@ -49,7 +49,6 @@
 
     <div class="search-cont">
         <form method="post" action="search/accommodations" id="searchForm">
-            {!! csrf_field() !!}
             <div class="inner">
                 <ul>
                     <li>
@@ -63,11 +62,11 @@
 
                         <div class='form-div date date-margin'>
                             <span class="glyphicon glyphicon-calendar"></span>
-                            <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate"  type="text" placeholder="Llegada" name="check-in">
+                            <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
                         </div>
                         <div class='form-div date'>
                             <span class="glyphicon glyphicon-calendar"></span>
-                            <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate"  type="text" placeholder="Salida" name="check-out">
+                            <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Salida">
                         </div>
                     </li>
                     <li>
@@ -80,7 +79,7 @@
             <script>
                 $("#searchForm").submit(function(e){
                     if(!$('[name="city"]').val()){
-                        $(".text-search-danger").text("Introduce la ciudad");
+                        $(".text-search-danger").text("Introduce la ciudad")
                         e.preventDefault();
                     }
                 })

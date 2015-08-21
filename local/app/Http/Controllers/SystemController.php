@@ -50,7 +50,7 @@ class SystemController extends Controller
     public function search(Request $request)
     {
         if($request->has("check-in") && $request->has("check-out")) {
-            return redirect("search/accommodations/".$request->input("city")."/checkin/".$request->input("check-in")."/checkout/".$request->input("check-out"));
+            //TODO:Implement logic for search including dates
         }
         else
             return redirect("search/accommodations/".$request->input("city"));
@@ -67,8 +67,9 @@ class SystemController extends Controller
      */
     public function displayAccommodationsByCity($city)
     {
-        
+        return view("search/display");
     }
+
 
     /**
      * Display the specified resource.

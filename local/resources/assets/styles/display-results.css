@@ -1,0 +1,92 @@
+.sorted-bar{
+    border: 1px solid #dce0e0;
+    border-radius: 2px;
+    float:left;
+    width: 100%;
+}
+
+.accom-number, .accom-sort{
+    padding: 10px;
+}
+.accom-number{
+    float:left;
+    color: #70747c;
+}
+
+.accom-sort{
+    float:right;
+    margin-right: 30px;
+}
+
+
+/*region accomList*/
+
+    .accommodation-list{
+        margin-top: 30px;
+        float: left;
+        width: 100%;
+    }
+    .accommodation{
+        width: 100%;
+        border: 1px solid #dce0e0;
+        border-radius: 2px;
+        float: left;
+        margin-right: 90px;
+        margin-bottom: 40px;
+        font-family: 'Open Sans',sans-serif;
+    }
+
+    .accommodation img {
+        float: left;
+        width: 400px;
+        height: 225px;
+    }
+
+    .accommodation-descrip {
+         float: left;
+         padding: 0px 20px 20px 30px;
+         width: 64.5%;
+     }
+
+    .accommodation-price{
+        position: absolute;
+        background-color: black;
+        opacity: 0.7;
+        margin-top: 25px;
+    }
+
+    .accommodation-price span{
+        padding: 10px 10px 10px 10px;
+        float: left;
+        font-size: 18px;
+        color: white;
+    }
+
+    .accommodation-details{
+        float: left;
+        padding: 0px 20px 0px 30px;
+        width: 64.5%;
+    }
+    .accommodation-city{
+        width: 50%;
+        float: left;
+    }
+
+    .accommodation-votes{
+    }
+    .city-icon{
+        color: #337ab7;
+        font-weight: 100;
+    }
+    .glyphicon-star{
+        color:#FFD700;
+        font-size: 15px;
+    }
+
+    .btn-book{
+        float:right;
+        border-radius:2px !important;
+        padding: 7px 50px !important;
+        font-size: 17px !important;
+    }
+/*endregion*/
