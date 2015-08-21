@@ -70,7 +70,8 @@ class SystemController extends Controller
     public function displayAccommodationsByCity($city,$page)
     {
         $sm = new SystemModel();
-        if($accommodations = $sm->allAcomByCity($city)!=null)
+        $accommodations = $sm->allAcomByCity($city);
+        if($accommodations != null)
             $items = DB::table("accommodations")->where('city',$city)->orWhere('province',$city)->paginate(5)->total();
         else
             $items = 0;
