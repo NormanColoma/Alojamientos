@@ -18,6 +18,14 @@
     margin-right: 30px;
 }
 
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    float: left;
+    width: 100%;
+    margin-top: 20px;
+}
 
 /*region search-bar*/
 

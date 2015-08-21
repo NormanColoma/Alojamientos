@@ -17,20 +17,23 @@
         <div class="container">
 
             <div class="inner">
-                <div class="form-div form-city">
-                    <span class="glyphicon glyphicon-map-marker"></span><input class="form-control " type="text" placeholder="Ciudad" name="city">
-                </div>
-                <div class="form-div form-date">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                    <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
-                </div>
-                <div class="form-div form-date">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                    <input class="form-control " data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
-                </div>
-                <div class="form-div form-search">
-                    <input type="submit" class="btn btn-primary btn-search-bar" value="Buscar">
-                </div>
+                <form method="post" action="{!! URL::to("/search/accommodations")!!}">
+                    {!! csrf_field() !!}
+                    <div class="form-div form-city">
+                        <span class="glyphicon glyphicon-map-marker"></span><input class="form-control " type="text" placeholder="Ciudad" name="city">
+                    </div>
+                    <div class="form-div form-date">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                    </div>
+                    <div class="form-div form-date">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <input class="form-control " data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                    </div>
+                    <div class="form-div form-search">
+                        <input type="submit" class="btn btn-primary btn-search-bar" value="Buscar">
+                    </div>
+                </form>
             </div>
 
         </div>
@@ -53,69 +56,73 @@
               </div>
           </div>
       </div>
-        <ul class="accommodation-list">
-            @foreach($accommodations as $accomm)
-                <?php
-                $am = new \App\Models\AccommodationModel();
-                    foreach($am->allPhotos($accomm->getId()) as $photo){
-                        if($photo->getMain())
-                            $img = $photo->getUrl();
-                    }
-                ?>
-                <li>
-                    <div class="accommodation">
-                        {!! Html::image('/local/resources/assets/img/accoms/'.$img ) !!}
-                        <div class="accommodation-price">
-                            <span>{!! $accomm->getPrice() !!}</span>
-                        </div>
-                        <div class="accommodation-descrip">
-                            <h3 class="accom-title">{!! $accomm->getTitle() !!} </h3>
-                            <p class="accom-description">
-                                {!! $accomm->getDesc() !!}
-                            </p>
-                        </div>
-                        <div class="accommodation-details">
-                            <div class="accommodation-city">
-                                <span class="glyphicon glyphicon-map-marker city-icon"></span>
-
-                                <label class="city-icon">{!! $accomm->getCity() !!}</label>
-                                <div class="accommodation-votes">
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </div>
+        @if($total > 0 && $accommodations !=null)
+            <ul class="accommodation-list">
+                @foreach($accommodations as $accomm)
+                    <?php
+                    $am = new \App\Models\AccommodationModel();
+                        foreach($am->allPhotos($accomm->getId()) as $photo){
+                            if($photo->getMain())
+                                $img = $photo->getUrl();
+                        }
+                    ?>
+                    <li>
+                        <div class="accommodation">
+                            {!! Html::image('/local/resources/assets/img/accoms/'.$img ) !!}
+                            <div class="accommodation-price">
+                                <span>{!! $accomm->getPrice() !!}</span>
                             </div>
-                            <a class="btn btn-primary btn-book btn-large">Reservar</a>
-                        </div>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
-        <ul class="pagination">
-            <li>
-                <a href="{!! URL::to("search/accommodations/".$city."/page/1")!!}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <?php
-                $per_page = 5;
-                $total = round($total/$per_page);
+                            <div class="accommodation-descrip">
+                                <h3 class="accom-title">{!! $accomm->getTitle() !!} </h3>
+                                <p class="accom-description">
+                                    {!! $accomm->getDesc() !!}
+                                </p>
+                            </div>
+                            <div class="accommodation-details">
+                                <div class="accommodation-city">
+                                    <span class="glyphicon glyphicon-map-marker city-icon"></span>
 
-            ?>
-            @for($i=1;$i<=$total;$i++)
+                                    <label class="city-icon">{!! $accomm->getCity() !!}</label>
+                                    <div class="accommodation-votes">
+                                        <span class="glyphicon glyphicon-star"></span>
+                                        <span class="glyphicon glyphicon-star"></span>
+                                        <span class="glyphicon glyphicon-star"></span>
+                                        <span class="glyphicon glyphicon-star"></span>
+                                        <span class="glyphicon glyphicon-star-empty"></span>
+                                    </div>
+                                </div>
+                                <a class="btn btn-primary btn-book btn-large">Reservar</a>
+                            </div>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+            <ul class="pagination">
+                <li>
+                    <a href="{!! URL::to("search/accommodations/".$city."/page/1")!!}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
                 <?php
-                $url = "search/accommodations/".$city."/page/".$i;
+                    $per_page = 5;
+                    $total = round($total/$per_page);
+
                 ?>
-                <li><a href="{!! URL::to($url)!!}" class="page">{!! $i !!}</a></li>
-            @endfor
-            <li>
-                <a href="{!! URL::to("search/accommodations/".$city."/page/".$total)!!}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
+                @for($i=1;$i<=$total;$i++)
+                    <?php
+                    $url = "search/accommodations/".$city."/page/".$i;
+                    ?>
+                    <li><a href="{!! URL::to($url)!!}" class="page">{!! $i !!}</a></li>
+                @endfor
+                <li>
+                    <a href="{!! URL::to("search/accommodations/".$city."/page/".$total)!!}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        @else
+            <div class="alert alert-danger">No hay resultados para la búsqueda introducida!</div>
+        @endif
     </div>
 </body>
 </html>

@@ -70,9 +70,12 @@ class SystemController extends Controller
     public function displayAccommodationsByCity($city,$page)
     {
         $sm = new SystemModel();
-        $accommodations = $sm->allAcomByCity($city);
-        $items = DB::table("accommodations")->where('city',$city)->orWhere('province',$city)->paginate(5)->total();
-        return view("search/display", ['accommodations' => $accommodations, 'city' => $city, 'total'=>$items]);
+        if($accommodations = $sm->allAcomByCity($city)!=null)
+            $items = DB::table("accommodations")->where('city',$city)->orWhere('province',$city)->paginate(5)->total();
+        else
+            $items = 0;
+        return view("search/display", ['accommodations' => $accommodations, 'city' => $city, 'total' => $items]);
+
     }
 
 
