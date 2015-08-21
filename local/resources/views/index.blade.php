@@ -48,14 +48,15 @@
     </div>
 
     <div class="search-cont">
-        <form method="post" action="#">
+        <form method="post" action="search/accommodations" id="searchForm">
             <div class="inner">
                 <ul>
                     <li>
                         <h4>Destino</h4>
                         <div class='form-div'>
-                            <span class="glyphicon glyphicon-map-marker"></span><input class="form-control" type="text" placeholder="Ciudad">
+                            <span class="glyphicon glyphicon-map-marker"></span><input class="form-control" type="text" placeholder="Ciudad" name="city">
                         </div>
+                        <span class="text-danger text-search-danger" style="color:red;font-weight:700;float:left"></span>
                     </li>
                     <li>
 
@@ -75,6 +76,14 @@
                     </li>
                 </ul>
             </div>
+            <script>
+                $("#searchForm").submit(function(e){
+                    if(!$('[name="city"]').val()){
+                        $(".text-search-danger").text("Introduce la ciudad");
+                        e.preventDefault();
+                    }
+                })
+            </script>
         </form>
     </div>
     <div class="container highlights">
