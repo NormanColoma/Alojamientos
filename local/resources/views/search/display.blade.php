@@ -15,6 +15,7 @@
     @include("include.header")
     <div class="search-bar">
         <div class="container">
+
             <div class="inner">
                 <div class="form-div form-city">
                     <span class="glyphicon glyphicon-map-marker"></span><input class="form-control " type="text" placeholder="Ciudad" name="city">
@@ -34,6 +35,28 @@
 
         </div>
     </div>
+    @foreach($users as $user)
+        <li>{!! $user->name !!}</li>
+    @endforeach
+
+    <ul class="pagination">
+        <li>
+            <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        @for($i=1;$i<=$users->total();$i++)
+            <?php
+                $url = "search/accommodations/".$city."/page/".$i;
+            ?>
+            <li><a href="{!! URL::to($url)!!}" class="page">{!! $i !!}</a></li>
+        @endfor
+        <li>
+            <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
     <div class="container">
       <div class="sorted-bar">
           <div class="accom-number">2 resultados</div>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserModel;
+use DB;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -65,9 +67,11 @@ class SystemController extends Controller
      * @param  String  $city
      * @return View
      */
-    public function displayAccommodationsByCity($city)
+    public function displayAccommodationsByCity($city,$page)
     {
-        return view("search/display");
+        $users = DB::table('users')->paginate(1);
+        $users->setPath($city);
+        return view("search/display", ['users' => $users, 'city' => $city]);
     }
 
 
