@@ -47,3 +47,4 @@ Route::group(['middleware' => ['auth']], function()
 });
 
 Route::post('accommodation/publish',"AccommodationController@addAccommodation");
+Route::post('search/accommodations',"SystemController@search");

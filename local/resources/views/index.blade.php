@@ -49,6 +49,7 @@
 
     <div class="search-cont">
         <form method="post" action="search/accommodations" id="searchForm">
+            {!! csrf_field() !!}
             <div class="inner">
                 <ul>
                     <li>
@@ -62,11 +63,11 @@
 
                         <div class='form-div date date-margin'>
                             <span class="glyphicon glyphicon-calendar"></span>
-                            <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                            <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate"  type="text" placeholder="Llegada" name="check-in">
                         </div>
                         <div class='form-div date'>
                             <span class="glyphicon glyphicon-calendar"></span>
-                            <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Salida">
+                            <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate"  type="text" placeholder="Salida" name="check-out">
                         </div>
                     </li>
                     <li>
