@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserModel;
+use App\Models\SystemModel;
 use DB;
 use Illuminate\Http\Request;
 
@@ -55,7 +55,7 @@ class SystemController extends Controller
             //TODO:Implement logic for search including dates
         }
         else
-            return redirect("search/accommodations/".$request->input("city"));
+            return redirect("search/accommodations/".$request->input("city")."/page/1");
     }
 
 
@@ -69,9 +69,10 @@ class SystemController extends Controller
      */
     public function displayAccommodationsByCity($city,$page)
     {
-        $users = DB::table('users')->paginate(1);
-        $users->setPath($city);
-        return view("search/display", ['users' => $users, 'city' => $city]);
+        $sm = new SystemModel();
+        $accommodations = $sm->allAcomByCity($city);
+        $items = DB::table("accommodations")->where('city',$city)->orWhere('province',$city)->paginate(5)->total();
+        return view("search/display", ['accommodations' => $accommodations, 'city' => $city, 'total'=>$items]);
     }
 
 

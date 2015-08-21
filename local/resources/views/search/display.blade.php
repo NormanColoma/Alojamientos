@@ -35,31 +35,11 @@
 
         </div>
     </div>
-    @foreach($users as $user)
-        <li>{!! $user->name !!}</li>
-    @endforeach
 
-    <ul class="pagination">
-        <li>
-            <a href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        @for($i=1;$i<=$users->total();$i++)
-            <?php
-                $url = "search/accommodations/".$city."/page/".$i;
-            ?>
-            <li><a href="{!! URL::to($url)!!}" class="page">{!! $i !!}</a></li>
-        @endfor
-        <li>
-            <a href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
+
     <div class="container">
       <div class="sorted-bar">
-          <div class="accom-number">2 resultados</div>
+          <div class="accom-number">{!! $total !!} resultados</div>
           <div class="accom-sort">
               <div class="dropdown">
                   <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -74,67 +54,66 @@
           </div>
       </div>
         <ul class="accommodation-list">
-            <li>
-                <div class="accommodation">
-                    {!! Html::image('/local/resources/assets/img/test_img/img1.jpg') !!}
-                    <div class="accommodation-price">
-                        <span>100 € noche</span>
-                    </div>
-                    <div class="accommodation-descrip">
-                        <h3 class="accom-title">Anuncio </h3>
-                        <p class="accom-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-                            esse cillum dolore eu fugiat nulla pariatur.
-                        </p>
-                    </div>
-                    <div class="accommodation-details">
-                        <div class="accommodation-city">
-                            <span class="glyphicon glyphicon-map-marker city-icon"></span>
-
-                            <label class="city-icon">Sevilla</label>
-                            <div class="accommodation-votes">
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                            </div>
+            @foreach($accommodations as $accomm)
+                <?php
+                $am = new \App\Models\AccommodationModel();
+                    foreach($am->allPhotos($accomm->getId()) as $photo){
+                        if($photo->getMain())
+                            $img = $photo->getUrl();
+                    }
+                ?>
+                <li>
+                    <div class="accommodation">
+                        {!! Html::image('/local/resources/assets/img/accoms/'.$img ) !!}
+                        <div class="accommodation-price">
+                            <span>{!! $accomm->getPrice() !!}</span>
                         </div>
-                        <a class="btn btn-primary btn-book btn-large">Reservar</a>
+                        <div class="accommodation-descrip">
+                            <h3 class="accom-title">{!! $accomm->getTitle() !!} </h3>
+                            <p class="accom-description">
+                                {!! $accomm->getDesc() !!}
+                            </p>
+                        </div>
+                        <div class="accommodation-details">
+                            <div class="accommodation-city">
+                                <span class="glyphicon glyphicon-map-marker city-icon"></span>
+
+                                <label class="city-icon">{!! $accomm->getCity() !!}</label>
+                                <div class="accommodation-votes">
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                </div>
+                            </div>
+                            <a class="btn btn-primary btn-book btn-large">Reservar</a>
+                        </div>
                     </div>
-                </div>
+                </li>
+            @endforeach
+        </ul>
+        <ul class="pagination">
+            <li>
+                <a href="{!! URL::to("search/accommodations/".$city."/page/1")!!}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
             </li>
-            <li>
-                <div class="accommodation">
-                    {!! Html::image('/local/resources/assets/img/test_img/img2.jpg') !!}
-                    <div class="accommodation-price">
-                        <span>225 € noche</span>
-                    </div>
-                    <div class="accommodation-descrip">
-                        <h3 class="accom-title">Anuncio </h3>
-                        <p class="accom-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-                            esse cillum dolore eu fugiat nulla pariatur.
-                        </p>
-                    </div>
-                    <div class="accommodation-details">
-                        <div class="accommodation-city">
-                            <span class="glyphicon glyphicon-map-marker city-icon"></span>
+            <?php
+                $per_page = 5;
+                $total = round($total/$per_page);
 
-                            <label class="city-icon">Benidorm</label>
-                            <div class="accommodation-votes">
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                            </div>
-                        </div>
-                        <a class="btn btn-primary btn-book btn-large">Reservar</a>
-                    </div>
-                </div>
+            ?>
+            @for($i=1;$i<=$total;$i++)
+                <?php
+                $url = "search/accommodations/".$city."/page/".$i;
+                ?>
+                <li><a href="{!! URL::to($url)!!}" class="page">{!! $i !!}</a></li>
+            @endfor
+            <li>
+                <a href="{!! URL::to("search/accommodations/".$city."/page/".$total)!!}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
             </li>
         </ul>
     </div>
