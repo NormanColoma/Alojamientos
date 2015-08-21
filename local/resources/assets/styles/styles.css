@@ -13,6 +13,10 @@ body{
 	border-radius: 2px;
 }
 
+.btn{
+	border-radius:2px !important;
+}
+
 
 ul{
 	padding: 0;

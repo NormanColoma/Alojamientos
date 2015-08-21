@@ -49,6 +49,7 @@
 
     <div class="search-cont">
         <form method="post" action="search/accommodations" id="searchForm">
+            {!! csrf_field() !!}
             <div class="inner">
                 <ul>
                     <li>

@@ -19,6 +19,71 @@
 }
 
 
+/*region search-bar*/
+
+.search-bar{
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(33,33,33,0.1);
+    margin-top: -20px;
+    margin-bottom: 40px;
+}
+
+.search-bar .form-div {
+    position: relative;
+    border-radius: 2px;
+}
+
+.search-bar .form-div .form-control {
+    padding-left: 25px;
+    height: 40px;
+}
+
+.search-bar .form-div .glyphicon {
+    position: absolute;
+    top: 30%;
+    padding-left: 5px;
+    color: #d3d3d3;
+}
+
+.search-bar .inner{
+    padding: 15px 15px 15px 0px;
+    float: left;
+    width: 100%;
+
+}
+
+.search-bar .form-city{
+    width: 40%;
+    float:left;
+    margin-right: 20px;
+}
+
+.search-bar .form-date{
+    width:20%;
+    float:left;
+    margin-right: 20px;
+}
+
+.search-bar .btn-search-bar{
+    border-radius: 2px !important;
+    padding: 7px 52px !important;
+    font-size: 17px !important;
+    height: 40px;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+}
+
+.search-bar .btn-search-bar:hover{
+    background-color: #449d44 !important;
+    border-color: #398439 !important;
+}
+
+.search-bar .form-search{
+    float:left;
+}
+
+/*endregion*/
+
 /*region accomList*/
 
     .accommodation-list{
