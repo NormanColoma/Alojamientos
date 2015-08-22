@@ -85,7 +85,7 @@ class SystemIntegrationTest extends TestCase
         $a1->setInside('Descripción del interior del alojamiento.');
         $a1->setOutside('Descripción del exterior del alojamiento.');
         $a1->setPhotos($arrayPhoto);
-        $a1->setPrice(50);
+        $a1->setPrice(number_format((float)50, 2, '.', ''));
         $a1->setProvince('Alicante');
         $a1->setTitle('Casa rural');
 
@@ -97,15 +97,18 @@ class SystemIntegrationTest extends TestCase
         $a2->setInside('Descripción del interior del alojamiento2.');
         $a2->setOutside('Descripción del exterior del alojamiento2.');
         $a2->setPhotos($arrayPhoto2);
-        $a2->setPrice(150);
+        $a2->setPrice(number_format((float)150, 2, '.', ''));
         $a2->setProvince('Alicante');
         $a2->setTitle('Casa rural2');
 
         $accom = $am->createAccom($a1, $um->getID($owner->getEmail()));
         $accom2 = $am->createAccom($a2, $um->getID($owner2->getEmail()));
 
-        $arrayAcomm [] = $accom;
-        $arrayAcomm [] = $accom2;
+        $a1->setID($accom['id']);
+        $a2->setID($accom2['id']);
+
+        $arrayAcomm [] = $a1;
+        $arrayAcomm [] = $a2;
 
         $this->SeeInDatabase('accommodations', ['title' => 'Casa rural']);
         $this->SeeInDatabase('photos', ['url' => 'url/photo1']);
@@ -115,7 +118,7 @@ class SystemIntegrationTest extends TestCase
         $this->SeeInDatabase('photos', ['url' => 'url/photo4']);
 
         //Testeamos el método allAccomByCity
-        //$this->assertEquals($arrayAcomm, $sm->allAcomByCity("Elche"));
+        $this->assertEquals($arrayAcomm, $sm->allAcomByCity("Elche"));
 
     }
 
