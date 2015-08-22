@@ -50,7 +50,7 @@
                         @if (Auth::check())
                             {!! HTML::link('logout', 'log out', array('class' => 'hover'))!!}
                         @else
-                            <a class="hover">Anuncia tu alojamiento</a>
+                            <a class="hover" href="{!! URL::to('manage/owner#newAccom')!!}">Anuncia tu alojamiento</a>
                         @endif
                     </li>
                 </ul>

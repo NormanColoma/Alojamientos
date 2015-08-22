@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth']], function()
     {
         return view("account/control_panel");
     }]);
-
+    
     Route::get('/manage/owner',['middleware' => 'owner', function()
     {
         $am = new \App\Models\AccommodationModel();
