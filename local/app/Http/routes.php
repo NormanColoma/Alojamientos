@@ -48,7 +48,4 @@ Route::group(['middleware' => ['auth']], function()
 
 Route::post('accommodation/publish',"AccommodationController@addAccommodation");
 Route::post('search/accommodations',"SystemController@search");
-Route:get("search/accommodations",function(){
-    return view("search/display");
-});
 Route::paginate('search/accommodations/{city}', 'SystemController@displayAccommodationsByCity');
