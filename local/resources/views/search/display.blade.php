@@ -50,7 +50,7 @@
           </div>
           <div class="accom-sort">
               <div class="dropdown">
-                  <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="cursor:pointer;">
                       Filtrar por
                       <span class="caret"></span>
                   </a>
@@ -75,7 +75,7 @@
                         <div class="accommodation">
                             {!! Html::image('/local/resources/assets/img/accoms/'.$img ) !!}
                             <div class="accommodation-price">
-                                <span>{!! $accomm->getPrice() !!}</span>
+                                <span>{!! round($accomm->getPrice())."€ noche" !!}</span>
                             </div>
                             <div class="accommodation-descrip">
                                 <h3 class="accom-title">{!! $accomm->getTitle() !!} </h3>

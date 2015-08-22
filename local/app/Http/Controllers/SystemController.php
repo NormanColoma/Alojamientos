@@ -73,8 +73,9 @@ class SystemController extends Controller
      * @param  String  $city
      * @return View
      */
-    public function displayAccommodationsByCity($city,$page)
+    public function displayAccommodationsByCity($city)
     {
+
         $sm = new SystemModel();
         $accommodations = $sm->allAcomByCity($city);
         if($accommodations != null)
