@@ -75,7 +75,7 @@
                         <div class="accommodation">
                             {!! Html::image('/local/resources/assets/img/accoms/'.$img ) !!}
                             <div class="accommodation-price">
-                                <span>{!! $accomm->getPrice()."€ noche" !!}</span>
+                                <span>{!! round($accomm->getPrice())."€ noche" !!}</span>
                             </div>
                             <div class="accommodation-descrip">
                                 <h3 class="accom-title">{!! $accomm->getTitle() !!} </h3>
