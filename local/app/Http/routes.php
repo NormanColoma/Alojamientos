@@ -47,3 +47,5 @@ Route::group(['middleware' => ['auth']], function()
 });
 
 Route::post('accommodation/publish',"AccommodationController@addAccommodation");
+Route::post('search/accommodations',"SystemController@search");
+Route::paginate('search/accommodations/{city}', 'SystemController@displayAccommodationsByCity');

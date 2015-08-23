@@ -1,0 +1,459 @@
+.sorted-bar{
+    border: 1px solid #dce0e0;
+    border-radius: 2px;
+    float:left;
+    width: 100%;
+}
+
+.accom-number, .accom-sort{
+    padding: 10px;
+}
+.accom-number{
+    float:left;
+    color: #70747c;
+}
+
+.accom-sort{
+    float:right;
+    margin-right: 30px;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    float: left;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/*region search-bar*/
+
+.search-bar{
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(33,33,33,0.1);
+    margin-top: -20px;
+    margin-bottom: 40px;
+}
+
+.search-bar .form-div {
+    position: relative;
+    border-radius: 2px;
+}
+
+.search-bar .form-div .form-control {
+    padding-left: 25px;
+    height: 40px;
+}
+
+.search-bar .form-div .glyphicon {
+    position: absolute;
+    top: 30%;
+    padding-left: 5px;
+    color: #d3d3d3;
+}
+
+.search-bar .inner{
+    padding: 15px 15px 15px 0px;
+    float: left;
+    width: 100%;
+
+}
+
+.search-bar .form-city{
+    width: 40%;
+    float:left;
+    margin-right: 20px;
+}
+
+.search-bar .form-date{
+    width:20%;
+    float:left;
+    margin-right: 20px;
+}
+
+.search-bar .btn-search-bar{
+    border-radius: 2px !important;
+    padding: 7px 52px !important;
+    font-size: 17px !important;
+    height: 40px;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+}
+
+.search-bar .btn-search-bar:hover{
+    background-color: #449d44 !important;
+    border-color: #398439 !important;
+}
+
+.search-bar .form-search{
+    float:left;
+}
+
+/*endregion*/
+
+/*region accomList*/
+
+    .accommodation-list{
+        margin-top: 30px;
+        float: left;
+        width: 100%;
+    }
+    .accommodation{
+        width: 100%;
+        border: 1px solid #dce0e0;
+        border-radius: 2px;
+        float: left;
+        margin-right: 90px;
+        margin-bottom: 40px;
+        font-family: 'Open Sans',sans-serif;
+    }
+
+    .accommodation img {
+        float: left;
+        width: 400px;
+        height: 225px;
+    }
+
+    .accommodation-descrip {
+         float: left;
+         padding: 0px 20px 20px 30px;
+         width: 64.5%;
+     }
+
+    .accommodation-price{
+        position: absolute;
+        background-color: black;
+        opacity: 0.7;
+        margin-top: 25px;
+    }
+
+    .accommodation-price span{
+        padding: 10px 10px 10px 10px;
+        float: left;
+        font-size: 18px;
+        color: white;
+    }
+
+    .accommodation-details{
+        float: left;
+        padding: 0px 20px 0px 30px;
+        width: 64.5%;
+    }
+    .accommodation-city{
+        width: 50%;
+        float: left;
+    }
+
+    .accommodation-votes{
+    }
+    .city-icon{
+        color: #337ab7;
+        font-weight: 100;
+    }
+    .glyphicon-star{
+        color:#FFD700;
+        font-size: 15px;
+    }
+
+    .btn-book{
+        float:right;
+        border-radius:2px !important;
+        padding: 7px 50px !important;
+        font-size: 17px !important;
+    }
+/*endregion*/
+
+/*region responsive*/
+@media screen and (min-width: 992px) and (max-width: 1200px) {
+    .search-bar .inner {
+        padding: 15px 0px 15px 0px;
+    }
+
+    .search-bar .form-city {
+        width: 36.5%;
+    }
+
+    .accommodation-descrip {
+        float: left;
+        padding: 0px 10px 10px 30px;
+        width: 57%;
+    }
+
+    .accommodation-details {
+        float: left;
+        padding: 0px 20px 0px 30px;
+        width: 57%;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .search-bar .inner {
+        padding: 15px 0px 15px 0px;
+    }
+
+    .search-bar .form-city {
+        width: 35%;
+    }
+
+    .search-bar .form-date {
+        width: 18%;
+    }
+
+    .search-bar .btn-search-bar {
+        padding: 7px 46px !important;
+    }
+
+    .accommodation img {
+        float: left;
+        width: 100%;
+        height: 275px;
+    }
+
+    .accommodation-descrip {
+        width: 100%;
+    }
+
+    .accommodation-details {
+        padding: 0px 20px 20px 30px;
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 600px) and (max-width: 767px) {
+    .search-bar .inner {
+        padding: 15px 0px 15px 0px;
+    }
+    .search-bar .btn-search-bar {
+        padding: 7px 29px !important;
+    }
+    .search-bar .form-city {
+        width: 35%;
+    }
+
+    .accommodation img {
+        float: left;
+        width: 100%;
+        height: 275px;
+    }
+
+    .accommodation-descrip {
+        width: 100%;
+    }
+
+    .accommodation-details {
+        padding: 0px 20px 20px 30px;
+        width: 100%;
+    }
+
+    @media screen and (min-width: 736px) and (max-width: 743px) {
+        .search-bar .form-city {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-bar .form-date {
+            width: 34.8%;
+        }
+
+        .search-bar .btn-search-bar {
+            padding: 7px 54px !important;
+        }
+    }
+
+    @media screen and (min-width: 728px) and (max-width: 735px) {
+        .search-bar .form-city {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-bar .form-date {
+            width: 34.7%;
+        }
+
+        .search-bar .btn-search-bar {
+            padding: 7px 54px !important;
+        }
+    }
+
+    @media screen and (min-width: 720px) and (max-width: 728px) {
+        .search-bar .form-city {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-bar .form-date {
+            width: 34.6%;
+        }
+
+        .search-bar .btn-search-bar {
+            padding: 7px 54px !important;
+        }
+    }
+
+    @media screen and (min-width: 712px) and (max-width: 719px) {
+        .search-bar .form-city {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-bar .form-date {
+            width: 34.5%;
+        }
+
+        .search-bar .btn-search-bar {
+            padding: 7px 54px !important;
+        }
+    }
+
+    @media screen and (min-width: 701px) and (max-width: 711px) {
+        .search-bar .form-city {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-bar .form-date {
+            width: 34.4%;
+        }
+
+        .search-bar .btn-search-bar {
+            padding: 7px 54px !important;
+        }
+    }
+
+    @media screen and (min-width: 697px) and (max-width: 700px) {
+        .search-bar .form-city {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-bar .form-date {
+            width: 34.3%;
+        }
+
+        .search-bar .btn-search-bar {
+            padding: 7px 54px !important;
+        }
+    }
+
+    @media screen and (min-width: 600px) and (max-width: 696px) {
+        .search-bar .form-city {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-bar .form-date {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-bar .btn-search-bar {
+            padding: 7px 54px !important;
+            width:100%;
+        }
+
+        .search-bar .form-search {
+            float: left;
+            width: 100%;
+        }
+
+        .datepicker {
+            width:95%;
+        }
+
+        .datepicker table {
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (min-width: 0px) and (max-width: 599px) {
+
+    .accommodation{
+        border:none;
+    }
+
+    .accommodation img {
+        float: left;
+        width: 100%;
+        height: 240px;
+    }
+
+    .accommodation-descrip {
+        width: 100%;
+        padding: 0px;
+    }
+
+    .accommodation-details {
+        padding: 15px 0px 15px 0px;
+        width: 100%;
+    }
+
+    .accommodation-city {
+        width: 100%;
+        float: left;
+        padding-bottom: 20px;
+    }
+
+    .btn-book{
+        width:100%;
+    }
+
+    .accommodation-votes {
+        float: right;
+        margin-right: 5px;
+    }
+
+    .accommodation-city label{
+        font-size: 20px;
+        margin-top: -3px;
+        margin-left: 5px
+    }
+
+    .city-icon {
+        font-size: 18px;
+    }
+
+    .search-bar .form-city {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .search-bar .form-date {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .search-bar .btn-search-bar {
+        padding: 7px 54px !important;
+        width:100%;
+    }
+
+    .search-bar .form-search {
+        float: left;
+        width: 100%;
+    }
+
+    .datepicker {
+        width:95%;
+    }
+
+    .datepicker table {
+        width: 100%;
+    }
+
+    @media screen and (min-width: 426px) and (max-width: 500px) {
+        .accommodation img {
+            height: 200px;
+        }
+    }
+
+    @media screen and (min-width: 0px) and (max-width: 425px) {
+        .accommodation img {
+            height: 175px;
+        }
+    }
+}
+
+
+/*endregion*/
