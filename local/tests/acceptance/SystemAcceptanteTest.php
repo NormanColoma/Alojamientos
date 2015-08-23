@@ -52,10 +52,8 @@ class SystemAcceptanteTest extends TestCase
      */
     public function try_index_search_city_empty(){
 
-        $this->visit("/")->see("Destacados")
-            ->type("", "city")
-            ->press("BUSCAR");
-           // ->seePageIs("/");
+        $this->visit("/home")->see("Destacados")->type("","city")
+            ->press("BUSCAR")->seePageIs("/search/accommodations")->see("No hay resultados para la búsqueda introducida!");
 
     }
 

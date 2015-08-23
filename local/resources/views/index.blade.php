@@ -57,7 +57,7 @@
                         <div class='form-div'>
                             <span class="glyphicon glyphicon-map-marker"></span><input class="form-control" type="text" placeholder="Ciudad" name="city">
                         </div>
-                        <span class="text-danger text-search-danger" style="color:red;font-weight:700;float:left"></span>
+                        <span class="text-danger text-search-danger" style="color:red;font-weight:700;float:left" id="text-search-danger"></span>
                     </li>
                     <li>
 
