@@ -110,7 +110,7 @@
                 </li>
                 <?php
                     $per_page = 5;
-                    $total = round($total/$per_page);
+                    $total = ceil($total/$per_page);
 
                 ?>
                 @for($i=1;$i<=$total;$i++)

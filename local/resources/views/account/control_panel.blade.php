@@ -2,7 +2,7 @@
 <html>
 <head>
         <meta charset="utf-8">
-        <title>Owner Panel</title>
+        <title>Control Panel</title>
         {!! Html::style('/local/resources/assets/styles/owner_panel.css') !!}
 </head>
 <body>
@@ -32,10 +32,10 @@
                         @if(Auth::user()->owner)
                          <div id="accoms" class="tab-pane fade in active">
                                  @include('flash::message')
-                                 <h3>Alojamientos</h3>
+                                 <h3 id="accomms">Alojamientos</h3>
 
                                  <p>Aquí se te mostrarán todos los alojamientos que hayas anunciado hasta el momento.</p>
-                                 <ul>
+                                 <ul class="accom-list">
                                      @if(count($accommodations) > 0)
                                          @foreach($accommodations as $accom)
                                              @foreach($accom->getPhotos() as $photo)
@@ -57,9 +57,62 @@
                                          @endforeach
                                      @endif
                              </ul>
+                             <?php
+                                 $per_page = 5;
+                                 $total = ceil(count($accommodations)/$per_page);
+                             ?>
+                             <ul class="pagination pagination-accom">
+                                 <li>
+                                     <a style="cursor:pointer;" aria-label="Previous" name="1">
+                                         <span aria-hidden="true">&laquo;</span>
+                                     </a>
+                                 </li>
+                                 @for($i=1;$i<=$total;$i++)
+                                     <li><a style="cursor:pointer;" name="{!! $i !!}">{!! $i !!}</a></li>
+                                 @endfor
+                                 <li>
+                                     <a style="cursor:pointer;" aria-label="Next" name="{!! $total !!}">
+                                         <span aria-hidden="true">&raquo;</span>
+                                     </a>
+                                 </li>
+                             </ul>
                              <script>
                                  $('#flash-overlay-modal').modal();
+                                 $(document).ready(function(){
+                                     var items = $(".accom-list li").length;
+                                     var page=1;
+                                     var page_items = 1;
+                                     var per_page = 5;
+                                     $(".accom-list li").each(function(){
+                                         $(this).attr("id","accom-page-"+page);
+                                         if(page_items==per_page) {
+                                             page++;
+                                             page_items = per_page;
+                                         }
+                                         page_items++;
+                                     })
+
+                                     displayPage(1);
+                                     $(".pagination-accom a").click(function(){
+                                         var page = $(this).attr("name");
+                                         displayPage(page);
+                                     })
+
+                                 })
+
+                                 function displayPage(page){
+                                     $(".accom-list li").each(function(){
+                                         if($(this).attr("id") != "accom-page-"+page){
+                                             $(this).hide();
+                                         }
+                                         else
+                                            $(this).show();
+                                     })
+                                     $('html, body').animate({ scrollTop: 0 }, 0);
+
+                                 }
                              </script>
+
                         </div>
                         <div id="pers" class="tab-pane fade">
                                 <h3>Clientes</h3>

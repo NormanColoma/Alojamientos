@@ -39,6 +39,13 @@ Route::group(['middleware' => ['auth']], function()
         $am = new \App\Models\AccommodationModel();
         return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id)]);
     }]);
+
+    Route::get('/manage/owner/accoms/page/{id}',['middleware' => 'owner', function()
+    {
+        $am = new \App\Models\AccommodationModel();
+        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id)]);
+    }]);
+
     Route::get('/manage/admin', ['middleware' => 'admin', function()
     {
         return view("account/control_panel");
