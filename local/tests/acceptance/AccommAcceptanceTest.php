@@ -114,7 +114,7 @@ class AccommAcceptanceTest extends TestCase
             ->press('btn-login')
             ->seePageIs('/manage/owner')->see("Alojamientos");
         $this->visit("/manage/owner#newAccom")->see("Nuevo Alojamiento")->type("Alojamiento", "new-accom-title")
-            ->type("Alicante","new-accom-city")->type("Alicante", "new-accom-province")->type("150","new-accom-price")
+            ->type("Alicante","new-accom-city")->select("Alicante", "new-accom-province")->type("150","new-accom-price")
             ->type("Esto es la descripción del anuncio","new-accom-desc")->attach(base_path() ."/resources/assets/img/img_test/img1.jpg","new-accom-main-img")->press("Anunciar")
             ->seePageIs("/manage/owner")->see("Alojamiento");
     }
@@ -187,39 +187,6 @@ class AccommAcceptanceTest extends TestCase
             ->see("El campo es obligatorio");
     }
 
-    /**
-     * Escenario: Insertar un nuevo alojamiento campo provincia vacío
-     * Dado que soy un usuario del tipo Propietario y me he logueado correctamente
-     * Cuando relleno el formulario para insertar un nuevo alojamiento
-     * Y dejo vacío el provincia ciudad
-     * Si hago click en el botón 'Anunciar'
-     * Entonces debe aparecer un mensaje de "El campo es obligatorio"
-     *
-     * @return void
-     * @group accommAcceptance
-     * @test
-     */
-    public function inserting_new_accommodation_province_empty(){
-        $userModel = new UserModel();
-        $owner = new Owner();
-        $owner->setEmail('owner@email.com');
-        $owner->setAdmin(false);
-        $owner->setPassword('123456');
-        $owner->setName('Owner');
-        $owner->setOwner(true);
-        $owner->setPhone('654321987');
-        $owner->setSurname('Apellido');
-        $userModel->createUser($owner);
-
-        $this->visit('/login')
-            ->type('owner@email.com', 'email')->type('123456','password')
-            ->press('btn-login')
-            ->seePageIs('/manage/owner')->see("Alojamientos");
-        $this->visit("/manage/owner#newAccom")->see("Nuevo Alojamiento")->type("Alojamiento", "new-accom-title")
-            ->type("Alicante","new-accom-city")->type("", "new-accom-province")->type("150","new-accom-price")
-            ->type("Esto es la descripción del anuncio","new-accom-desc")->attach(base_path() ."/resources/assets/img/img_test/img1.jpg","new-accom-main-img")->press("Anunciar")
-            ->see("El campo es obligatorio");
-    }
 
     /**
      * Escenario: Insertar un nuevo alojamiento campo precio vacío
@@ -392,40 +359,6 @@ class AccommAcceptanceTest extends TestCase
     }
 
     /**
-     * Escenario: Insertar un nuevo alojamiento campo provincia no válido
-     * Dado que soy un usuario del tipo Propietario y me he logueado correctamente
-     * Cuando relleno el formulario para insertar un nuevo alojamiento
-     * Y el campo provincia se rellena con números
-     * Si hago click en el botón 'Anunciar'
-     * Entonces debe aparecer un mensaje de "El formato introducido no es válido. Solo se permiten letras"
-     *
-     * @return void
-     * @group accommAcceptance
-     * @test
-     */
-    public function inserting_new_accommodation_province_invalid(){
-        $userModel = new UserModel();
-        $owner = new Owner();
-        $owner->setEmail('owner@email.com');
-        $owner->setAdmin(false);
-        $owner->setPassword('123456');
-        $owner->setName('Owner');
-        $owner->setOwner(true);
-        $owner->setPhone('654321987');
-        $owner->setSurname('Apellido');
-        $userModel->createUser($owner);
-
-        $this->visit('/login')
-            ->type('owner@email.com', 'email')->type('123456','password')
-            ->press('btn-login')
-            ->seePageIs('/manage/owner')->see("Alojamientos");
-        $this->visit("/manage/owner#newAccom")->see("Nuevo Alojamiento")->type("Alojamiento", "new-accom-title")
-            ->type("Alicante","new-accom-city")->type("1", "new-accom-province")->type("150","new-accom-price")
-            ->type("Esto es la descripción del anuncio","new-accom-desc")->attach(base_path() ."/resources/assets/img/img_test/img1.jpg","new-accom-main-img")->press("Anunciar")
-            ->see("El formato introducido no es válido. Solo se permiten letras");
-    }
-
-    /**
      * Escenario: Insertar un nuevo alojamiento campo precio no válido
      * Dado que soy un usuario del tipo Propietario y me he logueado correctamente
      * Cuando relleno el formulario para insertar un nuevo alojamiento
@@ -488,7 +421,7 @@ class AccommAcceptanceTest extends TestCase
             ->press('btn-login')
             ->seePageIs('/manage/owner')->see("Alojamientos");
         $this->visit("/manage/owner#newAccom")->see("Nuevo Alojamiento")->type("Alojamiento", "new-accom-title")
-            ->type("Alicante","new-accom-city")->type("1", "new-accom-province")->type("150","new-accom-price")
+            ->type("Alicante","new-accom-city")->select("Alicante","new-accom-province")->type("150","new-accom-price")
             ->type("Esto es la descripción del anuncio","new-accom-desc")->attach(base_path() ."/resources/assets/img/img_test/falloFormato.txt","new-accom-main-img")->press("Anunciar")
             ->see("Nuevo Alojamiento");
     }

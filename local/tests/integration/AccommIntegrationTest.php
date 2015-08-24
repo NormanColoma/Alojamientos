@@ -265,6 +265,7 @@ class AccommIntegrationTest extends TestCase
         $a1->setPrice(number_format((float)50, 2, '.', ''));
         $a1->setProvince('Alicante');
         $a1->setTitle('Casa rural');
+        $a1->setInitialDesc($a1->getDesc());
 
         $a2->setBaths(1);
         $a2->setBeds(2);
@@ -277,6 +278,7 @@ class AccommIntegrationTest extends TestCase
         $a2->setPrice(number_format((float)20, 2, '.', ''));
         $a2->setProvince('Murcia');
         $a2->setTitle('Casa en la ciudad');
+        $a2->setInitialDesc($a2->getDesc());
 
         $prueba1 = $am->createAccom($a1, $um->getID($owner->getEmail()));
         $prueba2 = $am->createAccom($a2, $um->getID($owner->getEmail()));
