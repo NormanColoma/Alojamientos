@@ -23,6 +23,7 @@ class Accommodation
     private $city;
     private $province;
     private $photos;
+    private $intial_desc;
 
     function __construct() {
         $this->inside = "El propietario aún no ha detallado nada sobre las características interiores del alojamiento.";
@@ -122,5 +123,19 @@ class Accommodation
     }
     public function setPhotos($photos){
         $this->photos = $photos;
+    }
+
+    public function getInitialDesc()
+    {
+        return $this->intial_desc;
+    }
+
+    public function setInitialDesc($desc){
+        if(strlen($desc) > 334) {
+            $this->intial_desc = substr($desc, 0, 334);
+            $this->intial_desc = $this->intial_desc . "...";
+        }
+        else
+            $this->intial_desc = $desc;
     }
 }

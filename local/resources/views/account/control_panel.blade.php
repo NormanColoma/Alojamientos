@@ -14,15 +14,15 @@
                         <li class="active"><a data-toggle="tab" href="#accoms" id="btn-display-accoms">Mis alojamientos  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#newAccom" id="btn-add-accom">Añadir alojamiento  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#pers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
-                        <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">4</span></a></li>
+                        <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">0</span></a></li>
                         <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @elseif(Auth::user()->admin)
-                          <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">4</span></a></li>
+                          <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">0</span></a></li>
                           <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @else
                           <li class="active"><a data-toggle="tab" href="#preBookings">Mis Prereservas  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#bookings">Mis Reservas  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
-                          <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">4</span></a></li>
+                          <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">0</span></a></li>
                           <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @endif
 
@@ -48,7 +48,7 @@
                                                      {!! Html::image('/local/resources/assets/img/accoms/' . $img) !!}
                                                      <div class="accom-descrip">
                                                          <h3 class="accom-title">{!! $accom->getTitle() !!}</h3>
-                                                         <p class="accom-description">{!! $accom->getDesc() !!}</p>
+                                                         <p class="accom-description">{!! $accom->getInitialDesc() !!}</p>
                                                          <a href="#" class="btn btn-primary btn-delete-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
                                                          <a href="#" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
                                                      </div>
@@ -96,8 +96,60 @@
                                 </div>
                                 <div class="form-group form-default col-xs-6">
                                     <label>Provincia</label>
-                                    <input type="text" name="new-accom-province" class="form-control new-accom-province">
-                                    <span class="text-danger">{{ $errors->first('new-accom-province') }}</span>
+                                    <select name="new-accom-province" class="form-control new-accom-province">
+                                        <option value='álava'>Álava</option>
+                                        <option value='Albacete'>Albacete</option>
+                                        <option value='Alicante'>Alicante/Alacant</option>
+                                        <option value='Almería'>Almería</option>
+                                        <option value='Asturias'>Asturias</option>
+                                        <option value='Avila'>Ávila</option>
+                                        <option value='Badajoz'>Badajoz</option>
+                                        <option value='Barcelona'>Barcelona</option>
+                                        <option value='Burgos'>Burgos</option>
+                                        <option value='Cáceres'>Cáceres</option>
+                                        <option value='Cádiz'>Cádiz</option>
+                                        <option value='Cantabria'>Cantabria</option>
+                                        <option value='Castellón'>Castellón/Castelló</option>
+                                        <option value='Ceuta'>Ceuta</option>
+                                        <option value='Ciudad Real'>Ciudad Real</option>
+                                        <option value='Córdoba'>Córdoba</option>
+                                        <option value='Cuenca'>Cuenca</option>
+                                        <option value='Girona'>Girona</option>
+                                        <option value='Las Palmas'>Las Palmas</option>
+                                        <option value='Granada'>Granada</option>
+                                        <option value='Guadalajara'>Guadalajara</option>
+                                        <option value='Guipúzcoa'>Guipúzcoa</option>
+                                        <option value='Huelva'>Huelva</option>
+                                        <option value='Huesca'>Huesca</option>
+                                        <option value='Islas Baleares'>Islas Baleares</option>
+                                        <option value='Jaén'>Jaén</option>
+                                        <option value='A Coruña'>A Coruña</option>
+                                        <option value='La Rioja'>La Rioja</option>
+                                        <option value='León'>León</option>
+                                        <option value='LLeida'>Lleida</option>
+                                        <option value='Lugo'>Lugo</option>
+                                        <option value='Madrid'>Madrid</option>
+                                        <option value='Málaga'>Málaga</option>
+                                        <option value='Melilla'>Melilla</option>
+                                        <option value='Murcia'>Murcia</option>
+                                        <option value='Navarra'>Navarra</option>
+                                        <option value='Ourense'>Ourense</option>
+                                        <option value='Palencia'>Palencia</option>
+                                        <option value='Pontevedra'>Pontevedra</option>
+                                        <option value='Salamanca'>Salamanca</option>
+                                        <option value='Segovia'>Segovia</option>
+                                        <option value='Sevilla'>Sevilla</option>
+                                        <option value='Soria'>Soria</option>
+                                        <option value='Santa Cruz de Tenerife'>Santa Cruz de Tenerife</option>
+                                        <option value='Tarragona'>Tarragona</option>
+                                        <option value='Teruel'>Teruel</option>
+                                        <option value='Toledo'>Toledo</option>
+                                        <option value='Valencia'>Valencia/Valéncia</option>
+                                        <option value='Valladolid'>Valladolid</option>
+                                        <option value='Vizcaya'>Vizcaya</option>
+                                        <option value='Zamora'>Zamora</option>
+                                        <option value='Zaragoza'>Zaragoza</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group form-default">
@@ -211,6 +263,7 @@
                                         </span>
                                         <input type="text" class="form-control" readonly>
                                     </div>
+                                    <span>La imagen no puede pesar más de 5mb</span>
                                     <span class="text-danger">{{ $errors->first('new-accom-main-img') }}</span>
                                 </div>
                                 <div class="col-lg-6 col-sm-6 col-12">
@@ -223,7 +276,8 @@
                                         </span>
                                         <input type="text" class="form-control" readonly>
                                     </div>
-                                    <span class="text-danger">{{ $errors->first('galery') }}</span>
+                                    <span>Solo puedes subir un máximo de 6 imágenes (8mb máximo por imagen)</span>
+                                    <span class="text-danger" style="float:left;">{{ $errors->first('galery') }}</span>
                             </div>
                             </div>
                             <div class="form-group form-submit">

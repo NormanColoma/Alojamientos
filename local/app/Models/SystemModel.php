@@ -36,7 +36,6 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         $accommodations = [];
         try{
             $accomm = DB::table('accommodations')->where('province', $city)->orWhere('city', $city)->paginate(5);
-            //$accomm = AccommodationModel::where('city', $city);
             if(count($accomm) == 0) {
                 return null;
             }
@@ -55,12 +54,12 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
                 $a->setPrice($ac->price_per_person);
                 $a->setProvince($ac->province);
                 $a->setTitle($ac->title);
+                $a->setInitialDesc($ac->desc);
                 $accommodations [] = $a;
             }
         }catch(QueryException $ex){
             return null;
         }
         return $accommodations;
-        //return DB::table("accommodations")->where('city',$city)->orWhere('province',$city)->paginate(1);
     }
 }

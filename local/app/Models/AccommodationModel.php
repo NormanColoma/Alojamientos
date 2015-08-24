@@ -134,6 +134,7 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
                 $a->setPrice($ac->price_per_person);
                 $a->setProvince($ac->province);
                 $a->setTitle($ac->title);
+                $a->setInitialDesc($ac->desc);
                 $accommodations [] = $a;
             }
         }catch(QueryException $ex){
