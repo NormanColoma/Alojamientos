@@ -17,7 +17,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class AccommIntegrationTest extends TestCase
 {
 
-    use DatabaseTransactions;
+    //use DatabaseTransactions;
 
     /**
      * Insertamos un alojamiento en la base de datos
@@ -306,4 +306,210 @@ class AccommIntegrationTest extends TestCase
         $this->assertNull($am->accommodationByOwner(100));
     }
 
+    /**
+     * Testeamos que el método actualice correctamente un alojamiento de la base de datos
+     *
+     * @return void
+     * @group updateAccomm
+     */
+    public function testUpdateAccomm(){
+
+        //$this->notSeeInDatabase('accommodations', ['title' => 'Casa rural']);
+
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $a2 = new Accommodation();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(number_format((float)50, 2, '.', ''));
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $a2->setBaths(4);
+        $a2->setBeds(6);
+        $a2->setCapacity(20);
+        $a2->setCity('Madrid');
+        $a2->setDesc('Alojamiento de lujo.');
+        $a2->setInside('Descripción del interior del alojamiento.');
+        $a2->setOutside('Descripción del exterior del alojamiento.');
+        $a2->setPhotos($arrayPhoto);
+        $a2->setPrice(number_format((float)50, 2, '.', ''));
+        $a2->setProvince('Madrid');
+        $a2->setTitle('Bungalow');
+
+        $accom = $am->createAccom($a1, $um->getID($owner->getEmail()));
+
+        //$this->SeeInDatabase('accommodations', ['title' => 'Casa rural', 'city' => 'Elche']);
+
+        echo "ID : ".$accom['id'];
+        $this->assertTrue($am->updateAccomm($a2, $accom['id']));
+
+        //$this->SeeInDatabase('accommodations', ['title' => 'Bungalow']);
+        //$this->SeeInDatabase('accommodations', ['city' => 'Madrid']);
+
+    }
+
+    /**
+     * Testeamos que el método no actualice correctamente un alojamiento de la base de datos
+     *
+     * @return void
+     * @group updateAccommFail
+     */
+    public function testUpdateAccommFail(){
+
+        $this->notSeeInDatabase('accommodations', ['title' => 'Casa rural']);
+
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $a2 = new Accommodation();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(number_format((float)50, 2, '.', ''));
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $a2->setBaths(4);
+        $a2->setBeds(6);
+        $a2->setCapacity(20);
+        $a2->setCity('Madrid');
+        $a2->setDesc('Alojamiento de lujo.');
+        $a2->setInside('Descripción del interior del alojamiento.');
+        $a2->setOutside('Descripción del exterior del alojamiento.');
+        $a2->setPhotos($arrayPhoto);
+        $a2->setPrice(number_format((float)50, 2, '.', ''));
+        $a2->setProvince('Madrid');
+        $a2->setTitle('Bungalow');
+
+        $am->createAccom($a1, $um->getID($owner->getEmail()));
+
+        $this->assertFalse($am->updateAccomm($a2, 1));
+
+    }
+
+    /**
+     * Testeamos que el método elimine correctamente un alojamiento de la base de datos
+     *
+     * @return void
+     * @group deleteAccomm
+     */
+    public function testDeleteAccomm(){
+
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom = $am->createAccom($a1, $um->getID($owner->getEmail()));
+
+        $this->SeeInDatabase('accommodations', ['title' => 'Casa rural']);
+
+        $this->assertTrue($am->deleteAccomm($accom['id']));
+
+        $this->notSeeInDatabase('accommodations', ['title' => 'Casa rural']);
+    }
+
+    /**
+     * Testeamos que el método NO elimine correctamente un alojamiento de la base de datos
+     *
+     * @return void
+     * @group deleteAccommFail
+     */
+    public function testDeleteAccommFail(){
+        $am = new AccommodationModel();
+
+        $result = $am->deleteAccomm(1);
+
+        $this->assertFalse($result);
+
+    }
 }
