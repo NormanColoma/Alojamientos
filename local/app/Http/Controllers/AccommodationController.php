@@ -206,8 +206,6 @@ class AccommodationController extends Controller
     public function removeAccommodation($id)
     {
         //TODO:: Implemente logic here to delete Accommodation which corresponds with the id passed
-        //flash()->overlay("El alojamiento ha sido borrado satisfactoriamente", "Eliminado");
-        //return redirect("manage/owner");
-        return $id;
+        return response()->json([ 'ok' => true, 'message' => 'Accomodation was delete' ], 200);
     }
 }
