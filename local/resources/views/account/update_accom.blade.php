@@ -179,9 +179,14 @@
                 <textarea class="form-control form-desc" name="new-accom-desc"></textarea>
                 <span class="text-danger">{{ $errors->first('new-accom-desc') }}</span>
             </div>
-            <div class="row">
-
-                <div class="col-lg-6 col-sm-6 col-12">
+            <div class="row" style="margin-left: 0px;">
+                <label style="float:left;width: 100%">Imagen principal</label>
+                <div class="current-main-img">
+                    {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
+                </div>
+                <p>Si quieres actualizar la imagen principal de tu alojamiento, solo tienes que seleccionar una nueva imagen. Por el contrario,
+                si quieres seguir manteniendo la actual, no debes hacer nada.</p>
+                <div class="col-lg-6 col-sm-6 col-12" style="padding:0px;margin-top: 30px;">
                     <label>Selecciona la imagen princiapl</label>
                     <div class="input-group">
                                         <span class="input-group-btn">
@@ -194,6 +199,45 @@
                     <span>La imagen no puede pesar más de 5mb</span>
                     <span class="text-danger">{{ $errors->first('new-accom-main-img') }}</span>
                 </div>
+                <div class="current-img-cont">
+                    <label>Galería de imágenes</label>
+                    <ul class="current-list-img">
+                        <li>
+                            <div class="current-img">
+                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
+                            </div>
+                        </li>
+                        <li>
+                            <div class="current-img">
+                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
+                            </div>
+                        </li>
+                        <li>
+                            <div class="current-img">
+                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
+                            </div>
+                        </li>
+                        <li>
+                            <div class="current-img">
+                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
+                            </div>
+                        </li>
+                        <li>
+                            <div class="current-img">
+                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
+                            </div>
+                        </li>
+                        <li>
+                            <div class="current-img">
+                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
+                            </div>
+                        </li>
+                    </ul>
+                    <p>Selecciona aquellas imágenes de la galería que deseas borrar y elimínalas. A continuación, selecciona las nuevas que deseas subir.
+                    Si no quieres modificarlas, déjalas como están.</p>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-6 col-sm-6 col-12">
                     <label>Selecciona las imágenes de la galería</label>
                     <div class="input-group">
@@ -207,6 +251,16 @@
                     <span>Solo puedes subir un máximo de 6 imágenes (5mb máximo por imagen)</span>
                     <span class="text-danger" style="float:left;">{{ $errors->first('galery') }}</span>
                 </div>
+                <script>
+                    $(document).ready(function(){
+                        $(".current-img").click(function (){
+                            if($(this).css("border-color") === "rgb(255, 0, 0)")
+                                $(this).css("border-color", "#dce0e0");
+                            else
+                                $(this).css("border-color","rgb(255,0,0)");
+                        })
+                    })
+                </script>
             </div>
             <div class="form-group form-submit">
                 <input type="submit" class="btn btn-primary" value="Actualizar">

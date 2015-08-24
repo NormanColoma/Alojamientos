@@ -95,7 +95,58 @@ input[readonly] {
 }
 /*endregion*/
 
+/*region updateAccom */
 
+.current-img-cont{
+    float:left;
+    width:100%;
+    margin-top: 40px;
+}
+.current-list-img{
+    float: left;
+    width: 100%;
+    margin-top: 20px;
+    padding: 0px 50px 0px 50px;
+}
+.current-list-img li{
+    width:100%;
+}
+
+.current-main-img{
+    width: 30%;
+    border: 2px solid #dce0e0;
+    border-radius: 2px;
+    float: left;
+    margin-right: 90px;
+    margin-bottom: 40px;
+    height: 250px !important;
+    cursor: pointer;
+}
+
+.current-main-img img{
+    float:left;
+    width:100%;
+}
+
+.current-img{
+    width: 20%;
+    border: 2px solid #dce0e0;
+    border-radius: 2px;
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 40px;
+    cursor: pointer;
+}
+
+.current-img img{
+    float:left;
+    width:100%;
+}
+
+.btn-delete-main-img{
+    float:left;
+}
+/*endregion*/
 /*region responsive*/
 @media screen and (min-width: 1004px) and (max-width: 1215px) {
     .accomodation img {
