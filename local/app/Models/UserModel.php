@@ -50,9 +50,35 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
         return $u;
     }
 
-    public function updateUser($id, $user)
+    public function updateUser($id, AbstractUser $user)
     {
+        $u = null;
+        try {
+            $use = UserModel::find($id);
+            $use->name = $user->getName();
+            $use->password = bcrypt($user->getPassword());
+            $use->email = $user->getEmail();
+            $use->surname = $user->getSurname();
+            $use->phtone = $user->getPhone();
+            $use->owner = $user->getOwner();
+            $use->admin = $user->getAdmin();
 
+            $use->save();
+           // echo "USER: ".$user;
+            /*$u = UserModel::where('id', $id)
+                ->update([
+                    'name' => $user->getName(),
+                    'password' => bcrypt($user->getPassword()),
+                    'email' => $user->getEmail(),
+                    'surname' => $user->getSurname(),
+                    'phone' => $user->getPhone(),
+                    'owner' => $user->getOwner(),
+                    'admin' => $user->getAdmin(),
+                ]);*/
+            return true;
+        }catch(QueryException $ex){
+            return false;
+        }
     }
 
     public function deleteUser($id)
