@@ -192,9 +192,9 @@ class AccommodationController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function updateAccommodation(Request $request, $id)
     {
-        //
+        return view("account/update_accom", ["id" => $id]);
     }
 
     /**

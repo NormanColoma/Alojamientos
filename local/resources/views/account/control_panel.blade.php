@@ -51,7 +51,7 @@
                                                          <h3 class="accom-title">{!! $accom->getTitle() !!}</h3>
                                                          <p class="accom-description">{!! $accom->getInitialDesc() !!}</p>
                                                          <a class="btn btn-danger btn-delete-accom" id="{!! $accom->getID() !!}"><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
-                                                         <a href="#" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
+                                                         <a href="{!! URL::to("accommodation/".$accom->getID() . "/update") !!}" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
                                                      </div>
                                                  </div>
                                              </li>
@@ -417,7 +417,7 @@
                                 });
                             </script>
                         </div>
-                                @endif
+                            @endif
                 </div>
         </div>
 </body>
