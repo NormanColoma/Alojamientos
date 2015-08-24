@@ -137,6 +137,7 @@ class UserController extends Controller
                 $uCreated = $uModel->createUser($user);
                 if($uCreated !=null) {
                     Auth::login($uCreated);
+                    flash()->overlay('Su cuenta en Alojarural ha sido creada correctamente..', 'Bienvenido');
                     if (!Auth::user()->admin && !Auth::user()->owner)
                         return redirect()->intended('/manage/traveler');
                     else
