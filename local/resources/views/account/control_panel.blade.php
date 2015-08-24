@@ -276,7 +276,7 @@
                                         </span>
                                         <input type="text" class="form-control" readonly>
                                     </div>
-                                    <span>Solo puedes subir un máximo de 6 imágenes (8mb máximo por imagen)</span>
+                                    <span>Solo puedes subir un máximo de 6 imágenes (5mb máximo por imagen)</span>
                                     <span class="text-danger" style="float:left;">{{ $errors->first('galery') }}</span>
                             </div>
                             </div>
