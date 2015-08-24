@@ -88,6 +88,7 @@ class SystemIntegrationTest extends TestCase
         $a1->setPrice(number_format((float)50, 2, '.', ''));
         $a1->setProvince('Alicante');
         $a1->setTitle('Casa rural');
+        $a1->setInitialDesc($a1->getDesc());
 
         $a2->setBaths(4);
         $a2->setBeds(5);
@@ -100,6 +101,7 @@ class SystemIntegrationTest extends TestCase
         $a2->setPrice(number_format((float)150, 2, '.', ''));
         $a2->setProvince('Alicante');
         $a2->setTitle('Casa rural2');
+        $a2->setInitialDesc($a2->getDesc());
 
         $accom = $am->createAccom($a1, $um->getID($owner->getEmail()));
         $accom2 = $am->createAccom($a2, $um->getID($owner2->getEmail()));
