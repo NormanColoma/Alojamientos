@@ -209,7 +209,7 @@
                 </div>
             </div>
             <div class="form-group form-submit">
-                <input type="submit" class="btn btn-primary" value="Anunciar">
+                <input type="submit" class="btn btn-primary" value="Actualizar">
             </div>
 
             {!! Form::close() !!}
