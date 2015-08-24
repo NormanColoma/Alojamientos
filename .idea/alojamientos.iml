@@ -90,8 +90,8 @@
           <root url="file://$MODULE_DIR$/local/vendor/doctrine/inflector" />
           <root url="file://$MODULE_DIR$/local/vendor/jeremeamia/SuperClosure" />
           <root url="file://$MODULE_DIR$/local/vendor/league/flysystem" />
-          <root url="file://$MODULE_DIR$/local/vendor/phpunit/php-token-stream" />
           <root url="file://$MODULE_DIR$/local/vendor/symfony/event-dispatcher" />
+          <root url="file://$MODULE_DIR$/local/vendor/phpunit/php-token-stream" />
           <root url="file://$MODULE_DIR$/../../php/pear" />
           <root url="file://$MODULE_DIR$/local/vendor/danielstjules/stringy" />
           <root url="file://$MODULE_DIR$/local/vendor/sebastian/environment" />
@@ -99,8 +99,8 @@
           <root url="file://$MODULE_DIR$/local/vendor/symfony/http-kernel" />
           <root url="file://$MODULE_DIR$/local/vendor/symfony/yaml" />
           <root url="file://$MODULE_DIR$/local/vendor/composer" />
-          <root url="file://$MODULE_DIR$/local/vendor/phpspec/phpspec" />
           <root url="file://$MODULE_DIR$/local/vendor/sebastian/version" />
+          <root url="file://$MODULE_DIR$/local/vendor/phpspec/phpspec" />
           <root url="file://$MODULE_DIR$/local/vendor/illuminate/html" />
           <root url="file://$MODULE_DIR$/local/vendor/psr/log" />
           <root url="file://$MODULE_DIR$/local/vendor/jakub-onderka/php-console-color" />
@@ -152,8 +152,8 @@
           <root url="file://$MODULE_DIR$/local/vendor/doctrine/inflector" />
           <root url="file://$MODULE_DIR$/local/vendor/jeremeamia/SuperClosure" />
           <root url="file://$MODULE_DIR$/local/vendor/league/flysystem" />
-          <root url="file://$MODULE_DIR$/local/vendor/phpunit/php-token-stream" />
           <root url="file://$MODULE_DIR$/local/vendor/symfony/event-dispatcher" />
+          <root url="file://$MODULE_DIR$/local/vendor/phpunit/php-token-stream" />
           <root url="file://$MODULE_DIR$/../../php/pear" />
           <root url="file://$MODULE_DIR$/local/vendor/danielstjules/stringy" />
           <root url="file://$MODULE_DIR$/local/vendor/sebastian/environment" />
@@ -161,8 +161,8 @@
           <root url="file://$MODULE_DIR$/local/vendor/symfony/http-kernel" />
           <root url="file://$MODULE_DIR$/local/vendor/symfony/yaml" />
           <root url="file://$MODULE_DIR$/local/vendor/composer" />
-          <root url="file://$MODULE_DIR$/local/vendor/phpspec/phpspec" />
           <root url="file://$MODULE_DIR$/local/vendor/sebastian/version" />
+          <root url="file://$MODULE_DIR$/local/vendor/phpspec/phpspec" />
           <root url="file://$MODULE_DIR$/local/vendor/illuminate/html" />
           <root url="file://$MODULE_DIR$/local/vendor/psr/log" />
           <root url="file://$MODULE_DIR$/local/vendor/jakub-onderka/php-console-color" />

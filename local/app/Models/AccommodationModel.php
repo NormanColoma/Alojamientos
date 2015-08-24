@@ -71,6 +71,55 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
         return $a;
     }
 
+    public function updateAccomm(Accommodation $accom, $id){
+
+        $a = null;
+        try{
+            $a = AccommodationModel::where('id', $id)
+                ->update([
+                    'title' => $accom->getTitle(),
+                    'desc' => $accom->getDesc(),
+                    'capacity' => $accom->getCapacity(),
+                    'beds' => $accom->getBeds(),
+                    'bathrooms' => $accom->getBaths(),
+                    'inside' => $accom->getInside(),
+                    'outside' => $accom->getOutside(),
+                    'price_per_person' => $accom->getPrice(),
+                    'city' => $accom->getCity(),
+                    'province' => $accom->getProvince(),
+                    'user_id' => $id,
+                ]);
+
+            foreach($accom->getPhotos() as $photo){
+                $this->addPhoto($photo, $a['id']);
+            }
+
+            echo "UPDATE: ".$a;
+            if($a == null)
+                return false;
+            else
+                return true;
+        }catch(QueryException $ex){
+            echo "EXCEPTION";
+            return false;
+        }
+    }
+
+    public function deleteAccomm($id){
+
+        try {
+            $deletedRows = AccommodationModel::where('id', $id)->delete();
+
+            if($deletedRows == 0)
+                return false;
+
+            return true;
+        }catch(QueryException $ex){
+            return false;
+        }
+
+    }
+
     public function accommodationByID($id)
     {
         $accomm = null;
