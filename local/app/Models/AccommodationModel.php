@@ -86,21 +86,12 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
                     'outside' => $accom->getOutside(),
                     'price_per_person' => $accom->getPrice(),
                     'city' => $accom->getCity(),
-                    'province' => $accom->getProvince(),
-                    'user_id' => $id,
+                    'province' => $accom->getProvince()
                 ]);
-
-            foreach($accom->getPhotos() as $photo){
-                $this->addPhoto($photo, $a['id']);
-            }
-
-            echo "UPDATE: ".$a;
-            if($a == null)
-                return false;
-            else
+            if($a!=null)
                 return true;
+            return false;
         }catch(QueryException $ex){
-            echo "EXCEPTION";
             return false;
         }
     }
