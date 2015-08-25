@@ -164,7 +164,10 @@ class AccommodationController extends Controller
      */
     public function removeAccommodation($id)
     {
-        //TODO:: Implemente logic here to delete Accommodation which corresponds with the id passed
-        return response()->json([ 'ok' => true, 'message' => 'Accomodation was delete' ], 200);
+        $am = new AccommodationModel();
+        if($am->deleteAccomm($id))
+            return response()->json([ 'ok' => true, 'message' => 'Accomodation was delete' ], 200);
+        else
+            return response()->json([ 'ok' => false, 'message' => 'Accomodation was not found' ], 404);
     }
 }
