@@ -54,18 +54,8 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
     {
         $u = null;
         try {
-            $use = UserModel::find($id);
-            $use->name = $user->getName();
-            $use->password = bcrypt($user->getPassword());
-            $use->email = $user->getEmail();
-            $use->surname = $user->getSurname();
-            $use->phtone = $user->getPhone();
-            $use->owner = $user->getOwner();
-            $use->admin = $user->getAdmin();
-
-            $use->save();
            // echo "USER: ".$user;
-            /*$u = UserModel::where('id', $id)
+            $u = UserModel::where('id', $id)
                 ->update([
                     'name' => $user->getName(),
                     'password' => bcrypt($user->getPassword()),
@@ -74,8 +64,12 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
                     'phone' => $user->getPhone(),
                     'owner' => $user->getOwner(),
                     'admin' => $user->getAdmin(),
-                ]);*/
-            return true;
+                ]);
+
+            if($u!=null)
+                return true;
+
+            return false;
         }catch(QueryException $ex){
             return false;
         }
