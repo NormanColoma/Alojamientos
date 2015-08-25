@@ -618,4 +618,61 @@ class AccommIntegrationTest extends TestCase
         $am= new AccommodationModel();
         $this->assertEquals($am->photoUrl(250),"");
     }
+
+    /**
+     * Testeamos que el método actualiza la url de la foto correspondiente
+     *
+     * @return void
+     * @group photoUrl
+     */
+    public function testUploadPhoto(){
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom= $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $photos = $am->allPhotos($accom['id']);
+        $photo_1 = $photos[0];
+
+        $this->assertTrue($am->updatePhoto($photo_1->getID(),'url/updated'));
+        $photo_updated = $am->allPhotos($accom['id'])[0];
+        $this->assertEquals($photo_1->getID(), $photo_updated->getID());
+        $this->assertEquals("url/updated",$photo_updated->getUrl());
+        $this->seeInDatabase('photos', ['url' => 'url/updated', 'id' => $photo_updated->getID()]);
+        $this->notSeeInDatabase('photos', ['url' => 'url/photo1', 'id' => $photo_updated->getID()]);
+
+    }
 }

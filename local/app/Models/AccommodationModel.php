@@ -212,6 +212,20 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
 
     }
 
+    public function updatePhoto($id, $url){
+        $p = null;
+        try{
+            $p = DB::table('photos')
+                ->where('id', $id)
+                ->update(['url' => $url]);
+            if($p!=null)
+                return true;
+            return false;
+        }catch(QueryException $ex){
+            return false;
+        }
+    }
+
     public function allPhotos($id){
 
         $photos = null;

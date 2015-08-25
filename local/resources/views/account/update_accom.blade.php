@@ -10,23 +10,24 @@
 @include("include.header")
     <div class="container">
         <div id="newAccom" class="">
-            <h3>Nuevo Alojamiento</h3>
+            <h3>Actualiza las características del alojamiento</h3>
             {!! Form::open(['url' => 'accommodation/' . $id . "/update", 'files' => true]) !!}
             <div class="form-group form-default">
                 <label>Título del anuncio</label>
-                <input type="text" name="new-accom-title" class="form-control">
+                <input type="text" name="new-accom-title" class="form-control" value="{!! $accommodation->getTitle() !!}">
                 <span class="text-danger">{{ $errors->first('new-accom-title') }}</span>
             </div>
             <div class="row">
                 <div class="form-group form-default col-xs-6">
                     <label>Ciudad</label>
-                    <input type="text" name="new-accom-city" class="form-control new-accom-city">
+                    <input type="text" name="new-accom-city" class="form-control new-accom-city" value="{!! $accommodation->getCity() !!}">
                     <span class="text-danger">{{ $errors->first('new-accom-city') }}</span>
                 </div>
                 <div class="form-group form-default col-xs-6">
                     <label>Provincia</label>
                     <select name="new-accom-province" class="form-control new-accom-province">
-                        <option value='álava'>Álava</option>
+                        <option selected>{!! $accommodation->getCity() !!}</option>
+                        <option value='Álava'>Álava</option>
                         <option value='Albacete'>Albacete</option>
                         <option value='Alicante'>Alicante/Alacant</option>
                         <option value='Almería'>Almería</option>
@@ -83,13 +84,14 @@
             </div>
             <div class="form-group form-default">
                 <label>Precio por persona</label>
-                <input type="text" name="new-accom-price" class="form-control">
+                <input type="text" name="new-accom-price" class="form-control" value="{!! $accommodation->getPrice() !!}">
                 <span class="text-danger">{{ $errors->first('new-accom-price') }}</span>
             </div>
             <div class="row">
                 <div class="form-group col-xs-4">
                     <label>Nº de habitaciones</label>
                     <select name="new-accom-beds" class="form-control">
+                        <option selected>{!! $accommodation->getBeds() !!}</option>
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -115,6 +117,7 @@
                 <div class="form-group col-xs-4">
                     <label>Nº de aseos</label>
                     <select name="new-accom-baths" class="form-control">
+                        <option selected>{!! $accommodation->getBaths() !!}</option>
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -140,6 +143,7 @@
                 <div class="form-group col-xs-4">
                     <label>Nº máximo de personas</label>
                     <select name="new-accom-capacity" class="form-control">
+                        <option selected>{!! $accommodation->getCapacity() !!}</option>
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -166,140 +170,169 @@
             <div class="row">
                 <div class="form-group form-default col-xs-6">
                     <label>Interior</label>
-                    <textarea class="form-control" placeholder="Introduce una breve descripción del interior del alojamiento. Este campo no es obligatorio" name="new-accom-inside"></textarea>
+                    <textarea class="form-control" name="new-accom-inside">{!!$accommodation->getInside()!!}</textarea>
                     <span class="text-danger">{{ $errors->first('new-accom-inside') }}</span>
                 </div>
                 <div class="form-group form-default col-xs-6">
+
                     <label>Exterior</label>
-                    <textarea class="form-control" placeholder="Introduce una breve descripción del exterior del alojamiento. Este campo no es obligatorio" name="new-accom-outside"></textarea>
+                    <textarea class="form-control"  name="new-accom-outside">{!!$accommodation->getOutside()!!}</textarea>
                     <span class="text-danger">{{ $errors->first('new-accom-outside') }}</span>
                 </div>
             </div>
             <div class="form-group ">
                 <label>Descripción del anuncio</label>
-                <textarea class="form-control form-desc" name="new-accom-desc"></textarea>
+                <textarea class="form-control form-desc" name="new-accom-desc">{!! $accommodation->getDesc() !!}</textarea>
                 <span class="text-danger">{{ $errors->first('new-accom-desc') }}</span>
-            </div>
-            <div class="row" style="margin-left: 0px;">
-                <label style="float:left;width: 100%">Imagen principal</label>
-                <div class="current-main-img">
-                    {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
-                </div>
-                <p>Si quieres actualizar la imagen principal de tu alojamiento, solo tienes que seleccionar una nueva imagen. Por el contrario,
-                si quieres seguir manteniendo la actual, no debes hacer nada.</p>
-                <div class="col-lg-6 col-sm-6 col-12" style="padding:0px;margin-top: 30px;">
-                    <label>Selecciona la imagen princiapl</label>
-                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <span class="btn btn-primary btn-file">
-                                                Principal&hellip; <input type="file" name="new-accom-main-img">
-                                            </span>
-                                        </span>
-                        <input type="text" class="form-control" readonly>
-                    </div>
-                    <span>La imagen no puede pesar más de 5mb</span>
-                    <span class="text-danger">{{ $errors->first('new-accom-main-img') }}</span>
-                </div>
-                <div class="current-img-cont">
-                    <label>Galería de imágenes</label>
-                    <ul class="current-list-img">
-                        <li>
-                            <div class="current-img" id="4">
-                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
-                            </div>
-                        </li>
-                        <li>
-                            <div class="current-img" id="5">
-                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
-                            </div>
-                        </li>
-                        <li>
-                            <div class="current-img" id="6">
-                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
-                            </div>
-                        </li>
-                        <li>
-                            <div class="current-img" id="9">
-                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
-                            </div>
-                        </li>
-                        <li>
-                            <div class="current-img" id="3">
-                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
-                            </div>
-                        </li>
-                        <li>
-                            <div class="current-img" id="2">
-                                {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
-                            </div>
-                        </li>
-                    </ul>
-                    <p>Selecciona aquellas imágenes de la galería que deseas borrar y elimínalas. A continuación, selecciona las nuevas que deseas subir.
-                    Si no quieres modificarlas, déjalas como están.</p>
-                    <a style="margin-bottom: 40px" class="btn btn-danger btn-delete-gallery"><span class="glyphicon glyphicon-remove"></span> Eliminar Selección</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 col-sm-6 col-12">
-                    <label>Selecciona las imágenes de la galería</label>
-                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <span class="btn btn-primary btn-file">
-                                                Galería&hellip; <input type="file" multiple name="galery[]">
-                                            </span>
-                                        </span>
-                        <input type="text" class="form-control" readonly>
-                    </div>
-                    <span>Solo puedes subir un máximo de 6 imágenes (5mb máximo por imagen)</span>
-                    <span class="text-danger" style="float:left;">{{ $errors->first('galery') }}</span>
-                </div>
-                <script>
-                    $(document).ready(function(){
-                        $(".current-img").click(function (){
-                            if($(this).css("border-color") === "rgb(255, 0, 0)")
-                                $(this).css("border-color", "#dce0e0");
-                            else
-                                $(this).css("border-color","rgb(255,0,0)");
-                        })
-
-                        $(".btn-delete-gallery").click(function(){
-                            var to_erase = "";
-                            $(".current-img").each(function(){
-                                if($(this).css("border-color") === "rgb(255, 0, 0)"){
-                                    deletePhoto($(this).attr("id"));
-                                }
-                            })
-                        })
-
-                        function deletePhoto(id) {
-                            var port = location.port;
-                            var uri = "http://localhost:" + port + "/alojamientos/photo/delete/" + id;
-                            $.ajax({
-                                type: "Delete",
-                                url: uri,
-                                success: function (data) {
-                                        alert(data);
-                                }, error: function () {
-                                    alert("bad")
-                                }
-                            });
-                        }
-
-                        $(function() {
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                                }
-                            });
-                        });
-                    })
-                </script>
             </div>
             <div class="form-group form-submit">
                 <input type="submit" class="btn btn-primary" value="Actualizar">
             </div>
-
             {!! Form::close() !!}
+            <div class="images">
+                <h3>Actualiza las imágenes</h3>
+                {!! Form::open(['id' => 'main-img-form', 'files' => true]) !!}
+                    <div class="row" style="margin-left: 0px;">
+                    <label style="float:left;width: 100%">Imagen principal</label>
+                    <div class="current-main-img" id="{!! $accommodation->getMainImg()->getID() !!}">
+                        {!! Html::image('/local/resources/assets/img/accoms/' . $accommodation->getMainImg()->getUrl()) !!}
+                    </div>
+                    <p>Si quieres actualizar la imagen principal de tu alojamiento, solo tienes que seleccionar una nueva imagen. Por el contrario,
+                    si quieres seguir manteniendo la actual, no debes hacer nada.</p>
+
+                    <div class="col-lg-6 col-sm-6 col-12" style="padding:0px;margin-top: 30px;">
+                        <label>Selecciona la imagen princiapl</label>
+                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <span class="btn btn-primary btn-file">
+                                                    Principal&hellip; <input type="file" name="new-accom-main-img">
+                                                </span>
+                                            </span>
+                            <input type="text" class="form-control new-accom-main-img-name" readonly >
+                        </div>
+                        <span>La imagen no puede pesar más de 5mb</span>
+                        <span class="text-danger">{{ $errors->first('new-accom-main-img') }}</span>
+                    </div>
+                        <input type="submit" class="btn btn-success btn-update-main-img" style="margin-top: 20px" value="Actualizar imagen">
+                        <div class="alert alert-success main-img-updated" style="display:none">
+                            <strong>Actulizada!</strong> La imagen principal ha sido actualizada correctamente.
+                        </div>
+                        <div class="alert alert-danger main-img-failed" style="display:none">
+                            <strong>Error!</strong> Ha habido un error en el servidor, por favor inténtelo de nuevo.
+                        </div>
+                </div>
+                {!! Form::close() !!}
+                {!! Form::open(['url' => 'accommodation/' . $id . "/update", 'files' => true]) !!}
+                    <div class="row">
+                    <div class="current-img-cont">
+                        <label>Galería de imágenes</label>
+                        <ul class="current-list-img">
+                            @foreach($accommodation->getPhotos() as $photo)
+                                @if(!$photo->getMain())
+                                    <li>
+                                        <div class="current-img" id="{!! $photo->getId() !!}">
+                                            {!! Html::image('/local/resources/assets/img/accoms/' . $photo->getUrl()) !!}
+                                        </div>
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                        <p>Selecciona aquellas imágenes de la galería que deseas borrar (pinchando en ellas) y elimínalas. A continuación, selecciona las nuevas que deseas subir.
+                            Si no quieres modificarlas, déjalas como están. Si quieres desmarcalas, vuelve a pinchar en las que estén marcadas.</p>
+                        <a style="margin-bottom: 40px" class="btn btn-danger btn-delete-gallery"><span class="glyphicon glyphicon-remove"></span> Eliminar Selección</a>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-12">
+                        <label>Selecciona las imágenes de la galería</label>
+                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <span class="btn btn-primary btn-file">
+                                                    Galería&hellip; <input type="file" multiple name="galery[]">
+                                                </span>
+                                            </span>
+                            <input type="text" class="form-control" readonly>
+                        </div>
+                        <span>Solo puedes subir un máximo de 6 imágenes (5mb máximo por imagen)</span>
+                        <span class="text-danger" style="float:left;">{{ $errors->first('galery') }}</span>
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+
+                            $(".current-img").click(function (){
+                                if($(this).css("border-color") === "rgb(255, 0, 0)")
+                                    $(this).css("border-color", "#dce0e0");
+                                else
+                                    $(this).css("border-color","rgb(255,0,0)");
+                            })
+
+                            $(".btn-delete-gallery").click(function(){
+                                var to_erase = "";
+                                $(".current-img").each(function(){
+                                    if($(this).css("border-color") === "rgb(255, 0, 0)"){
+                                        deletePhoto($(this).attr("id"));
+                                    }
+                                })
+                            })
+                            $("#main-img-form").submit(function(){
+                                var id = $(".current-main-img").attr("id");
+                                var port = location.port;
+                                var uri = "http://localhost:" + port + "/alojamientos/photo/update/" + id;
+                                var formData = new FormData($(this)[0]);
+                                var new_img = $(".new-accom-main-img-name").val();
+                                $.ajax({
+                                    url: uri,
+                                    type: 'POST',
+                                    data: formData,
+                                    async: false,
+                                    success: function (data) {
+                                       if(data.ok){
+                                           updateMainImg(new_img);
+                                       }
+
+                                    },
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false
+                                });
+
+                                return false;
+                            });
+
+
+                            function updateMainImg(new_img){
+                                var port = location.port;
+                                var src = "http://localhost:" + port + "/alojamientos/local/resources/assets/img/accoms/" + new_img;
+                                $(".current-main-img").find("img").attr("src",src);
+                                $(".main-img-updated").show();
+                                $(".alert").delay(3000).slideUp(200);
+                            }
+
+
+                            function deletePhoto(id) {
+                                var port = location.port;
+                                var uri = "http://localhost:" + port + "/alojamientos/photo/delete/" + id;
+                                $.ajax({
+                                    type: "Delete",
+                                    url: uri,
+                                    success: function (data) {
+                                            $("#"+id).remove();
+                                    }, error: function () {
+                                        alert("bad")
+                                    }
+                                });
+                            }
+
+                            $(function() {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                            });
+                        })
+                    </script>
+                </div>
+                {!! Form::close() !!}
+            </div>
             <script>
                 $(document).on('change', '.btn-file :file', function() {
                     var input = $(this),

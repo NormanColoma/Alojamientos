@@ -59,5 +59,6 @@ Route::post('accommodation/publish',"AccommodationController@addAccommodation");
 Route::post('search/accommodations',"SystemController@search");
 Route::paginate('search/accommodations/{city}', 'SystemController@displayAccommodationsByCity');
 Route::delete('/accommodation/delete/{id}',"AccommodationController@removeAccommodation");
-Route::get('/accommodation/{id}/update', "AccommodationController@updateAccommodation");
+Route::get('/accommodation/{id}/update', "AccommodationController@getAccommodation");
 Route::delete('/photo/delete/{id}',"AccommodationController@removePhoto");
+Route::post('/photo/update/{id}',"AccommodationController@updatePhoto");

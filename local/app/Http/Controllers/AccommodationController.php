@@ -9,10 +9,14 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Mockery\CountValidator\Exception;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use PhpParser\Node\Scalar\String_;
 use App\Models\DTO\Photo;
 use Auth;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 use Validator;
 
 class AccommodationController extends Controller
@@ -151,9 +155,14 @@ class AccommodationController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function updateAccommodation(Request $request, $id)
+    public function getAccommodation($id)
     {
-        return view("account/update_accom", ["id" => $id]);
+        $am = new AccommodationModel();
+        $accomm = $am->accommodationByID($id);
+        if($accomm != null)
+            return view("account/update_accom", ["id" => $id, "accommodation" => $accomm]);
+        else
+            return view("errors/503");
     }
 
     /**
@@ -180,11 +189,50 @@ class AccommodationController extends Controller
      */
     public function removePhoto($id)
     {
-        return response()->json([ 'ok' => true, 'message' => 'Image was delete' ], 200);
-        /*$am = new AccommodationModel();
-        if($am->deletePhoto($id))
-            return response()->json([ 'ok' => true, 'message' => 'Image was delete' ], 200);
+        $am = new AccommodationModel();
+        if($am->deletePhoto($id)) {
+            $path = base_path() ."/resources/assets/img/accoms/" . $am->photoUrl($id);
+            try {
+                \File::delete($path);
+            }catch (FileException $ex){
+                throw new Exception($ex->getMessage());
+            }
+            return response()->json(['ok' => true, 'message' => 'Image was delete'], 200);
+        }
         else
-            return response()->json([ 'ok' => false, 'message' => 'Image was not found' ], 404);*/
+            return response()->json([ 'ok' => false, 'message' => 'Image was not found' ], 404);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function updatePhoto(Request $request, $id)
+    {
+        if($request->hasFile('new-accom-main-img')){
+            $file = $request->file('new-accom-main-img');
+            $url = $file->getClientOriginalName();
+            $am = new AccommodationModel();
+            $url_to_remove = $am->photoUrl($id);
+            if($am->updatePhoto($id,$url)){
+                if($this->uploadPhoto($file)){
+                    $to_remove = base_path() ."/resources/assets/img/accoms/" . $url_to_remove;
+                    try {
+                        \File::delete($to_remove);
+                        return response()->json([ 'ok' => true, 'message' => 'Image was updated' ], 200);
+                    }catch (FileException $ex){
+                        throw new Exception($ex->getMessage());
+                    }
+                }
+                return response()->json([ 'ok' => false, 'message' => 'New image was not uploaded' ], 404);
+            }
+            else
+                return response()->json([ 'ok' => false, 'message' => 'Image was not found' ], 404);
+
+        }
+        return response()->json([ 'ok' => false, 'message' => 'File is not present' ], 500);
+
     }
 }
