@@ -189,7 +189,8 @@ class AccommIntegrationTest extends TestCase
         $a1->setTitle('Casa rural');
 
         $prueba = $am->createAccom($a1, $um->getID($owner->getEmail()));
-
+        $photos = $am->allPhotos($prueba['id']);
+        $a1->setPhotos($photos);
         $a1->setID($prueba['id']);
 
         $this->assertEquals($a1, $am->accommodationByID($prueba['id']));
@@ -285,7 +286,8 @@ class AccommIntegrationTest extends TestCase
 
         $a1->setID($prueba1['id']);
         $a2->setID($prueba2['id']);
-
+        $a1->setPhotos($am->allPhotos($prueba1['id']));
+        $a2->setPhotos($am->allPhotos($prueba2['id']));
         $resultado = [];
         $resultado[] = $a1;
         $resultado[] = $a2;
@@ -481,4 +483,75 @@ class AccommIntegrationTest extends TestCase
         $this->assertFalse($result);
 
     }
+
+
+    /**
+     * Testeamos que el método elimina correctamente la foto indicada por parámetro
+     *
+     * @return void
+     * @group deletePhoto
+     */
+    public function testDeletPhoto(){
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom=$am->createAccom($a1, $um->getID($owner->getEmail()));
+        $this->SeeInDatabase('accommodations', ['title' => 'Casa rural']);
+        $photos = $am->allPhotos($accom['id']);
+        $photo = $photos[0];
+        $this->assertTrue($am->deletePhoto($photo->getID()));
+        $this->notSeeInDatabase('photos', ['url' => 'url/photo1']);
+        $this->seeInDatabase('photos', ['url' => 'url/photo2']);
+    }
+
+
+    /**
+     * Testeamos que el método NO elimine correctamente una foto de la base de datos
+     *
+     * @return void
+     * @group deletePhotoFail
+     */
+    public function testDeletePhotoFail(){
+        $am = new AccommodationModel();
+
+        $result = $am->deletePhoto(250);
+
+        $this->assertFalse($result);
+
+    }
+
 }

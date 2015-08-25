@@ -111,6 +111,20 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
 
     }
 
+    public function deletePhoto($id){
+
+        try {
+            $deletedRows = DB::table('photos')->where('id',$id)->delete();
+
+            if($deletedRows == 0)
+                return false;
+            return true;
+        }catch(QueryException $ex){
+            return false;
+        }
+
+    }
+
     public function accommodationByID($id)
     {
         $accomm = null;
@@ -212,6 +226,7 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
                 $p = new Photo();
                 $p->setUrl($photo->url);
                 $p->setMain($photo->main);
+                $p->setID($photo->id);
                 $arrayPhotos[] = $p;
             }
         }catch(QueryException $ex){

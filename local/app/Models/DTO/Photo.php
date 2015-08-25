@@ -24,6 +24,10 @@ class Photo
         return $this->id;
     }
 
+    public function setID($id){
+        $this->id = $id;
+    }
+
     public function getUrl(){
         return $this->url;
     }
