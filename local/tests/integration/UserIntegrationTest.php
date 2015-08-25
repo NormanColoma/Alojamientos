@@ -16,7 +16,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class UserIntegrationTest extends TestCase
 {
 
-    //use DatabaseTransactions;
+    use DatabaseTransactions;
 
     /**
      * Insertamos un usuario en la base de datos
@@ -96,7 +96,7 @@ class UserIntegrationTest extends TestCase
 
         $this->assertTrue($userModel->updateUser($user['id'], $traveler2));
 
-        //$this->notSeeInDatabase('users', ['name' => 'Javi Missed']);
+        $this->SeeInDatabase('users', ['name' => 'Javi Missed']);
 
     }
 
