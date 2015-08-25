@@ -201,6 +201,8 @@
       </file>
     </leaf>
   </component>
+<<<<<<< HEAD
+=======
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -208,6 +210,7 @@
       </list>
     </option>
   </component>
+>>>>>>> develop
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -390,9 +393,21 @@
     </navigator>
     <panes>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <pane id="PackagesPane" />
 =======
 >>>>>>> feature_login
+=======
+<<<<<<< HEAD
+      <pane id="Scope" />
+      <pane id="Scratches" />
+=======
+>>>>>>> feature_home
+=======
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+>>>>>>> develop
+>>>>>>> master
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -402,12 +417,18 @@
             </PATH_ELEMENT>
           </PATH>
 <<<<<<< HEAD
+<<<<<<< HEAD
         </subPane>
       </pane>
       <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="Scope" />
 =======
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> develop
+>>>>>>> master
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="laravel_example" />
@@ -418,6 +439,10 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+<<<<<<< HEAD
+=======
+>>>>>>> feature_home
+=======
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="laravel_example" />
@@ -586,6 +611,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+>>>>>>> develop
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -948,9 +974,17 @@
       <workItem from="1438784244176" duration="2896000" />
       <workItem from="1438787975892" duration="63000" />
       <workItem from="1438788082261" duration="9615000" />
+<<<<<<< HEAD
+<<<<<<< HEAD
+      <workItem from="1439029700216" duration="27000" />
+=======
+      <workItem from="1439029815354" duration="2000" />
+>>>>>>> feature_home
+=======
       <workItem from="1439029815354" duration="13105000" />
       <workItem from="1439143502655" duration="3831000" />
       <workItem from="1439148423690" duration="2236000" />
+<<<<<<< HEAD
       <workItem from="1439204063176" duration="5695000" />
       <workItem from="1439222600181" duration="9234000" />
 <<<<<<< HEAD
@@ -968,10 +1002,14 @@
 >>>>>>> dfec84a4dc527312f675bbb4808bb383b2f301c0
 >>>>>>> e428d4fe2e7f0c647e54308a89704e36d1fd644a
 >>>>>>> feature_login
+=======
+>>>>>>> develop
+>>>>>>> master
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
 <<<<<<< HEAD
     <option name="totallyTimeSpent" value="58856000" />
 =======
@@ -985,6 +1023,16 @@
 >>>>>>> dfec84a4dc527312f675bbb4808bb383b2f301c0
 >>>>>>> e428d4fe2e7f0c647e54308a89704e36d1fd644a
 >>>>>>> feature_login
+=======
+<<<<<<< HEAD
+    <option name="totallyTimeSpent" value="21138000" />
+=======
+    <option name="totallyTimeSpent" value="21113000" />
+>>>>>>> feature_home
+=======
+    <option name="totallyTimeSpent" value="40283000" />
+>>>>>>> develop
+>>>>>>> master
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1049,8 +1097,20 @@
 >>>>>>> dfec84a4dc527312f675bbb4808bb383b2f301c0
 >>>>>>> e428d4fe2e7f0c647e54308a89704e36d1fd644a
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32977098" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
 >>>>>>> feature_login
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25037935" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25037935" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> feature_home
+=======
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2650514" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> develop
+>>>>>>> master
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
