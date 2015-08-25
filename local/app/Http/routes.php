@@ -60,3 +60,4 @@ Route::post('search/accommodations',"SystemController@search");
 Route::paginate('search/accommodations/{city}', 'SystemController@displayAccommodationsByCity');
 Route::delete('/accommodation/delete/{id}',"AccommodationController@removeAccommodation");
 Route::get('/accommodation/{id}/update', "AccommodationController@updateAccommodation");
+Route::delete('/photo/delete/{id}',"AccommodationController@removePhoto");

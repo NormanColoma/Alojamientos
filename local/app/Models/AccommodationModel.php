@@ -237,4 +237,13 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
 
     }
 
+
+    public function photoUrl($id){
+        try{
+            return $url = DB::table('photos')->where('id', $id)->value('url');
+        }catch(QueryException $ex){
+            return null;
+        }
+    }
+
 }

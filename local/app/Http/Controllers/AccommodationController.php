@@ -170,4 +170,21 @@ class AccommodationController extends Controller
         else
             return response()->json([ 'ok' => false, 'message' => 'Accomodation was not found' ], 404);
     }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function removePhoto($id)
+    {
+        return response()->json([ 'ok' => true, 'message' => 'Image was delete' ], 200);
+        /*$am = new AccommodationModel();
+        if($am->deletePhoto($id))
+            return response()->json([ 'ok' => true, 'message' => 'Image was delete' ], 200);
+        else
+            return response()->json([ 'ok' => false, 'message' => 'Image was not found' ], 404);*/
+    }
 }

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Control Panel</title>
     {!! Html::style('/local/resources/assets/styles/owner_panel.css') !!}
+    <meta name="csrf-token" content="<?= csrf_token() ?>">
 </head>
 <body>
 @include("include.header")
@@ -203,38 +204,39 @@
                     <label>Galería de imágenes</label>
                     <ul class="current-list-img">
                         <li>
-                            <div class="current-img">
+                            <div class="current-img" id="4">
                                 {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
                             </div>
                         </li>
                         <li>
-                            <div class="current-img">
+                            <div class="current-img" id="5">
                                 {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
                             </div>
                         </li>
                         <li>
-                            <div class="current-img">
+                            <div class="current-img" id="6">
                                 {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
                             </div>
                         </li>
                         <li>
-                            <div class="current-img">
+                            <div class="current-img" id="9">
                                 {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
                             </div>
                         </li>
                         <li>
-                            <div class="current-img">
+                            <div class="current-img" id="3">
                                 {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
                             </div>
                         </li>
                         <li>
-                            <div class="current-img">
+                            <div class="current-img" id="2">
                                 {!! Html::image('/local/resources/assets/img/accoms/img1.jpg') !!}
                             </div>
                         </li>
                     </ul>
                     <p>Selecciona aquellas imágenes de la galería que deseas borrar y elimínalas. A continuación, selecciona las nuevas que deseas subir.
                     Si no quieres modificarlas, déjalas como están.</p>
+                    <a style="margin-bottom: 40px" class="btn btn-danger btn-delete-gallery"><span class="glyphicon glyphicon-remove"></span> Eliminar Selección</a>
                 </div>
             </div>
             <div class="row">
@@ -259,6 +261,37 @@
                             else
                                 $(this).css("border-color","rgb(255,0,0)");
                         })
+
+                        $(".btn-delete-gallery").click(function(){
+                            var to_erase = "";
+                            $(".current-img").each(function(){
+                                if($(this).css("border-color") === "rgb(255, 0, 0)"){
+                                    deletePhoto($(this).attr("id"));
+                                }
+                            })
+                        })
+
+                        function deletePhoto(id) {
+                            var port = location.port;
+                            var uri = "http://localhost:" + port + "/alojamientos/photo/delete/" + id;
+                            $.ajax({
+                                type: "Delete",
+                                url: uri,
+                                success: function (data) {
+                                        alert(data);
+                                }, error: function () {
+                                    alert("bad")
+                                }
+                            });
+                        }
+
+                        $(function() {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                        });
                     })
                 </script>
             </div>
