@@ -229,17 +229,23 @@
                     <div class="row">
                     <div class="current-img-cont">
                         <label>Galería de imágenes</label>
-                        <ul class="current-list-img">
-                            @foreach($accommodation->getPhotos() as $photo)
-                                @if(!$photo->getMain())
-                                    <li id="photo-{!! $photo->getId() !!}">
-                                        <div class="current-img" id="{!! $photo->getId() !!}">
-                                            {!! Html::image('/local/resources/assets/img/accoms/' . $photo->getUrl()) !!}
-                                        </div>
+                            <ul class="current-list-img">
+                                @if(count($accommodation->getPhotos()) > 1)
+                                    @foreach($accommodation->getPhotos() as $photo)
+                                        @if(!$photo->getMain())
+                                            <li id="photo-{!! $photo->getId() !!}">
+                                                <div class="current-img" id="{!! $photo->getId() !!}">
+                                                    {!! Html::image('/local/resources/assets/img/accoms/' . $photo->getUrl()) !!}
+                                                </div>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <li class="empty-list-message">
+                                        <p>Todavía no has añadido ninguna foto a la galería. Comienza ya añadir tus imágenes</p>
                                     </li>
                                 @endif
-                            @endforeach
-                        </ul>
+                            </ul>
                     </div>
                     <div class="col-lg-6 col-sm-6 col-12 col-gallery">
                         <label>Selecciona las imágenes de la galería</label>
@@ -364,6 +370,7 @@
                             function updateGallery(photos){
                                 var port = location.port;
                                 var ids = new Array();
+                                $(".empty-list-message").remove();
                                 $(".current-list-img li").each(function(){
                                     ids.push($(this).attr("id"));
                                 })
