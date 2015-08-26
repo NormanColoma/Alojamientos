@@ -176,6 +176,8 @@
                                     <input type="password" name="password" class="form-control">
                                     <span class="text-danger">{{ $errors->first('password') }}</span>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-group form-update col-xs-6">
                                     <label>Teléfono</label>
                                     <input type="text" name="phone" class="form-control">
