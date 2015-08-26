@@ -49,7 +49,7 @@
                                                      <div class="accom-descrip">
                                                          <h3 class="accom-title">{!! $accom->getTitle() !!}</h3>
                                                          <p class="accom-description">{!! $accom->getInitialDesc() !!}</p>
-                                                         <a href="#" class="btn btn-primary btn-delete-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
+                                                         <a class="btn btn-danger btn-delete-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
                                                          <a href="#" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
                                                      </div>
                                                  </div>
@@ -98,6 +98,11 @@
                                          displayPage(page);
                                      })
 
+                                     $(".btn-delete-accom").click(function(){
+                                         var id = $(this).attr("id");
+                                         deleteAccomm(id);
+                                     })
+
                                  })
 
                                  function displayPage(page){
@@ -110,6 +115,21 @@
                                      })
                                      $('html, body').animate({ scrollTop: 0 }, 0);
 
+                                 }
+
+                                 function deleteAccomm(id){
+                                     var port = location.port;
+                                     var uri = "http://localhost:" + port + "/alojamientos/accommodation/delete/2";
+                                     alert(uri);
+                                     $.ajax({
+                                         type: "Delete",
+                                         url: uri,
+                                         success: function(data) {
+                                             alert(data);
+                                         }, error: function(){
+                                             alert("bad")
+                                         }
+                                     });
                                  }
                              </script>
 

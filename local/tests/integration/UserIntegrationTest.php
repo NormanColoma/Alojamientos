@@ -59,4 +59,45 @@ class UserIntegrationTest extends TestCase
 
     }
 
+    /**
+     * Actualizamos un usuario en la base de datos
+     *
+     * @return void
+     * @group updateUser
+     */
+    public function testUpdateUser(){
+
+        //$this->notSeeInDatabase('users', ['email' => 'javier@email.com']);
+
+        $userModel = new UserModel();
+        $traveler = new Traveler();
+
+        $traveler->setEmail('prueba@email.com');
+        $traveler->setAdmin(false);
+        $traveler->setPassword('123456');
+        $traveler->setName('NombrePrueba');
+        $traveler->setOwner(false);
+        $traveler->setPhone('156879654');
+        $traveler->setSurname('ApellidoPrueba');
+
+        $user = $userModel->createUser($traveler);
+
+        $this->seeInDatabase('users', ['email' => 'prueba@email.com']);
+
+        $traveler2 = new Traveler();
+
+        $traveler2->setEmail('missed@email.com');
+        $traveler2->setAdmin(false);
+        $traveler2->setPassword('123456');
+        $traveler2->setName('Javi Missed');
+        $traveler2->setOwner(false);
+        $traveler2->setPhone('654321987');
+        $traveler2->setSurname('Vera');
+
+        $this->assertTrue($userModel->updateUser($user['id'], $traveler2));
+
+        $this->SeeInDatabase('users', ['name' => 'Javi Missed']);
+
+    }
+
 }

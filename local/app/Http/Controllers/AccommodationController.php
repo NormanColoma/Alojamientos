@@ -45,7 +45,7 @@ class AccommodationController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -203,8 +203,11 @@ class AccommodationController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function removeAccommodation($id)
     {
-        //
+        //TODO:: Implemente logic here to delete Accommodation which corresponds with the id passed
+        //flash()->overlay("El alojamiento ha sido borrado satisfactoriamente", "Eliminado");
+        //return redirect("manage/owner");
+        return $id;
     }
 }

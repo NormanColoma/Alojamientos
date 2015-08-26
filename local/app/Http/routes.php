@@ -46,6 +46,8 @@ Route::group(['middleware' => ['auth']], function()
         return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id)]);
     }]);
 
+
+
     Route::get('/manage/admin', ['middleware' => 'admin', function()
     {
         return view("account/control_panel");
@@ -56,3 +58,4 @@ Route::group(['middleware' => ['auth']], function()
 Route::post('accommodation/publish',"AccommodationController@addAccommodation");
 Route::post('search/accommodations',"SystemController@search");
 Route::paginate('search/accommodations/{city}', 'SystemController@displayAccommodationsByCity');
+Route::delete('/accommodation/delete/{id}',"AccommodationController@removeAccommodation");
