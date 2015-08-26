@@ -96,6 +96,13 @@ input[readonly] {
 /*endregion*/
 
 
+/*region updateAccount*/
+.form-submit-update{
+    width:100%;
+    float:left;
+}
+/*endregion*/
+
 /*region responsive*/
 @media screen and (min-width: 1004px) and (max-width: 1215px) {
     .accomodation img {
@@ -169,7 +176,9 @@ input[readonly] {
         border: none !important;
         background-color: #eee !important;
     }
-
+    #account .col-xs-6 {
+        width: 100%;
+    }
     @media screen and (min-width: 450px) and (max-width: 591px) {
         .col-xs-4 {
             width: 100% !important;
@@ -201,6 +210,10 @@ input[readonly] {
 }
 
 @media screen and (min-width: 0px) and (max-width: 449px) {
+    #account .col-xs-6 {
+        width: 100%;
+    }
+
     .accomodation img {
         width: 100%;
         height: 150px;

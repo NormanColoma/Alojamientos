@@ -210,4 +210,6 @@ class AccommodationController extends Controller
         //return redirect("manage/owner");
         return $id;
     }
+
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DTO\Admin;
 use App\Models\DTO\Owner;
 use App\Models\DTO\Traveler;
 use App\Models\UserModel;
@@ -174,15 +175,72 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza el usuario con el id pasado, mediante los nuevos valores almacenados en el request
      *
      * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function updateUser(Request $request, $id)
     {
-        //
+        $redirect = null;
+        $user = null;
+        if(Auth::user()->admin) {
+            $redirect = "/manage/admin#account";
+            $user = new Admin();
+        }
+        else if(Auth::user()->owner) {
+            $redirect = "/manage/owner#account";
+            $user = new Owner();
+        }
+        else {
+            $redirect = "/manage/traveler#account";
+            $user = new Traveler();
+        }
+        $messages = [
+            'email.required' => 'El email es obligatorio',
+            'name.required' => 'El nombre es obligatorio',
+            'surname.required' => 'Los apellidos son obligatorios',
+            'password.required' => 'La contraseña es obligatoria',
+            'phone.required' => 'El teléfono es obligatorio',
+            'email.email' => 'El email introducido no es correcto',
+            'password.regex' => 'La contraseña introducida no es correcta. Debe tener un mínimo de 6 caractares, y un máximo de 15. Debe empezar por una letra, y solo puede ser alfanumérica',
+            'name.regex' => 'El nombre solo puede contener letras',
+            'surname.regex' => 'Los apellidos solo puede contener letras',
+            'digits' => 'El teléfono solo puede contener números, y debe ser correcto',
+        ];
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
+            'surname' => 'required|regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
+            'email' => 'required|email',
+            'password' => 'required|regex:[^[a-zA-Z]\w{5,14}$]',
+            'phone' => 'required|digits:9',
+
+        ],$messages);
+        if ($validator->fails()) {
+            return redirect($redirect)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        else{
+            $user->setName($request->input('name'));
+            $user->setSurname($request->input('surname'));
+            $user->setEmail($request->input('email'));
+            $user->setPassword($request->input('password'));
+            $user->setPhone($request->input('phone'));
+            $um = new UserModel();
+            if($um->updateUser($id, $user)) {
+                flash()->overlay('Su cuenta en Alojarural ha sido actulizada correctamente.', 'Cuenta actualizada');
+                return redirect($redirect);
+            }else{
+                return redirect($redirect)
+                    ->withErrors([
+                        "email" => "El email introducido ya se encuentra registrado"
+                    ])
+                    ->withInput();
+            }
+
+        }
     }
 
     /**
