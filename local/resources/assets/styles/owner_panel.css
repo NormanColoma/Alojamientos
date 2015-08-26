@@ -220,6 +220,15 @@ input[readonly] {
         border: none !important;
         background-color: #eee !important;
     }
+
+    .current-main-img {
+        width: 45%;
+        margin-right: 25px;
+    }
+
+    .current-list-img {
+        padding: 0px;
+    }
 }
 
 @media screen and (min-width: 450px) and (max-width: 767px) {
@@ -253,6 +262,55 @@ input[readonly] {
         .col-xs-4 {
             width: 100% !important;
         }
+
+        @media screen and (min-width: 450px) and (max-width: 493px) {
+            .current-img {
+                width: 100% !important;
+            }
+            .current-img img {
+                height: 200px !important;
+            }
+
+            .current-list-img {
+                padding: 10px !important;
+            }
+        }
+        #form-gallery .col-sm-6{
+            padding-left: 0px;
+            float: left !important;
+            width: 99% !important;
+        }
+
+        .btn-update-main-img{
+            width: 99%;
+            float: left;
+        }
+
+        .current-img {
+            width: 30%;
+            margin-right: 15px;
+        }
+
+        .options-gallery{
+            float:left;
+            width: 100%;
+        }
+
+        .options-gallery .btn{
+            width:100%;
+            margin-bottom: 20px;
+        }
+
+        .form-update-main-img{
+            float: left;
+            width: 99%;
+        }
+
+        #main-img-form .col-sm-6{
+            float:left;
+            width: 99%;
+        }
+
     }
 
     @media screen and (min-width: 450px) and (max-width: 550px) {
@@ -276,6 +334,27 @@ input[readonly] {
 
     #newAccom .col-xs-6 {
         padding-right: 15px;
+    }
+
+    .current-main-img {
+        width: 99%;
+        margin-bottom: 40px;
+    }
+
+    .current-main-img img {
+        height: 275px !important;
+    }
+
+    .current-list-img {
+        padding: 0px;
+    }
+
+    #form-gallery .row{
+        margin-left: 0px;
+    }
+
+    #form-gallery .col-sm-6{
+        padding-left: 0px;
     }
 }
 
@@ -327,6 +406,66 @@ input[readonly] {
 
     #newAccom .col-xs-6 {
         padding-right: 15px;
+    }
+
+    #form-gallery .col-sm-6{
+        padding-left: 0px;
+        float: left !important;
+        width: 99% !important;
+    }
+
+    .btn-update-main-img{
+        width: 99%;
+        float: left;
+    }
+
+    .current-img {
+        width: 30%;
+        margin-right: 15px;
+    }
+
+    .options-gallery{
+        float:left;
+        width: 100%;
+    }
+
+    .options-gallery .btn{
+        width:100%;
+        margin-bottom: 20px;
+    }
+
+    .form-update-main-img{
+        float: left;
+        width: 99%;
+    }
+
+    #main-img-form .col-sm-6{
+        float:left;
+        width: 99%;
+    }
+
+    #form-gallery .row{
+        margin-left: 0px;
+    }
+
+    .current-main-img {
+        width: 99%;
+        margin-bottom: 40px;
+    }
+
+    .current-main-img img {
+        height: 275px !important;
+    }
+
+    .current-img {
+        width: 100% !important;
+    }
+    .current-img img {
+        height: 200px !important;
+    }
+
+    .current-list-img {
+        padding: 10px !important;
     }
 }
 /*endregion*/

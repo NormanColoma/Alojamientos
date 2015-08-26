@@ -216,7 +216,10 @@
                         <span>La imagen no puede pesar más de 5mb</span>
                         <span class="text-danger">{{ $errors->first('new-accom-main-img') }}</span>
                     </div>
-                        <input type="submit" class="btn btn-success btn-update-main-img" style="margin-top: 20px" value="Actualizar imagen">
+                        <div class="form-group form-update-main-img">
+                            <input type="submit" class="btn btn-success btn-update-main-img" style="margin-top: 20px" value="Actualizar imagen">
+                        </div>
+
                         <div class="alert alert-success main-img-updated" style="display:none">
                             <strong>Actulizada!</strong> La imagen principal ha sido actualizada correctamente.
                         </div>
