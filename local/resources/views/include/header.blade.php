@@ -23,7 +23,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand navbar-img" href="{!! URL::to('home')!!}"> {!! Html::image('/local/resources/assets/img/alojablanco.png') !!}</a>
+                <a class="navbar-brand navbar-img" href="{!! URL::to('home')!!}"> {!! Html::image('/local/resources/assets/img/alojarural_logo.png') !!}</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -42,13 +42,22 @@
                         @if (Auth::check())
                             <a class="hover" href="{!! URL::to($url)!!}">{!! Auth::user()->name !!}</a>
                         @else
-                            <a class="hover" href="{!! URL::to("login")!!}">Log in</a>
+                            <a class="hover" href="{!! URL::to("login")!!}">Iniciar sesión</a>
                         @endif
 
                     </li>
+                    @if(Auth::check() && !Auth::user()->admin)
+                        <li>
+                            {!! HTML::link('contact', 'Contacto', array('class' => 'hover'))!!}
+                        </li>
+                    @elseif (!Auth::check())
+                        <li>
+                            {!! HTML::link('contact', 'Contacto', array('class' => 'hover'))!!}
+                        </li>
+                    @endif
                     <li>
                         @if (Auth::check())
-                            {!! HTML::link('logout', 'log out', array('class' => 'hover'))!!}
+                            {!! HTML::link('logout', 'Desconectar', array('class' => 'hover'))!!}
                         @else
                             <a class="hover" href="{!! URL::to('manage/owner#newAccom')!!}">Anuncia tu alojamiento</a>
                         @endif
