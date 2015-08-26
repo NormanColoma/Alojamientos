@@ -148,7 +148,7 @@ class AccommodationController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * Obtenemos el alojamiento pasado por la id, y cargamos la vista para actualizar el mismo.
      *
      * @param  Request  $request
      * @param  int  $id
@@ -166,7 +166,7 @@ class AccommodationController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * Actualizamos el alojamiento que se corresponde con la id pasada.
      *
      * @param  Request  $request
      * @param  int  $id
@@ -219,7 +219,7 @@ class AccommodationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminamos el alojamiento que se corresponde con la id pasada.
      *
      * @param  int  $id
      * @return Response
@@ -235,7 +235,7 @@ class AccommodationController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminamos la imagen que se corresponde con la id pasada
      *
      * @param  int  $id
      * @return Response
@@ -257,7 +257,7 @@ class AccommodationController extends Controller
     }
 
     /**
-     * Actuliza la foto que se le pasa
+     * Actuliza la imagen que se le pasa
      *
      * @param  int  $id
      * @return Response
