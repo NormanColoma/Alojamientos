@@ -162,6 +162,10 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
         return $acom;
     }
 
+    /**
+     * @param $owner_id
+     * @return array|null
+     */
     public function accommodationByOwner($owner_id)
     {
         $accomm = null;
@@ -248,6 +252,23 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
         }
 
         return $arrayPhotos;
+
+    }
+
+
+    public function getGallery($id){
+
+        $photos = null;
+
+        try{
+            $photos = DB::table('photos')->select('*')
+                ->where('accommodation_id', $id)->where('main', 0)
+                ->get();
+        }catch(QueryException $ex){
+            return $photos;
+        }
+
+        return $photos;
 
     }
 

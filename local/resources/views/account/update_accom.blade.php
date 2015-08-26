@@ -188,6 +188,10 @@
             <div class="form-group form-submit">
                 <input type="submit" class="btn btn-primary" value="Actualizar">
             </div>
+            @include('flash::message')
+            <script>
+                $('#flash-overlay-modal').modal();
+            </script>
             {!! Form::close() !!}
             <div class="images">
                 <h3>Actualiza las imágenes</h3>
@@ -197,8 +201,7 @@
                     <div class="current-main-img" id="{!! $accommodation->getMainImg()->getID() !!}">
                         {!! Html::image('/local/resources/assets/img/accoms/' . $accommodation->getMainImg()->getUrl()) !!}
                     </div>
-                    <p>Si quieres actualizar la imagen principal de tu alojamiento, solo tienes que seleccionar una nueva imagen. Por el contrario,
-                    si quieres seguir manteniendo la actual, no debes hacer nada.</p>
+                    <p>Si quieres actualizar la imagen principal de tu alojamiento, solo tienes que seleccionar una nueva imagen. Y pulsar en actualizar imagen.</p>
 
                     <div class="col-lg-6 col-sm-6 col-12" style="padding:0px;margin-top: 30px;">
                         <label>Selecciona la imagen princiapl</label>
@@ -222,14 +225,14 @@
                         </div>
                 </div>
                 {!! Form::close() !!}
-                {!! Form::open(['url' => 'accommodation/' . $id . "/update", 'files' => true]) !!}
+                {!! Form::open(['id' => 'form-gallery', 'files' => true]) !!}
                     <div class="row">
                     <div class="current-img-cont">
                         <label>Galería de imágenes</label>
                         <ul class="current-list-img">
                             @foreach($accommodation->getPhotos() as $photo)
                                 @if(!$photo->getMain())
-                                    <li>
+                                    <li id="photo-{!! $photo->getId() !!}">
                                         <div class="current-img" id="{!! $photo->getId() !!}">
                                             {!! Html::image('/local/resources/assets/img/accoms/' . $photo->getUrl()) !!}
                                         </div>
@@ -237,23 +240,39 @@
                                 @endif
                             @endforeach
                         </ul>
-                        <p>Selecciona aquellas imágenes de la galería que deseas borrar (pinchando en ellas) y elimínalas. A continuación, selecciona las nuevas que deseas subir.
-                            Si no quieres modificarlas, déjalas como están. Si quieres desmarcalas, vuelve a pinchar en las que estén marcadas.</p>
-                        <a style="margin-bottom: 40px" class="btn btn-danger btn-delete-gallery"><span class="glyphicon glyphicon-remove"></span> Eliminar Selección</a>
                     </div>
-                    <div class="col-lg-6 col-sm-6 col-12">
+                    <div class="col-lg-6 col-sm-6 col-12 col-gallery">
                         <label>Selecciona las imágenes de la galería</label>
                         <div class="input-group">
                                             <span class="input-group-btn">
                                                 <span class="btn btn-primary btn-file">
-                                                    Galería&hellip; <input type="file" multiple name="galery[]">
+                                                    Galería&hellip; <input type="file" multiple name="galery[]" id="massive-image">
                                                 </span>
                                             </span>
                             <input type="text" class="form-control" readonly>
                         </div>
                         <span>Solo puedes subir un máximo de 6 imágenes (5mb máximo por imagen)</span>
                         <span class="text-danger" style="float:left;">{{ $errors->first('galery') }}</span>
+                        <p>Selecciona aquellas imágenes de la galería que deseas borrar (pinchando en ellas) y elimínalas. A continuación, selecciona las nuevas que deseas subir, y pulsa
+                            el botón "Actualizar Galería".Si no quieres modificarlas, déjalas como están. Si quieres desmarcalas, vuelve a pinchar en las que estén marcadas.</p>
+                        <div class="form-group options-gallery">
+                            <a class="btn btn-danger btn-delete-gallery"><span class="glyphicon glyphicon-remove"></span> Eliminar Selección</a>
+                            <input type="submit" class="btn btn-success btn-update-galery"  value="Actualizar Galería" id="{!! $id !!}">
+                        </div>
+                        <div class="alert alert-danger gallery-excess" style="display: none; float:left; width:100%">
+                            <strong>Demasiadas imágenes!</strong> La galaería no puede contener más de 6 imágenes
+                        </div>
+                        <div class="alert alert-danger gallery-empty" style="display: none; float:left; width:100%">
+                            <strong>Selecciona imágenes!</strong> Selecciona las imágenes que quieres subir a la galería
+                        </div>
+                        <div class="alert alert-success gallery-deleted" style="display: none; float:left; width:100%">
+                            <strong>Imagenes eliminadas!</strong> Las imagenes seleccionadas han sido eliminadas de la galería
+                        </div>
+                        <div class="alert alert-success gallery-updated" style="display: none; float:left; width:100%">
+                            <strong>Galería actualizada!</strong> La galería ha sido actualizada correctamente
+                        </div>
                     </div>
+                        {!! Form::close() !!}
                     <script>
                         $(document).ready(function(){
 
@@ -288,6 +307,8 @@
                                            updateMainImg(new_img);
                                        }
 
+                                    },error: function(){
+                                      alert("error")
                                     },
                                     cache: false,
                                     contentType: false,
@@ -297,7 +318,41 @@
                                 return false;
                             });
 
-
+                            $("#form-gallery").submit(function(){
+                                var current_items = $(".current-list-img li").length;
+                                var photos = document.getElementById('massive-image');
+                                var upload_items = document.getElementById('massive-image').files.length;
+                                var total_items = upload_items+current_items;
+                                if(total_items > 6 || current_items == 6){
+                                    $(".gallery-excess").show();
+                                    $(".alert").delay(3000).slideUp(200);
+                                }
+                                else if(upload_items == 0){
+                                    $(".gallery-empty").show();
+                                    $(".alert").delay(3000).slideUp(200);
+                                }
+                                else{
+                                    var formData = new FormData($(this)[0]);
+                                    var id = $(".btn-update-galery").attr("id");
+                                    var port = location.port;
+                                    var uri = "http://localhost:" + port + "/alojamientos/gallery/update/" + id;
+                                    $.ajax({
+                                        url: uri,
+                                        type: 'POST',
+                                        data: formData,
+                                        async: false,
+                                        success: function (data) {
+                                            if(data.ok){
+                                                updateGallery(data.photos);
+                                            }
+                                        },
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false
+                                    });
+                                }
+                                return false;
+                            })
                             function updateMainImg(new_img){
                                 var port = location.port;
                                 var src = "http://localhost:" + port + "/alojamientos/local/resources/assets/img/accoms/" + new_img;
@@ -306,6 +361,20 @@
                                 $(".alert").delay(3000).slideUp(200);
                             }
 
+                            function updateGallery(photos){
+                                var port = location.port;
+                                var ids = new Array();
+                                $(".current-list-img li").each(function(){
+                                    ids.push($(this).attr("id"));
+                                })
+                                var ini =  ids.length;
+                                for(var i=ini;i<photos.length;i++){
+                                    var li = "<li><div class='current-img' id='"+photos[i].id+"'><img src='http://localhost:"+port+"/alojamientos/local/resources/assets/img/accoms/"+photos[i].url+"'></div></li>";
+                                    $(".current-list-img").append(li);
+                                }
+                                $(".gallery-updated").show();
+                                $(".alert").delay(3000).slideUp(200);
+                            }
 
                             function deletePhoto(id) {
                                 var port = location.port;
@@ -314,7 +383,9 @@
                                     type: "Delete",
                                     url: uri,
                                     success: function (data) {
-                                            $("#"+id).remove();
+                                        $("#photo-"+id).remove();
+                                        $(".gallery-deleted").show();
+                                        $(".alert").delay(3000).slideUp(200);
                                     }, error: function () {
                                         alert("bad")
                                     }

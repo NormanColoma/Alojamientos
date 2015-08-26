@@ -153,6 +153,27 @@ input[readonly] {
     float: left;
     width: 100%;
 }
+
+.col-gallery{
+    float:left !important;
+    width: 100% !important;
+    margin-bottom: 80px;
+}
+
+.col-gallery p{
+    float:left;
+    margin-top: 25px;
+}
+
+.options-gallery{
+    float:left;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.btn-delete-gallery{
+    margin-right: 25px;
+}
 /*endregion*/
 /*region responsive*/
 @media screen and (min-width: 1004px) and (max-width: 1215px) {
