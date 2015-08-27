@@ -35,6 +35,7 @@
       <excludeFolder url="file://$MODULE_DIR$/local/vendor/phpunit/php-token-stream" />
       <excludeFolder url="file://$MODULE_DIR$/local/vendor/phpunit/phpunit" />
       <excludeFolder url="file://$MODULE_DIR$/local/vendor/phpunit/phpunit-mock-objects" />
+      <excludeFolder url="file://$MODULE_DIR$/local/vendor/phpunit/phpunit-selenium" />
       <excludeFolder url="file://$MODULE_DIR$/local/vendor/psr/log" />
       <excludeFolder url="file://$MODULE_DIR$/local/vendor/psy/psysh" />
       <excludeFolder url="file://$MODULE_DIR$/local/vendor/sebastian/comparator" />
@@ -73,6 +74,7 @@
           <root url="file://$MODULE_DIR$/local/vendor/phpunit/php-timer" />
           <root url="file://$MODULE_DIR$/local/vendor/phpdocumentor/reflection-docblock" />
           <root url="file://$MODULE_DIR$/local/vendor/composer" />
+          <root url="file://$MODULE_DIR$/local/vendor/phpunit/phpunit-selenium" />
           <root url="file://$MODULE_DIR$/local/vendor/fzaninotto/faker" />
           <root url="file://$MODULE_DIR$/local/vendor/hamcrest/hamcrest-php" />
           <root url="file://$MODULE_DIR$/local/vendor/sebastian/environment" />
@@ -135,6 +137,7 @@
           <root url="file://$MODULE_DIR$/local/vendor/phpunit/php-timer" />
           <root url="file://$MODULE_DIR$/local/vendor/phpdocumentor/reflection-docblock" />
           <root url="file://$MODULE_DIR$/local/vendor/composer" />
+          <root url="file://$MODULE_DIR$/local/vendor/phpunit/phpunit-selenium" />
           <root url="file://$MODULE_DIR$/local/vendor/fzaninotto/faker" />
           <root url="file://$MODULE_DIR$/local/vendor/hamcrest/hamcrest-php" />
           <root url="file://$MODULE_DIR$/local/vendor/sebastian/environment" />

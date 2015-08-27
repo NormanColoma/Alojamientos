@@ -14,7 +14,10 @@
  * Time: 11:54
  */
 
+use App\Models\AccommodationModel;
+use App\Models\DTO\Accommodation;
 use App\Models\DTO\Owner;
+use App\Models\DTO\Photo;
 use App\Models\UserModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -425,5 +428,79 @@ class AccommAcceptanceTest extends TestCase
             ->type("Esto es la descripción del anuncio","new-accom-desc")->attach(base_path() ."/resources/assets/img/img_test/falloFormato.txt","new-accom-main-img")->press("Anunciar")
             ->see("Nuevo Alojamiento");
     }
+
+
+    /**
+     * Escenario: Borrar un alojamiento
+     * Dado que soy un usuario del tipo Propietario y me he logueado correctamente
+     * Cuando quiero borrar un alojamiento
+     * Si hago click en el botón 'Eliminar'
+     * Entonces debe eliminarse el alojamiento.
+     *
+     * @return void
+     * @group accommAcceptance2
+     * @test
+     */
+    public function deleting_accomodation(){
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("owner@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("123456");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom1 = $am->createAccom($a1, $um->getID($owner->getEmail()));
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Alojamiento de lujo');
+
+        $accom2 = $am->createAccom($a1, $um->getID($owner->getEmail()));
+
+        $this->visit('/login')
+            ->type('owner@email.com', 'email')->type('prueba','password')
+            ->press('btn-login')
+            ->seePageIs('/manage/owner')->see("Alojamientos")->see("Casa rural")->see("Alojamiento de lujo");
+        $this->click("Eliminar")->dontSee("Alojamiento de lujo")->dontSee("Casa rural");
+    }
+
 
 }

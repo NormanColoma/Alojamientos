@@ -6,7 +6,7 @@
  * Time: 11:06
  */
 
-namespace app\Models\DTO;
+namespace App\Models\DTO;
 
 
 class Photo

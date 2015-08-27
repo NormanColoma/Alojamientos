@@ -732,6 +732,4 @@ class AccommIntegrationTest extends TestCase
         $this->assertEquals("url/photo2",$photo_1->url);
         $this->assertEquals("url/photo3",$photo_2->url);
     }
-
-
 }
