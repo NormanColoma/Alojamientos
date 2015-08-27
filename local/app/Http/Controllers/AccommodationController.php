@@ -9,10 +9,14 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Mockery\CountValidator\Exception;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use PhpParser\Node\Scalar\String_;
 use App\Models\DTO\Photo;
 use Auth;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 use Validator;
 
 class AccommodationController extends Controller
@@ -27,37 +31,6 @@ class AccommodationController extends Controller
         'new-accom-main-img.max' => 'La imagen no puede ser mayor de 5mb',
 
     ];
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Recibimos por parámetro los datos para insertar un nuevo alojamiento.
@@ -122,7 +95,6 @@ class AccommodationController extends Controller
                     $accom->setOutside($request->input('new-accom-outside'));
                 $accom->setDesc($request->input('new-accom-desc'));
                 $accom->setPhotos($photos);
-                echo "good";
                 try {
                     $am->createAccom($accom, Auth::user()->id);
                     if ($this->uploadPhoto($file)) {
@@ -174,40 +146,181 @@ class AccommodationController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
-     * Update the specified resource in storage.
+     * Obtenemos el alojamiento pasado por la id, y cargamos la vista para actualizar el mismo.
      *
      * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function getAccommodation($id)
     {
-        //
+        $am = new AccommodationModel();
+        $accomm = $am->accommodationByID($id);
+        if($accomm != null)
+            return view("account/update_accom", ["id" => $id, "accommodation" => $accomm]);
+        else
+            return view("errors/503");
+    }
+
+
+    /**
+     * Actualizamos el alojamiento que se corresponde con la id pasada.
+     *
+     * @param  Request  $request
+     * @param  int  $id
+     * @return Response
+     */
+    public function updateAccommodation(Request $request, $id)
+    {
+        $messages = [
+            'required' => 'El campo es obligatorio',
+            'regex' => 'El formato introducido no es válido. Solo se permiten letras',
+            'image' => 'El archivo debe ser una imagen (jpeg, png, bmp, gif, or jpg)',
+            'numeric' => 'El formato debe ser una cifra (para decimales usar punto. Ejemplo: 150.25)',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'new-accom-title' => 'required|regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
+            'new-accom-city' => 'required|regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
+            'new-accom-desc' => 'required',
+            'new-accom-price' => 'required|numeric',
+        ], $this->messages);
+        if ($validator->fails()) {
+            return redirect('/accommodation/'. $id . '/update')
+                ->withErrors($validator)
+                ->withInput();
+        } else {
+            $accom = new Accommodation();
+            $accom->setTitle($request->input('new-accom-title'));
+            $accom->setCity($request->input('new-accom-city'));
+            $accom->setProvince($request->input('new-accom-province'));
+            $accom->setBaths($request->input('new-accom-baths'));
+            $accom->setBeds($request->input('new-accom-beds'));
+            $accom->setCapacity($request->input('new-accom-capacity'));
+            $accom->setPrice($request->input('new-accom-price'));
+            if ($request->has('new-accom-inside'))
+                $accom->setInside($request->input('new-accom-inside'));
+            if ($request->has('new-accom-outside'))
+                $accom->setOutside($request->input('new-accom-outside'));
+            $accom->setDesc($request->input('new-accom-desc'));
+            try {
+                $am = new AccommodationModel();
+                $am->updateAccomm($accom,$id);
+                flash()->overlay('Las características de tu alojamiento han sido actualizadas correctamente.Si quieres cambiar la imagen principal, o la galería, puedes hacerlo desde esta página.', 'Actualizado');
+                return redirect("/accommodation/". $id . "/update");
+            } catch (QueryException $ex) {
+                echo $ex;
+            }
+        }
+
+
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminamos el alojamiento que se corresponde con la id pasada.
      *
      * @param  int  $id
      * @return Response
      */
     public function removeAccommodation($id)
     {
-        //TODO:: Implemente logic here to delete Accommodation which corresponds with the id passed
-        //flash()->overlay("El alojamiento ha sido borrado satisfactoriamente", "Eliminado");
-        //return redirect("manage/owner");
-        return $id;
+        $am = new AccommodationModel();
+        if($am->deleteAccomm($id))
+            return response()->json([ 'ok' => true, 'message' => 'Accomodation was delete' ], 200);
+        else
+            return response()->json([ 'ok' => false, 'message' => 'Accomodation was not found' ], 404);
     }
+
+
+    /**
+     * Eliminamos la imagen que se corresponde con la id pasada
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function removePhoto($id)
+    {
+        $am = new AccommodationModel();
+        $path = base_path() ."/resources/assets/img/accoms/" . $am->photoUrl($id);
+        if($am->deletePhoto($id)) {
+            try {
+                \File::delete($path);
+                return response()->json(['ok' => true, 'message' => 'Image was delete'], 200);
+            }catch (FileException $ex){
+                throw new Exception($ex->getMessage());
+            }
+        }
+        else
+            return response()->json([ 'ok' => false, 'message' => 'Image was not found' ], 404);
+    }
+
+    /**
+     * Actuliza la imagen que se le pasa
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function updatePhoto(Request $request, $id)
+    {
+        if($request->hasFile('new-accom-main-img')){
+            $file = $request->file('new-accom-main-img');
+            $url = $file->getClientOriginalName();
+            $am = new AccommodationModel();
+            $url_to_remove = $am->photoUrl($id);
+            if($am->updatePhoto($id,$url)){
+                if($this->uploadPhoto($file)){
+                    $to_remove = base_path() ."/resources/assets/img/accoms/" . $url_to_remove;
+                    try {
+                        \File::delete($to_remove);
+                        return response()->json([ 'ok' => true, 'message' => 'Image was updated' ], 200);
+                    }catch (FileException $ex){
+                        throw new Exception($ex->getMessage());
+                    }
+                }
+                return response()->json([ 'ok' => false, 'message' => 'New image was not uploaded' ], 404);
+            }
+            else
+                return response()->json([ 'ok' => false, 'message' => 'Image was not found' ], 404);
+
+        }
+        return response()->json([ 'ok' => false, 'message' => 'File is not present' ], 500);
+
+    }
+
+
+    /**
+     * Actualiza la galería de imágenes
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function updateGallery(Request $request, $id)
+    {
+        $updated = true;
+        if($request->hasFile('galery')) {
+            $am = new AccommodationModel();
+            $files = $request->file('galery');
+            foreach($files as $f) {
+                $photo = new Photo();
+                $photo->setUrl($f->getClientOriginalName());
+                $photo->setMain(false);
+                if($am->addPhoto($photo,$id) != null){
+                    if(!$this->uploadPhoto($f)){
+                        $updated=false;
+                        return response()->json([ 'ok' => false, 'message' => 'Image was not found' ], 404);
+                    }
+                }
+                else
+                    return response()->json([ 'ok' => false, 'message' => 'Image was not added' ], 404);
+            }
+            if($updated) {
+                $photos = $am->getGallery($id);
+                return response()->json(['ok' => true, 'message' => 'Gallery was updated', 'photos' => $photos], 200);
+            }
+        }
+        return response()->json([ 'ok' => false, 'message' => 'There are no image files present' ], 500);
+    }
+
 }

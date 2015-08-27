@@ -71,6 +71,80 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
         return $a;
     }
 
+    /** Actualizamos el alojamiento que se corresponde con la id pasada, con los datos pasados en el objeto accom. Si el alojamiento
+     * no existiese, se devolverá false
+     * @param Accommodation $accom
+     * @param $id
+     * @return bool
+     */
+    public function updateAccomm(Accommodation $accom, $id){
+
+        $a = null;
+        try{
+            $a = AccommodationModel::where('id', $id)
+                ->update([
+                    'title' => $accom->getTitle(),
+                    'desc' => $accom->getDesc(),
+                    'capacity' => $accom->getCapacity(),
+                    'beds' => $accom->getBeds(),
+                    'bathrooms' => $accom->getBaths(),
+                    'inside' => $accom->getInside(),
+                    'outside' => $accom->getOutside(),
+                    'price_per_person' => $accom->getPrice(),
+                    'city' => $accom->getCity(),
+                    'province' => $accom->getProvince()
+                ]);
+            if($a!=null)
+                return true;
+            return false;
+        }catch(QueryException $ex){
+            return false;
+        }
+    }
+
+    /** Eliminamos el alojamiento que se corresponde con la id pasada. Si no existe dicho alojamiento, devolveremos false.
+     * @param $id
+     * @return bool
+     */
+    public function deleteAccomm($id){
+
+        try {
+            $deletedRows = AccommodationModel::where('id', $id)->delete();
+
+            if($deletedRows == 0)
+                return false;
+
+            return true;
+        }catch(QueryException $ex){
+            return false;
+        }
+
+    }
+
+    /** Eliminamos la imagen que se corresponde con la id pasada por parámetro. Si la imagen no existiese, devolveremos false.
+     * @param $id
+     * @return bool
+     */
+    public function deletePhoto($id){
+
+        try {
+            $deletedRows = DB::table('photos')->where('id',$id)->delete();
+
+            if($deletedRows == 0)
+                return false;
+            return true;
+        }catch(QueryException $ex){
+            return false;
+        }
+
+    }
+
+    /** Devolvemos el alojamiento que se corresponde con la id pasada por parámetro. Si el alojamiento no existiese,
+     * se devolverá un objeto nulo.
+     * @param $id
+     * @return Accommodation|null
+     * @throws \Exception
+     */
     public function accommodationByID($id)
     {
         $accomm = null;
@@ -108,6 +182,11 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
         return $acom;
     }
 
+    /** Devolvemos todos los alojamientos que pertenencen al propietario que se corresponde con la id pasada por parámetro.
+     * En caso de no existir ningún usuario con esa id se devolvera un objeto nulo.
+     * @param $owner_id
+     * @return array|null
+     */
     public function accommodationByOwner($owner_id)
     {
         $accomm = null;
@@ -143,6 +222,13 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
         return $accommodations;
     }
 
+    /** Añadimos la imagen pasada por parámetro al alojamiento que se corresponde con la id pasada por parámetro. Devolvemos el objeto
+     * photo insertado en caso de una insercción correcta. En caso contrario (si no existiese el alojamiento) se captura la excepción,
+     * y se devuelve el objeto nulo.
+     * @param Photo $photo
+     * @param $id
+     * @return bool|null
+     */
     public function addPhoto(Photo $photo, $id)
     {
         $p = null;
@@ -158,6 +244,30 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
 
     }
 
+    /**Actualizamos la url de la imagen que se corresponde con la id pasada. En casa de poder realizarse la actualización
+     * se devolvera flase. En caso contrario, true.
+     * @param $id
+     * @param $url
+     * @return bool
+     */
+    public function updatePhoto($id, $url){
+        $p = null;
+        try{
+            $p = DB::table('photos')
+                ->where('id', $id)
+                ->update(['url' => $url]);
+            if($p!=null)
+                return true;
+            return false;
+        }catch(QueryException $ex){
+            return false;
+        }
+    }
+
+    /**Obtenemos todas las imágenes del alojamiento que se corresponde con la id pasada
+     * @param $id
+     * @return array|null|static[]
+     */
     public function allPhotos($id){
 
         $photos = null;
@@ -172,6 +282,7 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
                 $p = new Photo();
                 $p->setUrl($photo->url);
                 $p->setMain($photo->main);
+                $p->setID($photo->id);
                 $arrayPhotos[] = $p;
             }
         }catch(QueryException $ex){
@@ -180,6 +291,42 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
 
         return $arrayPhotos;
 
+    }
+
+
+    /**
+     * Obtenemos la galería de imágenes del alojamiento pasado por la id
+     * @param $id
+     * @return array|null|static[]
+     */
+    public function getGallery($id){
+
+        $photos = null;
+
+        try{
+            $photos = DB::table('photos')->select('*')
+                ->where('accommodation_id', $id)->where('main', 0)
+                ->get();
+        }catch(QueryException $ex){
+            return $photos;
+        }
+
+        return $photos;
+
+    }
+
+
+    /** Obtenemos la url de la imagen que corresponde con la id pasada. En caso de existir se devuelve el string (la url).
+     * En caso contrario devolveremos null.
+     * @param $id
+     * @return mixed|null
+     */
+    public function photoUrl($id){
+        try{
+            return $url = DB::table('photos')->where('id', $id)->value('url');
+        }catch(QueryException $ex){
+            return null;
+        }
     }
 
 }

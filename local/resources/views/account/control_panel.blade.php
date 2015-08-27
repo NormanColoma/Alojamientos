@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <title>Control Panel</title>
         {!! Html::style('/local/resources/assets/styles/owner_panel.css') !!}
+        <meta name="csrf-token" content="<?= csrf_token() ?>">
 </head>
 <body>
         @include("include.header")
@@ -44,19 +45,36 @@
                                                  @endif
                                              @endforeach
                                              <li>
-                                                 <div class="accomodation">
+                                                 <div class="accomodation" id="accommodation-{!! $accom->getId() !!}">
                                                      {!! Html::image('/local/resources/assets/img/accoms/' . $img) !!}
                                                      <div class="accom-descrip">
                                                          <h3 class="accom-title">{!! $accom->getTitle() !!}</h3>
                                                          <p class="accom-description">{!! $accom->getInitialDesc() !!}</p>
-                                                         <a class="btn btn-danger btn-delete-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
-                                                         <a href="#" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
+                                                         <a class="btn btn-danger btn-delete-accom" id="{!! $accom->getID() !!}"><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
+                                                         <a href="{!! URL::to("accommodation/".$accom->getID() . "/update") !!}" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
                                                      </div>
                                                  </div>
                                              </li>
                                          @endforeach
                                      @endif
                              </ul>
+                             <div id="deleteModal" class="modal fade" role="dialog">
+                                 <div class="modal-dialog">
+                                     <div class="modal-content">
+                                         <div class="modal-header">
+                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                             <h4 class="modal-title">Eliminado</h4>
+                                         </div>
+                                         <div class="modal-body">
+                                             <p>El alojamiento ha sido eliminado con éxito.</p>
+                                         </div>
+                                         <div class="modal-footer">
+                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                         </div>
+                                     </div>
+
+                                 </div>
+                             </div>
                              <?php
                                  $per_page = 5;
                                  $total = ceil(count($accommodations)/$per_page);
@@ -119,18 +137,31 @@
 
                                  function deleteAccomm(id){
                                      var port = location.port;
-                                     var uri = "http://localhost:" + port + "/alojamientos/accommodation/delete/2";
-                                     alert(uri);
+                                     var uri = "http://localhost:" + port + "/alojamientos/accommodation/delete/"+id;
                                      $.ajax({
                                          type: "Delete",
                                          url: uri,
                                          success: function(data) {
-                                             alert(data);
+                                             if(data.ok)
+                                               removeAccomFromDOM(id);
                                          }, error: function(){
                                              alert("bad")
                                          }
                                      });
                                  }
+
+                                 function removeAccomFromDOM(id){
+                                     $("#deleteModal").modal('show');
+                                     $("#accommodation-"+id).remove();
+                                 }
+
+                                 $(function() {
+                                     $.ajaxSetup({
+                                         headers: {
+                                             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                                         }
+                                     });
+                                 });
                              </script>
 
                         </div>
@@ -386,7 +417,7 @@
                                 });
                             </script>
                         </div>
-                                @endif
+                            @endif
                 </div>
         </div>
 </body>
