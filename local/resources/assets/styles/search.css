@@ -1,11 +1,13 @@
 .search-cont{
-    float:left;
-    width: 30%;
+    float: left;
+    width: 405px;
     background-color: rgba(2,21,33,0.7);
-    top: 7%;
+    top: 50px;
     position: absolute;
-    right: 67%;
+    right: 890px;
+    z-index: 9999;
 }
+
 
 .search-cont h4{
     color: white;
@@ -50,3 +52,273 @@
 
 .btn-search{
 }
+
+/*region responsive*/
+
+@media screen and (min-width: 1255px) and (max-width: 1325px) {
+    .search-cont{
+        right: 820px;
+    }
+}
+
+@media screen and (min-width: 1216px) and (max-width: 1254px) {
+    .search-cont{
+        right: 790px;
+    }
+}
+
+@media screen and (min-width: 1195px) and (max-width: 1215px) {
+    .search-cont{
+        right: 760px;
+    }
+}
+
+@media screen and (min-width: 1165px) and (max-width: 1194px) {
+    .search-cont{
+        right: 730px;
+    }
+}
+
+@media screen and (min-width: 1120px) and (max-width: 1164px) {
+    .search-cont{
+        right: 700px;
+    }
+}
+
+@media screen and (min-width: 1090px) and (max-width: 1119px) {
+    .search-cont{
+        right: 670px;
+    }
+}
+
+@media screen and (min-width: 780px) and (max-width: 1089px) {
+    .search-cont{
+        right: 0;
+        left: 0px;
+    }
+
+    .carousel-indicators {
+        bottom: 240px !important;
+    }
+
+    @media screen and (min-width: 780px) and (max-width: 920px) {
+
+        .carousel-indicators {
+           display: none;
+        }
+
+        .search-cont{
+            z-index:0;
+        }
+    }
+}
+
+@media screen and (min-width: 718px) and (max-width: 779px) {
+    .search-cont{
+        right: 0;
+        left: 0px;
+        width: 100%;
+        position: inherit;
+        margin-top: -20px;
+        top: 0px;
+
+    }
+
+    .date {
+        width: 48.5%;
+        float: left;
+    }
+
+    #myCarousel{
+        display: none;
+    }
+
+    .carousel-indicators {
+        bottom: 210px !important;
+    }
+
+    .search-cont{
+        z-index:0;
+    }
+}
+
+
+@media screen and (min-width: 672px) and (max-width: 717px) {
+    .search-cont{
+        right: 0;
+        left: 0px;
+        width: 100%;
+        position: inherit;
+        margin-top: -20px;
+        top: 0px;
+    }
+
+    .date {
+        width: 48.4%;
+        float: left;
+    }
+
+    #myCarousel{
+        display: none;
+    }
+    .search-cont{
+        z-index:0;
+    }
+}
+
+@media screen and (min-width: 635px) and (max-width: 671px) {
+    .search-cont{
+        right: 0;
+        left: 0px;
+        width: 100%;
+        position: inherit;
+        margin-top: -20px;
+        top: 0px;
+
+    }
+
+    .date {
+        width: 48.3%;
+        float: left;
+    }
+
+    #myCarousel{
+        display: none;
+    }
+
+    .search-cont{
+        z-index:0;
+    }
+}
+
+
+@media screen and (min-width: 604px) and (max-width: 634px) {
+    .search-cont{
+        right: 0;
+        left: 0px;
+        width: 100%;
+        position: inherit;
+        margin-top: -20px;
+        top: 0px;
+
+    }
+
+    .date {
+        width: 48.2%;
+        float: left;
+    }
+
+    #myCarousel{
+        display: none;
+    }
+
+    .search-cont{
+        z-index:0;
+    }
+}
+
+@media screen and (min-width: 573px) and (max-width: 603px) {
+    .search-cont{
+        right: 0;
+        left: 0px;
+        width: 100%;
+        position: inherit;
+        margin-top: -20px;
+        top: 0px;
+
+    }
+
+    .date {
+        width: 48.1%;
+        float: left;
+    }
+
+    #myCarousel{
+        display: none;
+    }
+
+    .search-cont{
+        z-index:0;
+    }
+}
+@media screen and (min-width: 547px) and (max-width: 572px) {
+    .search-cont{
+        right: 0;
+        left: 0px;
+        width: 100%;
+        position: inherit;
+        margin-top: -20px;
+        top: 0px;
+
+    }
+
+    .date {
+        width: 48%;
+        float: left;
+    }
+
+    #myCarousel{
+        display: none;
+    }
+
+    .search-cont{
+        z-index:0;
+    }
+}
+
+@media screen and (min-width: 523px) and (max-width: 546px) {
+    .search-cont{
+        right: 0;
+        left: 0px;
+        width: 100%;
+        position: inherit;
+        margin-top: -20px;
+        top: 0px;
+    }
+
+    .date {
+        width: 47.9%;
+        float: left;
+    }
+
+    .date {
+        width: 100%;
+        float: left;
+        margin-bottom: 20px;
+    }
+
+    #myCarousel{
+        display: none;
+    }
+
+    .search-cont{
+        z-index:0;
+    }
+}
+
+@media screen and (min-width: 0px) and (max-width: 522px) {
+    .search-cont{
+        right: 0;
+        left: 0px;
+        width: 100%;
+        position: inherit;
+        margin-top: -20px;
+        top: 0px;
+
+    }
+
+    .date {
+        width: 100%;
+        float: left;
+        margin-bottom: 20px;
+    }
+
+    #myCarousel{
+        display: none;
+    }
+
+    .search-cont{
+        z-index:0;
+    }
+}
+/*endregion responsive*/

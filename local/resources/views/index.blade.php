@@ -48,14 +48,16 @@
     </div>
 
     <div class="search-cont">
-        <form method="post" action="#">
+        <form method="post" action="search/accommodations" id="searchForm">
+            {!! csrf_field() !!}
             <div class="inner">
                 <ul>
                     <li>
                         <h4>Destino</h4>
                         <div class='form-div'>
-                            <span class="glyphicon glyphicon-map-marker"></span><input class="form-control" type="text" placeholder="Ciudad">
+                            <span class="glyphicon glyphicon-map-marker"></span><input class="form-control" type="text" placeholder="Ciudad" name="city">
                         </div>
+                        <span class="text-danger text-search-danger" style="color:red;font-weight:700;float:left" id="text-search-danger"></span>
                     </li>
                     <li>
 
@@ -75,6 +77,14 @@
                     </li>
                 </ul>
             </div>
+            <script>
+                $("#searchForm").submit(function(e){
+                    if(!$('[name="city"]').val()){
+                        $(".text-search-danger").text("Introduce la ciudad")
+                        e.preventDefault();
+                    }
+                })
+            </script>
         </form>
     </div>
     <div class="container highlights">
@@ -95,7 +105,7 @@
                 </div>
             </li>
             <li>
-                <div class="accom">
+                <div class="accom accom-right">
                     <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
                     <div class="description">
                         <span class="city">Alicante</span>
@@ -109,7 +119,7 @@
                 </div>
             </li>
             <li>
-                <div class="accom">
+                <div class="accom accom-last">
                     <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
                     <div class="description">
                         <span class="city">Alicante</span>
