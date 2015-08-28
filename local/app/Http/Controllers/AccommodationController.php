@@ -227,8 +227,14 @@ class AccommodationController extends Controller
     public function removeAccommodation($id)
     {
         $am = new AccommodationModel();
-        if($am->deleteAccomm($id))
-            return response()->json([ 'ok' => true, 'message' => 'Accomodation was delete' ], 200);
+        $photos = $am->allPhotos($id);
+        if($am->deleteAccomm($id)) {
+            foreach($photos as $photo){
+                $path = base_path() ."/resources/assets/img/accoms/" . $photo->getUrl();
+                \File::delete($path);
+            }
+            return response()->json(['ok' => true, 'message' => 'Accomodation was delete'], 200);
+        }
         else
             return response()->json([ 'ok' => false, 'message' => 'Accomodation was not found' ], 404);
     }

@@ -108,7 +108,8 @@ class SystemIntegrationTest extends TestCase
 
         $a1->setID($accom['id']);
         $a2->setID($accom2['id']);
-
+        $a1->setPhotos($am->allPhotos($accom['id']));
+        $a2->setPhotos($am->allPhotos($accom2['id']));
         $arrayAcomm [] = $a1;
         $arrayAcomm [] = $a2;
 
