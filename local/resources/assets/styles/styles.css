@@ -2,6 +2,11 @@
 body{
 	font-family: 'Open Sans', sans-serif !important;
 	padding-top: 70px;
+	min-height:500px;
+}
+
+.container-height{
+	min-height: 450px;
 }
 
 .navbar-fixed-top{

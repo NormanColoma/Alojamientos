@@ -8,7 +8,7 @@
 </head>
 <body>
         @include("include.header")
-        <div class="container">
+        <div class="container container-height">
             @include('flash::message')
                   <h2>Tu cuenta</h2>
                   <ul class="nav nav-tabs">
@@ -461,5 +461,6 @@
                             @endif
                 </div>
         </div>
+        @include("include.footer")
 </body>
 </html>

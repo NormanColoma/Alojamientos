@@ -8,7 +8,7 @@
 </head>
 <body>
 @include("include.header")
-    <div class="container">
+    <div class="container container-height">
         <div id="newAccom" class="">
             <h3>Actualiza las características del alojamiento</h3>
             {!! Form::open(['url' => 'accommodation/' . $id . "/update", 'files' => true]) !!}
@@ -438,5 +438,6 @@
             </script>
         </div>
     </div>
+@include("include.footer")
 </body>
 </html>
