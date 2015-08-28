@@ -2,12 +2,11 @@
     float: left;
     width: 405px;
     background-color: rgba(2,21,33,0.7);
-    top: 50px;
+    top: 60px;
     position: absolute;
     right: 890px;
     z-index: 9999;
 }
-
 
 .search-cont h4{
     color: white;
@@ -51,6 +50,8 @@
 
 
 .btn-search{
+    background-color: #5cb85c !important;
+    border-color: #3bb83c !important
 }
 
 /*region responsive*/
