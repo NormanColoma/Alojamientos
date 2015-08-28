@@ -67,7 +67,6 @@ class UserIntegrationTest extends TestCase
      */
     public function testUpdateUser(){
 
-        //$this->notSeeInDatabase('users', ['email' => 'javier@email.com']);
 
         $userModel = new UserModel();
         $traveler = new Traveler();

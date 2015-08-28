@@ -64,3 +64,4 @@ Route::delete('/photo/delete/{id}',"AccommodationController@removePhoto");
 Route::post('/photo/update/{id}',"AccommodationController@updatePhoto");
 Route::post('/gallery/update/{id}',"AccommodationController@updateGallery");
 Route::post('/accommodation/{id}/update',"AccommodationController@updateAccommodation");
+Route::post('user/update/{id}', "UserController@updateUser");

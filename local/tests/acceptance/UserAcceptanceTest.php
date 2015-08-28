@@ -369,5 +369,329 @@ class UserAcceptanceTest extends TestCase
             ->see('El teléfono solo puede contener números, y debe ser correcto');//seePageIs('/login');
     }
 
+    /**
+     * Escenario: Actualizar cuenta Owner con campos vacíos
+     * Dado que estoy en la página de 'Mi cuenta' siendo un Owner
+     * Si dejo los campos vacíos
+     * Cuando pulso el botón 'Actualizar cuenta'
+     * Entonces debo mostrar los mensajes de que "Los campos son obligatorios"
+     *
+     * @return void
+     * @group userAcceptance
+     * @test
+     */
+    public function updating_owner_account_empty(){
+
+        $um = new UserModel();
+        $owner = new Owner();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("123456");
+
+        $um->createUser($owner);
+
+        $this->visit('/login')
+            ->type('norman@email.com', 'email')->type('123456','password')
+            ->press('btn-login')
+            ->seePageIs('manage/owner');
+
+        $this->visit("/manage/owner#account")->press("Actulizar cuenta")
+        ->see("El nombre es obligatorio")->see("Los apellidos son obligatorios")
+        ->see("El email es obligatorio")->see("La contraseña es obligatoria")
+        ->see("El teléfono es obligatorio");
+
+    }
+
+    /**
+     * Escenario: Actualizar cuenta Admin con campos vacíos
+     * Dado que estoy en la página de 'Mi cuenta' siendo un Admin
+     * Si dejo los campos vacíos
+     * Cuando pulso el botón 'Actualizar cuenta'
+     * Entonces debo mostrar los mensajes de que "Los campos son obligatorios"
+     *
+     * @return void
+     * @group userAcceptance
+     * @test
+     */
+    public function updating_admin_account_empty(){
+
+        $um = new UserModel();
+        $admin = new Admin();
+
+        $admin->setName("Norman");
+        $admin->setEmail("norman@email.com");
+        $admin->setSurname("Coloma");
+        $admin->setPhone("654987321");
+        $admin->setPassword("123456");
+
+        $um->createUser($admin);
+
+        $this->visit('/login')
+            ->type('norman@email.com', 'email')->type('123456','password')
+            ->press('btn-login')
+            ->seePageIs('manage/admin');
+
+        $this->visit("/manage/admin#account")->press("Actulizar cuenta")
+            ->see("El nombre es obligatorio")->see("Los apellidos son obligatorios")
+            ->see("El email es obligatorio")->see("La contraseña es obligatoria")
+            ->see("El teléfono es obligatorio");
+    }
+
+    /**
+     * Escenario: Actualizar cuenta Traveler con campos vacíos
+     * Dado que estoy en la página de 'Mi cuenta' siendo un Traveler
+     * Si dejo los campos vacíos
+     * Cuando pulso el botón 'Actualizar cuenta'
+     * Entonces debo mostrar los mensajes de que "Los campos son obligatorios"
+     *
+     * @return void
+     * @group userAcceptance
+     * @test
+     */
+    public function updating_traveler_account_empty(){
+
+        $um = new UserModel();
+        $traveler = new Traveler();
+
+        $traveler->setName("Norman");
+        $traveler->setEmail("norman@email.com");
+        $traveler->setSurname("Coloma");
+        $traveler->setPhone("654987321");
+        $traveler->setPassword("123456");
+
+        $um->createUser($traveler);
+
+        $this->visit('/login')
+            ->type('norman@email.com', 'email')->type('123456','password')
+            ->press('btn-login')
+            ->seePageIs('manage/traveler');
+
+        $this->visit("/manage/traveler#account")->press("Actulizar cuenta")
+            ->see("El nombre es obligatorio")->see("Los apellidos son obligatorios")
+            ->see("El email es obligatorio")->see("La contraseña es obligatoria")
+            ->see("El teléfono es obligatorio");
+    }
+
+    /**
+     * Escenario: Actualizar cuenta Owner
+     * Dado que estoy en la página de 'Mi cuenta' siendo un Owner
+     * Si completo correctamente los campos
+     * Cuando pulso el botón 'Actualizar cuenta'
+     * Entonces los datos de la cuenta deben actualizarse correctamente
+     *
+     * @return void
+     * @group userAcceptance
+     * @test
+     */
+    public function updating_owner_account(){
+
+        $um = new UserModel();
+        $owner = new Owner();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("123456");
+
+        $um->createUser($owner);
+
+        $this->visit('/login')
+            ->type('norman@email.com', 'email')->type('123456','password')
+            ->press('btn-login')
+            ->seePageIs('manage/owner');
+
+        $this->visit("/manage/owner#account")->type("Jose", "name")->type("Perez", "surname")->type("pepe@email.com","email")
+            ->type("prueba", "password")->type("654789345", "phone")->press("Actulizar cuenta")
+            ->dontSee("El nombre es obligatorio")->dontSee("Los apellidos son obligatorios")
+            ->dontSee("El email es obligatorio")->dontSee("La contraseña es obligatoria")
+            ->dontSee("El teléfono es obligatorio");
+
+    }
+
+    /**
+     * Escenario: Actualizar cuenta Admin
+     * Dado que estoy en la página de 'Mi cuenta' siendo un Admin
+     * Si completo correctamente los campos
+     * Cuando pulso el botón 'Actualizar cuenta'
+     * Entonces los datos de la cuenta deben actualizarse correctamente
+     *
+     * @return void
+     * @group userAcceptance
+     * @test
+     */
+    public function updating_admin_account(){
+
+        $um = new UserModel();
+        $admin = new Admin();
+
+        $admin->setName("Norman");
+        $admin->setEmail("norman@email.com");
+        $admin->setSurname("Coloma");
+        $admin->setPhone("654987321");
+        $admin->setPassword("123456");
+
+        $um->createUser($admin);
+
+        $this->visit('/login')
+            ->type('norman@email.com', 'email')->type('123456','password')
+            ->press('btn-login')
+            ->seePageIs('manage/admin');
+
+        $this->visit("/manage/admin#account")->type("Jose", "name")->type("Perez", "surname")->type("pepe@email.com","email")
+            ->type("prueba", "password")->type("654789345", "phone")->press("Actulizar cuenta")
+            ->dontSee("El nombre es obligatorio")->dontSee("Los apellidos son obligatorios")
+            ->dontSee("El email es obligatorio")->dontSee("La contraseña es obligatoria")
+            ->dontSee("El teléfono es obligatorio");
+    }
+
+    /**
+     * Escenario: Actualizar cuenta Traveler
+     * Dado que estoy en la página de 'Mi cuenta' siendo un Traveler
+     * Si completo correctamente los campos
+     * Cuando pulso el botón 'Actualizar cuenta'
+     * Entonces los datos de la cuenta deben actualizarse correctamente
+     *
+     * @return void
+     * @group userAcceptance
+     * @test
+     */
+    public function updating_traveler_account(){
+
+        $um = new UserModel();
+        $traveler = new Traveler();
+
+        $traveler->setName("Norman");
+        $traveler->setEmail("norman@email.com");
+        $traveler->setSurname("Coloma");
+        $traveler->setPhone("654987321");
+        $traveler->setPassword("123456");
+
+        $um->createUser($traveler);
+
+        $this->visit('/login')
+            ->type('norman@email.com', 'email')->type('123456','password')
+            ->press('btn-login')
+            ->seePageIs('manage/traveler');
+
+        $this->visit("/manage/traveler#account")->type("Jose", "name")->type("Perez", "surname")->type("pepe@email.com","email")
+            ->type("prueba", "password")->type("654789345", "phone")->press("Actulizar cuenta")
+            ->dontSee("El nombre es obligatorio")->dontSee("Los apellidos son obligatorios")
+            ->dontSee("El email es obligatorio")->dontSee("La contraseña es obligatoria")
+            ->dontSee("El teléfono es obligatorio");
+    }
+
+    /**
+     * Escenario: Actualizar cuenta Owner con campos incorrectos
+     * Dado que estoy en la página de 'Mi cuenta' siendo un Owner
+     * Si completo los campos pero son incorrectos
+     * Cuando pulso el botón 'Actualizar cuenta'
+     * Entonces debo mostrar los mensajes de error indicando que los datos introducidos no son correctos
+     *
+     * @return void
+     * @group userAcceptance
+     * @test
+     */
+    public function updating_owner_account_invalid(){
+
+        $um = new UserModel();
+        $owner = new Owner();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("123456");
+
+        $um->createUser($owner);
+
+        $this->visit('/login')
+            ->type('norman@email.com', 'email')->type('123456','password')
+            ->press('btn-login')
+            ->seePageIs('manage/owner');
+
+        $this->visit("/manage/owner#account")->type("1", "name")->type("1", "surname")->type("pepe","email")
+            ->type("123", "password")->type("asd", "phone")->press("Actulizar cuenta")
+            ->see("El nombre solo puede contener letras")->see("Los apellidos solo puede contener letras")
+            ->see("El email introducido no es correcto")->see("La contraseña introducida no es correcta. Debe tener un mínimo de 6 caractares, y un máximo de 15. Debe empezar por una letra, y solo puede ser alfanumérica")
+            ->see("El teléfono solo puede contener números, y debe ser correcto");
+
+    }
+
+    /**
+     * Escenario: Actualizar cuenta Admin con campos incorrectos
+     * Dado que estoy en la página de 'Mi cuenta' siendo un Admin
+     * Si completo los campos pero son incorrectos
+     * Cuando pulso el botón 'Actualizar cuenta'
+     * Entonces debo mostrar los mensajes de error indicando que los datos introducidos no son correctos
+     *
+     * @return void
+     * @group userAcceptance
+     * @test
+     */
+    public function updating_admin_account_invalid(){
+
+        $um = new UserModel();
+        $admin = new Admin();
+
+        $admin->setName("Norman");
+        $admin->setEmail("norman@email.com");
+        $admin->setSurname("Coloma");
+        $admin->setPhone("654987321");
+        $admin->setPassword("123456");
+
+        $um->createUser($admin);
+
+        $this->visit('/login')
+            ->type('norman@email.com', 'email')->type('123456','password')
+            ->press('btn-login')
+            ->seePageIs('manage/admin');
+
+        $this->visit("/manage/admin#account")->type("1", "name")->type("1", "surname")->type("pepe","email")
+            ->type("123", "password")->type("asd", "phone")->press("Actulizar cuenta")
+            ->see("El nombre solo puede contener letras")->see("Los apellidos solo puede contener letras")
+            ->see("El email introducido no es correcto")->see("La contraseña introducida no es correcta. Debe tener un mínimo de 6 caractares, y un máximo de 15. Debe empezar por una letra, y solo puede ser alfanumérica")
+            ->see("El teléfono solo puede contener números, y debe ser correcto");
+    }
+
+    /**
+     * Escenario: Actualizar cuenta Traveler con campos incorrectos
+     * Dado que estoy en la página de 'Mi cuenta' siendo un Traveler
+     * Si completo los campos pero son incorrectos
+     * Cuando pulso el botón 'Actualizar cuenta'
+     * Entonces debo mostrar los mensajes de error indicando que los datos introducidos no son correctos
+     *
+     * @return void
+     * @group userAcceptance
+     * @test
+     */
+    public function updating_traveler_account_invalid(){
+
+        $um = new UserModel();
+        $traveler = new Traveler();
+
+        $traveler->setName("Norman");
+        $traveler->setEmail("norman@email.com");
+        $traveler->setSurname("Coloma");
+        $traveler->setPhone("654987321");
+        $traveler->setPassword("123456");
+
+        $um->createUser($traveler);
+
+        $this->visit('/login')
+            ->type('norman@email.com', 'email')->type('123456','password')
+            ->press('btn-login')
+            ->seePageIs('manage/traveler');
+
+        $this->visit("/manage/traveler#account")->type("1", "name")->type("1", "surname")->type("pepe","email")
+            ->type("123", "password")->type("asd", "phone")->press("Actulizar cuenta")
+            ->see("El nombre solo puede contener letras")->see("Los apellidos solo puede contener letras")
+            ->see("El email introducido no es correcto")->see("La contraseña introducida no es correcta. Debe tener un mínimo de 6 caractares, y un máximo de 15. Debe empezar por una letra, y solo puede ser alfanumérica")
+            ->see("El teléfono solo puede contener números, y debe ser correcto");
+    }
+
 
 }

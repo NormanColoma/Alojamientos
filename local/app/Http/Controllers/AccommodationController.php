@@ -322,5 +322,4 @@ class AccommodationController extends Controller
         }
         return response()->json([ 'ok' => false, 'message' => 'There are no image files present' ], 500);
     }
-
 }
