@@ -15,7 +15,7 @@ interface IDAOUser
 {
 
     public function createUser(AbstractUser $user);
-    public function updateUser($id, $user);
+    public function updateUser($id, AbstractUser $user);
     public function deleteUser($id);
     public function userByEmail($email);
     public function userByName($name);

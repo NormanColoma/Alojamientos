@@ -138,4 +138,13 @@ class Accommodation
         else
             $this->intial_desc = $desc;
     }
+
+    public function getMainImg(){
+        $main = null;
+        foreach($this->photos as $photo){
+            if($photo->getMain())
+                $main = $photo;
+        }
+        return $main;
+    }
 }

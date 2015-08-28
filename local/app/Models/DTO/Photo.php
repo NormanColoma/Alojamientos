@@ -6,7 +6,7 @@
  * Time: 11:06
  */
 
-namespace app\Models\DTO;
+namespace App\Models\DTO;
 
 
 class Photo
@@ -22,6 +22,10 @@ class Photo
 
     public function getID(){
         return $this->id;
+    }
+
+    public function setID($id){
+        $this->id = $id;
     }
 
     public function getUrl(){

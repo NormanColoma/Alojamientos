@@ -4,10 +4,12 @@
         <meta charset="utf-8">
         <title>Control Panel</title>
         {!! Html::style('/local/resources/assets/styles/owner_panel.css') !!}
+        <meta name="csrf-token" content="<?= csrf_token() ?>">
 </head>
 <body>
         @include("include.header")
-        <div class="container">
+        <div class="container container-height">
+            @include('flash::message')
                   <h2>Tu cuenta</h2>
                   <ul class="nav nav-tabs">
                       @if(Auth::user()->owner)
@@ -31,7 +33,6 @@
                   <div class="tab-content">
                         @if(Auth::user()->owner)
                          <div id="accoms" class="tab-pane fade in active">
-                                 @include('flash::message')
                                  <h3 id="accomms">Alojamientos</h3>
 
                                  <p>Aquí se te mostrarán todos los alojamientos que hayas anunciado hasta el momento.</p>
@@ -44,19 +45,36 @@
                                                  @endif
                                              @endforeach
                                              <li>
-                                                 <div class="accomodation">
+                                                 <div class="accomodation" id="accommodation-{!! $accom->getId() !!}">
                                                      {!! Html::image('/local/resources/assets/img/accoms/' . $img) !!}
                                                      <div class="accom-descrip">
                                                          <h3 class="accom-title">{!! $accom->getTitle() !!}</h3>
                                                          <p class="accom-description">{!! $accom->getInitialDesc() !!}</p>
-                                                         <a class="btn btn-danger btn-delete-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
-                                                         <a href="#" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
+                                                         <a class="btn btn-danger btn-delete-accom" id="{!! $accom->getID() !!}"><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
+                                                         <a href="{!! URL::to("accommodation/".$accom->getID() . "/update") !!}" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
                                                      </div>
                                                  </div>
                                              </li>
                                          @endforeach
                                      @endif
                              </ul>
+                             <div id="deleteModal" class="modal fade" role="dialog">
+                                 <div class="modal-dialog">
+                                     <div class="modal-content">
+                                         <div class="modal-header">
+                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                             <h4 class="modal-title">Eliminado</h4>
+                                         </div>
+                                         <div class="modal-body">
+                                             <p>El alojamiento ha sido eliminado con éxito.</p>
+                                         </div>
+                                         <div class="modal-footer">
+                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                         </div>
+                                     </div>
+
+                                 </div>
+                             </div>
                              <?php
                                  $per_page = 5;
                                  $total = ceil(count($accommodations)/$per_page);
@@ -119,18 +137,31 @@
 
                                  function deleteAccomm(id){
                                      var port = location.port;
-                                     var uri = "http://localhost:" + port + "/alojamientos/accommodation/delete/2";
-                                     alert(uri);
+                                     var uri = "http://localhost:" + port + "/alojamientos/accommodation/delete/"+id;
                                      $.ajax({
                                          type: "Delete",
                                          url: uri,
                                          success: function(data) {
-                                             alert(data);
+                                             if(data.ok)
+                                               removeAccomFromDOM(id);
                                          }, error: function(){
                                              alert("bad")
                                          }
                                      });
                                  }
+
+                                 function removeAccomFromDOM(id){
+                                     $("#deleteModal").modal('show');
+                                     $("#accommodation-"+id).remove();
+                                 }
+
+                                 $(function() {
+                                     $.ajaxSetup({
+                                         headers: {
+                                             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                                         }
+                                     });
+                                 });
                              </script>
 
                         </div>
@@ -150,10 +181,51 @@
                                 <h3>Mensajes</h3>
                         </div>
                         <div id="account" class="tab-pane fade">
-                                <h3>Configuración de la cuenta</h3>
+                            <h3>Configuración de la cuenta</h3>
+                            <p>Desde aquí podrás actualizar los datos de tu cuenta</p>
+                            {!! Form::open(['url' => 'user/update/' . Auth::user()->id, 'files' => true]) !!}
+                            <div class="row">
+                                <div class="form-group form-default col-xs-6">
+                                    <label>Nombre</label>
+                                    <input type="text" name="name" class="form-control">
+                                    <span class="text-danger">{{ $errors->first('name') }}</span>
+                                </div>
+                                <div class="form-group form-default col-xs-6">
+                                    <label>Apellidos</label>
+                                    <input type="text" name="surname" class="form-control">
+                                    <span class="text-danger">{{ $errors->first('surname') }}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group form-update col-xs-6">
+                                    <label>E-mail</label>
+                                    <input type="text" name="email" class="form-control">
+                                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                                </div>
+                                <div class="form-group form-update col-xs-6">
+                                    <label>Contraseña</label>
+                                    <input type="password" name="password" class="form-control">
+                                    <span class="text-danger">{{ $errors->first('password') }}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group form-update col-xs-6">
+                                    <label>Teléfono</label>
+                                    <input type="text" name="phone" class="form-control">
+                                    <span class="text-danger">{{ $errors->first('phone') }}</span>
+                                </div>
+                            </div>
+                            <div class="form-group form-submit-update">
+                                <input type="submit" class="btn btn-success" value="Actulizar cuenta">
+                            </div>
+                            <script>
+                                $('#flash-overlay-modal').modal();
+                            </script>
+                            {!! Form::close()!!}
                         </div>
                             @if(Auth::user()->owner)
                         <div id="newAccom" class="tab-pane fade">
+                            @include('flash::message')
                             <h3>Nuevo Alojamiento</h3>
                             {!! Form::open(['url' => 'accommodation/publish', 'files' => true]) !!}
                             <div class="form-group form-default">
@@ -386,8 +458,9 @@
                                 });
                             </script>
                         </div>
-                                @endif
+                            @endif
                 </div>
         </div>
+        @include("include.footer")
 </body>
 </html>

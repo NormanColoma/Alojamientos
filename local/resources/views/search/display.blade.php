@@ -14,7 +14,7 @@
 <body>
     @include("include.header")
     <div class="search-bar">
-        <div class="container">
+        <div class="container ">
 
             <div class="inner">
                 <form method="post" action="{!! URL::to("/search/accommodations")!!}">
@@ -43,7 +43,7 @@
     </div>
 
 
-    <div class="container">
+    <div class="container container-height">
       <div class="sorted-bar">
           <div class="accom-number">
                 {!! $total !!} resultados
@@ -129,5 +129,6 @@
             <div class="alert alert-danger">No hay resultados para la búsqueda introducida!</div>
         @endif
     </div>
+    @include("include.footer")
 </body>
 </html>

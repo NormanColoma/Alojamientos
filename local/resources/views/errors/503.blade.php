@@ -7,8 +7,9 @@
 </head>
 <body>
 @include("include.header")
-    <div class="container">
+    <div class="container container-height">
         <span class="alert alert-danger" style="float:left;width:100%;">El recurso o la página que está buscando, no existe o no está disponible</span>
     </div>
+@include("include.footer")
 </body>
 </html>
