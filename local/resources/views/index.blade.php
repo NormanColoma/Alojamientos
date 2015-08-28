@@ -21,27 +21,32 @@
             <li data-target="#myCarousel" data-slide-to="1"></li>
             <li data-target="#myCarousel" data-slide-to="2"></li>
             <li data-target="#myCarousel" data-slide-to="3"></li>
+            <li data-target="#myCarousel" data-slide-to="4"></li>
         </ol>
 
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img src="http://c50039.r39.cf3.rackcdn.com/uploads/homepage_header/41/bg_1.jpg" alt="Chania">
+                <img src="./local/resources/assets/img/carousel/cazorla.jpg" alt="Chania">
 
             </div>
 
             <div class="item">
-                <img src="./local/resources/assets/img/carousel-2.jpg" alt="Chania">
+                <img src="./local/resources/assets/img/carousel/benaojan.jpg" alt="Chania">
 
             </div>
 
             <div class="item">
-                <img src="http://c50039.r39.cf3.rackcdn.com/uploads/homepage_header/41/bg_1.jpg" alt="Flower">
+                <img src="./local/resources/assets/img/carousel/hornachuelos.jpg" alt="Flower">
 
             </div>
 
             <div class="item">
-                <img src="http://c50039.r39.cf3.rackcdn.com/uploads/homepage_header/41/bg_1.jpg" alt="Flower">
+                <img src="./local/resources/assets/img/carousel/ronda.jpg" alt="Flower">
+
+            </div>
+            <div class="item">
+                <img src="./local/resources/assets/img/carousel/zahara.jpg" alt="Flower">
 
             </div>
         </div>

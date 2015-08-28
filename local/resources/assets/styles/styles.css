@@ -197,7 +197,7 @@ ul{
 
 /*endregion carousel*/
 
-/*region highlights*/
+/*region carousel*/
 .highlights h3{
 	border-bottom: 1px solid rgba(33,33,33,0.1);
 }
@@ -371,4 +371,4 @@ ul{
 		width: 100%;
 	}
 }
-/*endregion highlights*/
+/*endregion carousel*/
