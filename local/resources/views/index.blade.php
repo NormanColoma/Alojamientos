@@ -100,7 +100,7 @@
                     <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
                     <div class="description">
                         <span class="city">Alicante</span>
-                        <p>Aquí irá una pequeña descripción sobre el alojamiento</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur....</p>
                         <span class="price">250 €</span>
                         <span class="hidden-id" hidden="hidden">1</span>
                     </div>
