@@ -11,6 +11,7 @@ namespace App\Models;
 
 use App\Models\DTO\Accommodation;
 use App\Models\DTO\Photo;
+use App\Models\DTO\Schedule;
 
 interface IDAOAccommodation
 {
@@ -24,4 +25,7 @@ interface IDAOAccommodation
     public function photoUrl($id);
     public function accommodationByOwner($owner_id);
     public function deleteAccomm($id);
+    public function addSchedule($id, Schedule $schedule);
+    public function getSchedule($id);
+    public function deleteSchedule($id);
 }

@@ -6,7 +6,7 @@
  * Time: 19:09
  */
 
-namespace app\Models\DTO;
+namespace App\Models\DTO;
 
 
 class BookingDate
