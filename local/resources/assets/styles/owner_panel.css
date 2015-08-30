@@ -260,6 +260,10 @@ input[readonly] {
     .accom-description{
         margin-bottom: 30px;
     }
+
+    .schedule-info {
+        width: 74%;
+    }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1003px) {
@@ -303,6 +307,10 @@ input[readonly] {
     .current-list-img {
         padding: 0px;
     }
+
+    .schedule-info {
+        width: 66%;
+    }
 }
 
 @media screen and (min-width: 450px) and (max-width: 767px) {
@@ -327,6 +335,20 @@ input[readonly] {
         width: 100%;
     }
 
+    .datepicker{
+        width:100% !important;
+    }
+
+    .datepicker table{
+        width: 100%;
+    }
+
+    .schedule-info {
+        float: left;
+        width: 100%;
+        margin-top: 35px;
+        margin-left: 0px;
+    }
     .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
         border: none !important;
         background-color: #eee !important;
@@ -360,6 +382,11 @@ input[readonly] {
         .btn-update-main-img{
             width: 99%;
             float: left;
+        }
+
+        .schedule-info .btn{
+            width: 100%;
+            margin-bottom: 20px;
         }
 
         .current-img {
@@ -556,6 +583,26 @@ input[readonly] {
 
     .current-list-img {
         padding: 10px !important;
+    }
+
+    .datepicker{
+        width:100% !important;
+    }
+
+    .datepicker table{
+        width: 100%;
+    }
+
+    .schedule-info {
+        float: left;
+        width: 100%;
+        margin-top: 35px;
+        margin-left: 0px;
+    }
+
+    .schedule-info .btn{
+        width: 100%;
+        margin-bottom: 20px;
     }
 }
 /*endregion*/
