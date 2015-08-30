@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AccommodationModel;
 use App\Models\DTO\Accommodation;
+use App\Models\DTO\Schedule;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -327,5 +328,47 @@ class AccommodationController extends Controller
             }
         }
         return response()->json([ 'ok' => false, 'message' => 'There are no image files present' ], 500);
+    }
+
+
+    public function updateSchedule(Request $request, $id){
+        $schedule = new Schedule();
+        $schedule->setDays($request->input('calendar'));
+        $schedule->format_calendar();
+        $am = new AccommodationModel();
+        if($am->addSchedule($id,$schedule)){
+            flash()->overlay('El calendario de ocupación del alojamiento ha sido actualizado correctamente.', 'Calendario actualizado');
+            return redirect("/accommodation/". $id . "/update");
+        }
+        else
+            return response()->json([ 'ok' => false, 'message' => 'Accommodation was not found' ], 404);
+
+    }
+
+    public function getSchedule($id){
+        $am = new AccommodationModel();
+        $schedule = $am->getSchedule($id);
+        if($schedule != null){
+            $dates = [];
+            foreach($schedule->getDays() as $sched){
+                $d = strtotime($sched);
+                $date = array('year' => date("Y",$d), 'month' => date("m",$d), 'day' => date("d",$d));
+                $dates[] = $date;
+            }
+            return response()->json([ 'ok' => true, 'schedule' => $dates , 'message' => 'Schedule was retrieved'], 200);
+        }
+        else
+            return response()->json([ 'ok' => false, 'message' => 'Schedule is empty' ], 200);
+
+    }
+
+    public function deleteSchedule($id){
+        $am = new AccommodationModel();
+        if($am->deleteSchedule($id)){
+            return response()->json([ 'ok' => true, 'message' => 'Schedule was deleted'], 200);
+        }
+        else
+            return response()->json([ 'ok' => false, 'message' => 'Schedule was not found'], 404);
+
     }
 }

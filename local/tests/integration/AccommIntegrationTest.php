@@ -8,6 +8,7 @@
  */
 
 use App\Models\AccommodationModel;
+use App\Models\DTO\Schedule;
 use App\Models\UserModel;
 use App\Models\DTO\Accommodation;
 use App\Models\DTO\Photo;
@@ -732,4 +733,174 @@ class AccommIntegrationTest extends TestCase
         $this->assertEquals("url/photo2",$photo_1->url);
         $this->assertEquals("url/photo3",$photo_2->url);
     }
+
+    public function testInsertSchedule(){
+    $am = new AccommodationModel();
+    $a1 = new Accommodation();
+    $p1 = new Photo();
+    $p2 = new Photo();
+    $p3 = new Photo();
+    $owner = new Owner();
+    $um = new UserModel();
+    $arrayPhoto = [];
+
+    $owner->setName("Norman");
+    $owner->setEmail("norman@email.com");
+    $owner->setSurname("Coloma");
+    $owner->setPhone("654987321");
+    $owner->setPassword("prueba");
+
+    $um->createUser($owner);
+
+    $p1->setUrl('url/photo1');
+    $p1->setMain(1);
+
+    $p2->setUrl('url/photo2');
+    $p2->setMain(0);
+    $p3->setUrl('url/photo3');
+    $p3->setMain(0);
+
+    $arrayPhoto [] = $p1;
+    $arrayPhoto [] = $p2;
+    $arrayPhoto [] = $p3;
+
+
+    $a1->setBaths(2);
+    $a1->setBeds(3);
+    $a1->setCapacity(5);
+    $a1->setCity('Elche');
+    $a1->setDesc('Alojamiento de lujo.');
+    $a1->setInside('Descripción del interior del alojamiento.');
+    $a1->setOutside('Descripción del exterior del alojamiento.');
+    $a1->setPhotos($arrayPhoto);
+    $a1->setPrice(50);
+    $a1->setProvince('Alicante');
+    $a1->setTitle('Casa rural');
+
+    $accom= $am->createAccom($a1, $um->getID($owner->getEmail()));
+    $schedule = new Schedule();
+    $schedule->setDays("10/14/2015,10/19/2015,10/17/2015");
+    $schedule->format_calendar();
+    $this->assertTrue($am->addSchedule($accom['id'],$schedule));
+    $this->seeInDatabase('schedules', ['day' => '2015-10-14', 'accommodation_id' => $accom['id']]);
+    $this->seeInDatabase('schedules', ['day' => '2015-10-19', 'accommodation_id' => $accom['id']]);
+    $this->seeInDatabase('schedules', ['day' => '2015-10-17', 'accommodation_id' => $accom['id']]);
+}
+
+    public function testGetSchedule(){
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $p3 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+        $p3->setUrl('url/photo3');
+        $p3->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+        $arrayPhoto [] = $p3;
+
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom= $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $schedule = new Schedule();
+        $schedule->setDays("10/14/2015,10/19/2015,10/17/2015");
+        $schedule->format_calendar();
+        $am->addSchedule($accom['id'],$schedule);
+        $this->seeInDatabase('schedules', ['day' => '2015-10-14', 'accommodation_id' => $accom['id']]);
+        $this->seeInDatabase('schedules', ['day' => '2015-10-19', 'accommodation_id' => $accom['id']]);
+        $this->seeInDatabase('schedules', ['day' => '2015-10-17', 'accommodation_id' => $accom['id']]);
+        $schedule = $am->getSchedule($accom['id']);
+        $this->assertEquals($schedule->getDays()[0],"2015-10-14");
+        $this->assertEquals($schedule->getDays()[1],"2015-10-19");
+        $this->assertEquals($schedule->getDays()[2],"2015-10-17");
+    }
+
+    public function testDeleteSchedule(){
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $p3 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+        $p3->setUrl('url/photo3');
+        $p3->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+        $arrayPhoto [] = $p3;
+
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom= $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $schedule = new Schedule();
+        $schedule->setDays("10/14/2015,10/19/2015,10/17/2015");
+        $schedule->format_calendar();
+        $am->addSchedule($accom['id'],$schedule);
+        $this->seeInDatabase('schedules', ['day' => '2015-10-14', 'accommodation_id' => $accom['id']]);
+        $this->seeInDatabase('schedules', ['day' => '2015-10-19', 'accommodation_id' => $accom['id']]);
+        $this->seeInDatabase('schedules', ['day' => '2015-10-17', 'accommodation_id' => $accom['id']]);
+        $this->assertTrue($am->deleteSchedule($accom['id']));
+        $this->notSeeInDatabase('schedules', ['day' => '2015-10-14', 'accommodation_id' => $accom['id']]);
+        $this->notSeeInDatabase('schedules', ['day' => '2015-10-19', 'accommodation_id' => $accom['id']]);
+        $this->notSeeInDatabase('schedules', ['day' => '2015-10-17', 'accommodation_id' => $accom['id']]);
+    }
+
+
+
 }

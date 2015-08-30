@@ -6,7 +6,7 @@
  * Time: 19:10
  */
 
-namespace app\Models\DTO;
+namespace App\Models\DTO;
 
 
 class Schedule
@@ -33,6 +33,27 @@ class Schedule
 
     function getDays(){
         return $this->days;
+    }
+
+    function format_calendar(){
+        $calendar = [];
+        $str ="";
+        for($i=0;$i<strlen($this->days);$i++){
+            if($this->days[$i] != ","){
+                $str = $str . $this->days[$i];
+                if($i+1 == strlen($this->days)){
+                    $day = date('Y-m-d', strtotime($str));
+                    $calendar [] = $day;
+                }
+            }
+            else{
+                $day = date('Y-m-d', strtotime($str));
+                $calendar [] = $day;
+                $str = "";
+            }
+        }
+
+        $this->days = $calendar;
     }
 
 }

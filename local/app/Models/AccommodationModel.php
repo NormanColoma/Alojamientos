@@ -9,6 +9,7 @@
 namespace App\Models;
 
 
+use App\Models\DTO\Schedule;
 use App\Models\IDAOAccommodation;
 use App\Models\DTO\Accommodation;
 use App\Models\DTO\Photo;
@@ -327,6 +328,60 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
         }catch(QueryException $ex){
             return null;
         }
+    }
+
+
+    public function addSchedule($id, Schedule $schedule){
+        $sc = false;
+        foreach($schedule->getDays() as $day){
+            try {
+                $sc = DB::table('schedules')->insert(
+                    ['day' => $day,'accommodation_id' => $id]
+                );
+            }catch(QueryException $ex){
+               return false;
+            }
+        }
+        return $sc;
+    }
+
+    public function getSchedule($id){
+        $schedules = null;
+        $sched = new Schedule();
+        $days = [];
+        try{
+            $schedules = DB::table('schedules')->select('*')
+                ->where('accommodation_id', $id)
+                ->get();
+
+            if($schedules == null){
+                return null;
+            }
+
+            foreach($schedules as $sc) {
+                $day = $sc->day;
+                $days [] = $day;
+            }
+            $sched->setDays($days);
+        }catch(QueryException $ex){
+            throw new \Exception("No existe el alojamiento");
+        }
+
+        return $sched;
+    }
+
+
+    public function deleteSchedule($id){
+
+        try {
+            $deletedRows = DB::table('schedules')->where('accommodation_id',$id)->delete();
+            if($deletedRows == 0)
+                return false;
+            return true;
+        }catch(QueryException $ex){
+            return false;
+        }
+
     }
 
 }
