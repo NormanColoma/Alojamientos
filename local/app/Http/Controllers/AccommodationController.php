@@ -331,6 +331,14 @@ class AccommodationController extends Controller
     }
 
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     *
+     * Añade el calendario de ocupación pasado por parámetro al alojamiento que se corresponde con la id pasada.
+     * En caso de exister, deveolverá la vista con un mensaje. En caso contrario devolveremos un Json.
+     */
     public function updateSchedule(Request $request, $id){
         $schedule = new Schedule();
         $schedule->setDays($request->input('calendar'));
@@ -345,6 +353,14 @@ class AccommodationController extends Controller
 
     }
 
+    /**
+     * Obtiene el calendario de ocupación del alojamiento que se corresponde con la id pasada por parámetro.
+     * Se devolverá un Json indicando si la operación se realizó correctamente (true o false)  y un mensaje
+     * indicando lo ocurrido
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
     public function getSchedule($id){
         $am = new AccommodationModel();
         $schedule = $am->getSchedule($id);
@@ -362,6 +378,12 @@ class AccommodationController extends Controller
 
     }
 
+    /**
+     * Se elimina el calendario de ocupación del alojamiento que se corresponde con la id pasada por parámetro.
+     * Se devuelve un Json en función del resultado.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteSchedule($id){
         $am = new AccommodationModel();
         if($am->deleteSchedule($id)){

@@ -331,6 +331,14 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
     }
 
 
+    /**
+     * Insertamos cada uno de los días (objetos de tipo date) almacenados en la variable days de la clase Schedule.
+     * En caso de no exister el alojamiento que se corresponde con la id pasada, se capturará la excepción y se
+     * devolverá false. En caso contrario, se devolverá true
+     * @param $id
+     * @param Schedule $schedule
+     * @return bool
+     */
     public function addSchedule($id, Schedule $schedule){
         $sc = false;
         foreach($schedule->getDays() as $day){
@@ -345,6 +353,13 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
         return $sc;
     }
 
+    /**
+     * Se devuelve un objeto de tipo Schedule con el calendario de ocupación que se corresponde con el alojamiento
+     * pasado por la id. En caso de no existir el alojamiento, se lanzará una excepción.
+     * @param $id
+     * @return Schedule|null
+     * @throws \Exception
+     */
     public function getSchedule($id){
         $schedules = null;
         $sched = new Schedule();
@@ -371,6 +386,12 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
     }
 
 
+    /**
+     * Se elimina el calendario de ocupación del alojamiento que se corresponde con la id pasada por parámetro.
+     * En caso de no existir el alojamiento, se devolverá false, y en caso contrario, true.
+     * @param $id
+     * @return bool
+     */
     public function deleteSchedule($id){
 
         try {
