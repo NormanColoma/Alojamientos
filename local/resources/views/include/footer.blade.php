@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Laravel</title>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 </head>
 <body>
@@ -20,7 +20,7 @@
             </li>
             <li>
                 <div>
-                    <h3>Contancto</h3>
+                    <h3>Contacto</h3>
                     <p class="margin-info-extra">
                         <span class="glyphicon glyphicon-phone-alt"></span>
                         +34 686236338
@@ -34,11 +34,11 @@
             <li class="socialnet">
                 <div>
                     <h3>Síguenos</h3>
-                    <p class="margin-info-extra">
-                        {!! Html::image('/local/resources/assets/img/fb.png') !!}
-                        {!! Html::image('/local/resources/assets/img/tw.png') !!}
-                        {!! Html::image('/local/resources/assets/img/gp.png') !!}
-                    </p>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                    </ul>
                 </div>
             </li>
             <li>
