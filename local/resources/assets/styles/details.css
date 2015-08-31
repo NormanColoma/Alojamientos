@@ -9,6 +9,7 @@
 
 .accommodation-main-container {
     width: 66%;
+    float: left;
 }
 
 .accommodation-location{
@@ -29,6 +30,69 @@
 .accommodation-about-info-list li h4{
     font-weight: 700;
 }
+
+.accommodation-about ul li{
+    float:left;
+    width:100%;
+}
+
+.accommodation-right-bar-side-container{
+    width: 30%;
+    margin-left: 20px;
+    margin-top: 94px;
+    position: fixed;
+    left: 900px;
+    border: 1px solid #dce0e0;
+    border-radius: 2px;
+    background-color: white;
+}
+
+.accommodation-right-bar-side-inner{
+    padding: 20px;
+}
+
+.inner-title{
+
+}
+
+.inner-title h3{
+    padding: 10px;
+    margin: 0px;
+    background-color: #5cb85c !important;
+    color: white;
+    border: 1px solid #398439;
+}
+
+.accommodation-right-bar-side-container .form-div input{
+    padding: 20px 0px 20px 35px;
+}
+
+.accommodation-right-bar-side-container .form-div .glyphicon{
+    position: absolute;
+    top: 30.5%;
+    margin-left: 15px;
+    color: #d3d3d3;
+}
+
+.form-div{
+    margin-bottom: 20px;
+}
+
+.btn-prebooking{
+    width: 100%;
+}
+
+.form-schedule p{
+    float: left;
+    width: 68%;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.form-schedule #datepicker{
+    float:left;
+}
+
 @media (min-width: 768px) {
     .accommodation-main-container .col-sm-8 {
         width: 100% !important;

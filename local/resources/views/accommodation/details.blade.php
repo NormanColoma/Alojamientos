@@ -164,17 +164,57 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <h3 class="accommodation-about-info">
+                            Calendario de ocupación
+                        </h3>
+                        <div class="form-group form-schedule">
+                            <div id="datepicker"></div>
+                            <input type="hidden" id="my_hidden_input" name="calendar" />
+                            <p>Este es el calendario de ocupación actual en el que usted podrá ver las fechas
+                            que se encuentran disponibles para este alojamiento. Tenga en cuenta que estás fechas podrían
+                            sufrir modificaciones por parte del propietario en cualquier momento</p>
+                        </div>
+                    </li>
                     <li><h3 class="accommodation-about-info">Comentarios y valoración</h3>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="accommodation-right-bar-side-container">
-            <form>
-                <div class="form-group">
-
-                </div>
-            </form>
+            <div class="inner-title">
+                <h3>Resérvalo ya</h3>
+            </div>
+            <div class="accommodation-right-bar-side-inner">
+                <form>
+                    <div class="form-group">
+                        <div class='form-div date date-margin'>
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class='form-div date'>
+                            <span class="glyphicon glyphicon-calendar" style="top: 55%;"></span>
+                            <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Salida">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-primary btn-prebooking" value="Prereservar">
+                    </div>
+                    <script>
+                        $(function() {
+                            $( ".datepicker" ).datepicker();
+                            $("#datepicker").datepicker();
+                        });
+                        $("#datepicker").on("changeDate", function(event) {
+                            $("#my_hidden_input").val(
+                                    $("#datepicker").datepicker('getFormattedDate')
+                            )
+                        });
+                    </script>
+                </form>
+            </div>
         </div>
     </div>
 </div>
