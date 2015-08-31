@@ -5,11 +5,7 @@
     <title>Laravel</title>
     <meta name="csrf-token" content="<?= csrf_token() ?>">
     <link rel="stylesheet" type="text/css" href="./local/resources/assets/styles/search.css">
-    <script>
-        $(function() {
-            $( "#datepicker" ).datepicker();
-        });
-    </script>
+
 </head>
 <body>
 @include("include.header")
@@ -68,11 +64,11 @@
 
                         <div class='form-div date date-margin'>
                             <span class="glyphicon glyphicon-calendar"></span>
-                            <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                            <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
                         </div>
                         <div class='form-div date'>
                             <span class="glyphicon glyphicon-calendar"></span>
-                            <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Salida">
+                            <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Salida">
                         </div>
                     </li>
                     <li>
@@ -80,6 +76,11 @@
                             <input type="submit" class="form-control btn-primary btn-search" value="BUSCAR">
                         </div>
                     </li>
+                    <script>
+                        $(function() {
+                            $( ".datepicker" ).datepicker();
+                        });
+                    </script>
                 </ul>
             </div>
             <script>

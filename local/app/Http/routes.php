@@ -65,3 +65,6 @@ Route::post('/photo/update/{id}',"AccommodationController@updatePhoto");
 Route::post('/gallery/update/{id}',"AccommodationController@updateGallery");
 Route::post('/accommodation/{id}/update',"AccommodationController@updateAccommodation");
 Route::post('user/update/{id}', "UserController@updateUser");
+Route::post('accommodation/{id}/schedule/', "AccommodationController@updateSchedule");
+Route::get('accommodation/{id}/schedule', "AccommodationController@getSchedule");
+Route::delete('accommodation/{id}/schedule', "AccommodationController@deleteSchedule");

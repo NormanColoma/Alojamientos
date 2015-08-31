@@ -6,13 +6,12 @@
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         {!! Html::style('/bower_components/bootstrap/dist/css/bootstrap.min.css') !!}
         {!! Html::style('/local/resources/assets/styles/styles.css') !!}
-        {!! Html::style('/local/resources/assets/styles/datepicker/bootstrap-datepicker.min.css') !!}
-        {!! Html::style('/local/resources/assets/styles/datepicker/bootstrap-datepicker.css') !!}
-        {!! Html::style('/local/resources/assets/styles/datepicker/bootstrap-datepicker.css') !!}
         {!! Html::script('/local/resources/assets/scripts/jquery-2.1.4.min.js') !!}
         {!! Html::script('/bower_components/bootstrap/dist/js/bootstrap.min.js') !!}
         {!! Html::script('/local/resources/assets/scripts/datepicker/bootstrap-datepicker.js') !!}
-        {!! Html::script('/local/resources/assets/scripts/datepicker/bootstrap-datepicker.min.js') !!}
+        {!! Html::style('/local/resources/assets/styles/datepicker/bootstrap-datepicker.min.css') !!}
+        {!! Html::style('/local/resources/assets/styles/datepicker/bootstrap-datepicker.css') !!}
+        {!! Html::style('/local/resources/assets/styles/datepicker/bootstrap-datepicker.css') !!}
     </head>
     <body>
     <div class="navbar navbar-default navbar-fixed-top">

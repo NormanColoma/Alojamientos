@@ -157,7 +157,6 @@ input[readonly] {
 .col-gallery{
     float:left !important;
     width: 100% !important;
-    margin-bottom: 80px;
 }
 
 .col-gallery p{
@@ -173,6 +172,68 @@ input[readonly] {
 
 .btn-delete-gallery{
     margin-right: 25px;
+}
+
+.schedule{
+    margin-bottom: 80px;
+}
+
+.datepicker table tr td.active:hover,
+.datepicker table tr td.active:hover:hover,
+.datepicker table tr td.active.disabled:hover,
+.datepicker table tr td.active.disabled:hover:hover,
+.datepicker table tr td.active:active,
+.datepicker table tr td.active:hover:active,
+.datepicker table tr td.active.disabled:active,
+.datepicker table tr td.active.disabled:hover:active,
+.datepicker table tr td.active.active,
+.datepicker table tr td.active:hover.active,
+.datepicker table tr td.active.disabled.active,
+.datepicker table tr td.active.disabled:hover.active,
+.datepicker table tr td.active.disabled,
+.datepicker table tr td.active:hover.disabled,
+.datepicker table tr td.active.disabled.disabled,
+.datepicker table tr td.active.disabled:hover.disabled,
+.datepicker table tr td.active[disabled],
+.datepicker table tr td.active:hover[disabled],
+.datepicker table tr td.active.disabled[disabled],
+.datepicker table tr td.active.disabled:hover[disabled]{
+    background-color: #cc2c24;
+    background-image: -moz-linear-gradient(top, #cc2c24, #cc001d);
+    background-image: -ms-linear-gradient(top, #cc2c24, #cc001d);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#cc2c24), to(#cc001d));
+    background-image: -webkit-linear-gradient(top, #cc2c24, #cc001d);
+    background-image: -o-linear-gradient(top, #cc2c24, #cc001d);
+    background-image: linear-gradient(top, #cc2c24, #cc001d);
+    background-repeat: repeat-x;
+    color: white !important;
+}
+
+.datepicker{
+    float:left;
+}
+
+.datepicker table tr td.disabled, .datepicker table tr td.disabled:hover{
+    color:red !important;
+}
+
+.schedule-info{
+    float: left;
+    width: 78%;
+    margin-top: 8px;
+    margin-left: 20px;
+}
+
+.day{
+    color:green !important;
+}
+
+.new{
+    color:#999999 !important;
+}
+
+.schedule-deleted{
+    margin-top: 20px;
 }
 /*endregion*/
 /*region updateAccount*/
@@ -198,6 +259,10 @@ input[readonly] {
 
     .accom-description{
         margin-bottom: 30px;
+    }
+
+    .schedule-info {
+        width: 74%;
     }
 }
 
@@ -242,6 +307,10 @@ input[readonly] {
     .current-list-img {
         padding: 0px;
     }
+
+    .schedule-info {
+        width: 66%;
+    }
 }
 
 @media screen and (min-width: 450px) and (max-width: 767px) {
@@ -266,6 +335,20 @@ input[readonly] {
         width: 100%;
     }
 
+    .datepicker{
+        width:100% !important;
+    }
+
+    .datepicker table{
+        width: 100%;
+    }
+
+    .schedule-info {
+        float: left;
+        width: 100%;
+        margin-top: 35px;
+        margin-left: 0px;
+    }
     .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
         border: none !important;
         background-color: #eee !important;
@@ -299,6 +382,11 @@ input[readonly] {
         .btn-update-main-img{
             width: 99%;
             float: left;
+        }
+
+        .schedule-info .btn{
+            width: 100%;
+            margin-bottom: 20px;
         }
 
         .current-img {
@@ -495,6 +583,26 @@ input[readonly] {
 
     .current-list-img {
         padding: 10px !important;
+    }
+
+    .datepicker{
+        width:100% !important;
+    }
+
+    .datepicker table{
+        width: 100%;
+    }
+
+    .schedule-info {
+        float: left;
+        width: 100%;
+        margin-top: 35px;
+        margin-left: 0px;
+    }
+
+    .schedule-info .btn{
+        width: 100%;
+        margin-bottom: 20px;
     }
 }
 /*endregion*/
