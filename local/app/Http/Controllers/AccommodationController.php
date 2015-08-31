@@ -348,8 +348,10 @@ class AccommodationController extends Controller
             flash()->overlay('El calendario de ocupación del alojamiento ha sido actualizado correctamente.', 'Calendario actualizado');
             return redirect("/accommodation/". $id . "/schedule/update");
         }
-        else
-            return response()->json([ 'ok' => false, 'message' => 'Accommodation was not found' ], 404);
+        else{
+            flash()->error("Debes seleccionar al menos una fecha");
+            return redirect("/accommodation/". $id . "/schedule/update");
+        }
 
     }
 
