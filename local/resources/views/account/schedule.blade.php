@@ -25,6 +25,9 @@
                 <div class="alert alert-success schedule-deleted" style="display: none; float:left; width:100%">
                     <strong>Calendario eliminado!</strong> El calendario de ocupación ha sido eliminado correctamente
                 </div>
+                <div class="alert alert-danger schedule-empty" style="display: none; float:left; width:100%; margin-top: 20px">
+                    <strong>Calendario vacío!</strong> El calendario de ocupación está vacío por el momento
+                </div>
             </div>
             <script>
                 $('#flash-overlay-modal').modal();
@@ -110,16 +113,16 @@
                         type: "Delete",
                         url: uri,
                         success: function (data) {
-                            if(data.ok) {
                                 $('#datepicker').datepicker('remove');
                                 $('#datepicker').datepicker({
                                     multidate: true,
                                 });
                                 $(".schedule-deleted").show();
                                 $(".alert").delay(3000).slideUp(200);
-                            }
+
                         }, error: function () {
-                            alert("bad")
+                            $(".schedule-empty").show();
+                            $(".alert").delay(3000).slideUp(200);
                         }
                     });
                 }
