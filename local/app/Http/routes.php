@@ -68,3 +68,4 @@ Route::post('user/update/{id}', "UserController@updateUser");
 Route::post('accommodation/{id}/schedule/', "AccommodationController@updateSchedule");
 Route::get('accommodation/{id}/schedule', "AccommodationController@getSchedule");
 Route::delete('accommodation/{id}/schedule', "AccommodationController@deleteSchedule");
+Route::get("accomodation/{id}/details", "AccommodationController@show");

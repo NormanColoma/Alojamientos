@@ -144,7 +144,7 @@ class AccommodationController extends Controller
      */
     public function show($id)
     {
-        //
+        return view("accommodation/details");
     }
 
 
