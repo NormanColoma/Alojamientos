@@ -1,0 +1,36 @@
+.carousel {
+    position: inherit !important;
+    margin-top: 0px !important;
+}
+
+.hide-bullets .col-sm-2 {
+    width: 130px;
+}
+
+.accommodation-main-container {
+    width: 66%;
+}
+
+.accommodation-location{
+   color: #2574a9;
+}
+
+.accommodation-about-info{
+    border-bottom: 1px solid #dce0e0;
+    padding-bottom: 5px;
+}
+.accommodation-about-info-list{
+    padding: 5px;
+}
+.accommodation-about-info-list li{
+    margin-bottom: 10px;
+}
+
+.accommodation-about-info-list li h4{
+    font-weight: 700;
+}
+@media (min-width: 768px) {
+    .accommodation-main-container .col-sm-8 {
+        width: 100% !important;
+    }
+}

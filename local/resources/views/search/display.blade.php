@@ -96,7 +96,7 @@
                                         <span class="glyphicon glyphicon-star-empty"></span>
                                     </div>
                                 </div>
-                                <a class="btn btn-primary btn-book btn-large">Reservar</a>
+                                <a class="btn btn-primary btn-book btn-large" href="{!! Url::to("accommodation/". $accomm->getID() ."/details") !!}">Reservar</a>
                             </div>
                         </div>
                     </li>
