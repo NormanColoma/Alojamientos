@@ -58,6 +58,7 @@ Route::group(['middleware' => ['auth']], function()
 Route::post('accommodation/publish',"AccommodationController@addAccommodation");
 Route::post('search/accommodations',"SystemController@search");
 Route::paginate('search/accommodations/{city}', 'SystemController@displayAccommodationsByCity');
+Route::paginate('search/accommodations/{city}/checkIn/{check_in}/checkOut/{check_out}', 'SystemController@displayAccommodationsByDate');
 Route::delete('/accommodation/delete/{id}',"AccommodationController@removeAccommodation");
 Route::get('/accommodation/{id}/update', "AccommodationController@getAccommodation");
 Route::delete('/photo/delete/{id}',"AccommodationController@removePhoto");

@@ -52,7 +52,9 @@ class SystemController extends Controller
     public function search(Request $request)
     {
         if($request->has("check-in") && $request->has("check-out")) {
-            //TODO:Implement logic for search including dates
+            $c_in= date('Y-m-d', strtotime($request->input("check-in")));
+            $c_out = date('Y-m-d', strtotime($request->input("check-out")));;
+           return redirect("search/accommodations/".$request->input("city")."/checkIn/".$c_in."/checkOut/".$c_out."/page/1");
         }
         else{
             if($request->has("city"))
@@ -84,6 +86,19 @@ class SystemController extends Controller
             $items = 0;
         return view("search/display", ['accommodations' => $accommodations, 'city' => $city, 'total' => $items]);
 
+    }
+
+    public function displayAccommodationsByDate($city, $check_in, $check_out){
+        $sm = new SystemModel();
+        $accommodations = $sm->allAccomByDates($city, $check_in, $check_out);
+        if($accommodations != null) {
+            $ids = DB::table('schedules')->where('day',$check_in)->orWhere('day',$check_out)->distinct()->lists("accommodation_id");
+            $items = DB::table("accommodations")->whereNotIn("id",$ids)->where('city', $city)->orWhere('province', $city)->paginate(5)->total();
+        }
+        else
+            $items = 0;
+
+        return view("search/display", ['accommodations' => $accommodations, 'city' => $city, 'total' => $items]);
     }
 
 
