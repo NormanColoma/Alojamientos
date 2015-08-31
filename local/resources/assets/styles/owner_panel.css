@@ -35,6 +35,8 @@
     padding: 0px 20px 20px 30px;
     width: 64.5%;
 }
+
+
 .accom-province{
     color: #006cb7;
 }
@@ -72,6 +74,14 @@ input[readonly] {
 
 .form-submit{
     margin-top: 20px;
+}
+
+.accom-descrip .btn{
+    float:right;
+}
+
+.btn-schedule-accom{
+    margin-right: 20px;
 }
 /*endregion*/
 

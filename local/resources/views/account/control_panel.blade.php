@@ -52,6 +52,7 @@
                                                          <p class="accom-description">{!! $accom->getInitialDesc() !!}</p>
                                                          <a class="btn btn-danger btn-delete-accom" id="{!! $accom->getID() !!}"><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
                                                          <a href="{!! URL::to("accommodation/".$accom->getID() . "/update") !!}" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
+                                                         <a href="{!! URL::to("accommodation/".$accom->getID() . "/schedule/update") !!}" class="btn btn-primary btn-schedule-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-calendar"></span> Calendario ocupación</a>
                                                      </div>
                                                  </div>
                                              </li>

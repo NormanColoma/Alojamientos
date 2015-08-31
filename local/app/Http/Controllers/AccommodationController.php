@@ -346,7 +346,7 @@ class AccommodationController extends Controller
         $am = new AccommodationModel();
         if($am->addSchedule($id,$schedule)){
             flash()->overlay('El calendario de ocupación del alojamiento ha sido actualizado correctamente.', 'Calendario actualizado');
-            return redirect("/accommodation/". $id . "/update");
+            return redirect("/accommodation/". $id . "/schedule/update");
         }
         else
             return response()->json([ 'ok' => false, 'message' => 'Accommodation was not found' ], 404);
