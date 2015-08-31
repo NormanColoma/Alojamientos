@@ -226,6 +226,9 @@
                         <div class="alert alert-danger main-img-failed" style="display:none">
                             <strong>Error!</strong> Ha habido un error en el servidor, por favor inténtelo de nuevo.
                         </div>
+                        <div class="alert alert-danger main-img-empty" style="display:none;float:left;width:100%">
+                            <strong>Selecciona una imagen!</strong> Debes seleccionar una imagen principal
+                        </div>
                 </div>
                 {!! Form::close() !!}
                 {!! Form::open(['id' => 'form-gallery', 'files' => true]) !!}
@@ -312,12 +315,11 @@
                                     data: formData,
                                     async: false,
                                     success: function (data) {
-                                       if(data.ok){
                                            updateMainImg(new_img);
-                                       }
 
                                     },error: function(){
-                                      alert("error")
+                                        $(".main-img-empty").show();
+                                        $(".alert").delay(3000).slideUp(200);
                                     },
                                     cache: false,
                                     contentType: false,
