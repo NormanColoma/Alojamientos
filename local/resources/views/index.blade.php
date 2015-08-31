@@ -64,11 +64,11 @@
 
                         <div class='form-div date date-margin'>
                             <span class="glyphicon glyphicon-calendar"></span>
-                            <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                            <input class="form-control datepicker" id="avialableDate" name="check-in" type="text" placeholder="Llegada">
                         </div>
                         <div class='form-div date'>
                             <span class="glyphicon glyphicon-calendar"></span>
-                            <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Salida">
+                            <input class="form-control datepicker" id="avialableDate" name="check-out" type="text" placeholder="Salida">
                         </div>
                     </li>
                     <li>

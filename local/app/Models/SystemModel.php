@@ -62,4 +62,46 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         }
         return $accommodations;
     }
+
+    public function allAccomByDates($city, $c_in, $c_out){
+        $am = new AccommodationModel();
+        $accomm = null;
+        $accommodations = [];
+        try{
+            $ids = $this->accommodationsForDates($c_in, $c_out);
+            $accomm = DB::table('accommodations')->whereNotIn("id",$ids)->where('province', $city)->orWhere('city', $city)->whereNotIn("id", $ids)->paginate(5);
+            if(count($accomm) == 0) {
+                return null;
+            }
+
+            foreach($accomm as $ac) {
+                $a = new Accommodation();
+                $a->setID($ac->id);
+                $a->setBaths($ac->bathrooms);
+                $a->setBeds($ac->beds);
+                $a->setCapacity($ac->capacity);
+                $a->setCity($ac->city);
+                $a->setDesc($ac->desc);
+                $a->setInside($ac->inside);
+                $a->setOutside($ac->outside);
+                $a->setPhotos($am->allPhotos($ac->id));
+                $a->setPrice($ac->price_per_person);
+                $a->setProvince($ac->province);
+                $a->setTitle($ac->title);
+                $a->setInitialDesc($ac->desc);
+                $accommodations [] = $a;
+            }
+        }catch(QueryException $ex){
+            return null;
+        }
+        return $accommodations;
+    }
+
+    public function accommodationsForDates($c_in, $c_out){
+        try{
+            return $accommodations_id = DB::table('schedules')->where('day',$c_in)->orWhere('day',$c_out)->distinct()->lists("accommodation_id");
+        }catch(QueryException $ex){
+            return null;
+        }
+    }
 }

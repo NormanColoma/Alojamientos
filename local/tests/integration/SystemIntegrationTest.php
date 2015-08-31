@@ -8,6 +8,7 @@
  */
 
 use App\Models\AccommodationModel;
+use App\Models\DTO\Schedule;
 use App\Models\UserModel;
 use App\Models\DTO\Accommodation;
 use App\Models\DTO\Photo;
@@ -140,4 +141,334 @@ class SystemIntegrationTest extends TestCase
 
     }
 
+
+
+    public function testGetAccomsIDByDate()
+    {
+        $sm = new \App\Models\SystemModel();
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $p3 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+        $p3->setUrl('url/photo3');
+        $p3->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+        $arrayPhoto [] = $p3;
+
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom = $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $schedule = new Schedule();
+        $schedule->setDays("10/14/2015,10/15/2015,10/16/2015");
+        $schedule->format_calendar();
+        $am->addSchedule($accom['id'], $schedule);
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('San Vicente');
+        $a1->setDesc('Alojamiento en San Vicnete.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(150);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural en San Vicente');
+        $accom2 =  $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $schedule = new Schedule();
+        $schedule->setDays("10/14/2015,10/15/2015,10/16/2015");
+        $schedule->format_calendar();
+        $am->addSchedule($accom2['id'], $schedule);
+        $ids = $sm->accommodationsForDates("2015-10-14","2015-10-15");
+        $this->assertEquals(2,count($ids));
+        $this->assertEquals($ids[0],$accom['id']);
+        $this->assertEquals($ids[1],$accom2['id']);
+    }
+
+    public function testGetAccomsIDByDate2()
+    {
+        $sm = new \App\Models\SystemModel();
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $p3 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+        $p3->setUrl('url/photo3');
+        $p3->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+        $arrayPhoto [] = $p3;
+
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom = $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $schedule = new Schedule();
+        $schedule->setDays("10/14/2015,10/15/2015,10/16/2015");
+        $schedule->format_calendar();
+        $am->addSchedule($accom['id'], $schedule);
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('San Vicente');
+        $a1->setDesc('Alojamiento en San Vicnete.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(150);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural en San Vicente');
+        $accom2 =  $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $ids = $sm->accommodationsForDates("2015-10-14","2015-10-15");
+        $this->assertEquals(1,count($ids));
+        $this->assertEquals($ids[0],$accom['id']);
+    }
+
+    public function testGetAccomsIDByDate3()
+    {
+        $sm = new \App\Models\SystemModel();
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $p3 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+        $p3->setUrl('url/photo3');
+        $p3->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+        $arrayPhoto [] = $p3;
+
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom = $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $schedule = new Schedule();
+        $schedule->setDays("10/14/2015,10/15/2015,10/16/2015");
+        $schedule->format_calendar();
+        $am->addSchedule($accom['id'], $schedule);
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('San Vicente');
+        $a1->setDesc('Alojamiento en San Vicnete.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(150);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural en San Vicente');
+        $accom2 =  $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $schedule = new Schedule();
+        $schedule->setDays("10/16/2015");
+        $schedule->format_calendar();
+        $am->addSchedule($accom2['id'], $schedule);
+        $ids = $sm->accommodationsForDates("2015-10-14","2015-10-16");
+        $this->assertEquals(2,count($ids));
+        $this->assertEquals($ids[0],$accom['id']);
+        $this->assertEquals($ids[1],$accom2['id']);
+    }
+
+    public function testGetAccomsByDate(){
+        $sm = new \App\Models\SystemModel();
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $p3 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+        $p3->setUrl('url/photo3');
+        $p3->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+        $arrayPhoto [] = $p3;
+
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom= $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $schedule = new Schedule();
+        $schedule->setDays("10/14/2015,10/15/2015,10/16/2015");
+        $schedule->format_calendar();
+        $am->addSchedule($accom['id'],$schedule);
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('San Vicente');
+        $a1->setDesc('Alojamiento en San Vicnete.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(150);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural en San Vicente');
+        $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $accoms = $sm->allAccomByDates("Alicante", "2015-10-14", "2015-10-16");
+        $this->assertNotNull($accoms);
+        $this->assertEquals(1,count($accoms));
+        $this->assertEquals('Casa rural en San Vicente', $accoms[0]->getTitle());
+    }
+
+    public function testGetAccomsByDate2(){
+        $sm = new \App\Models\SystemModel();
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $p3 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+        $p3->setUrl('url/photo3');
+        $p3->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+        $arrayPhoto [] = $p3;
+
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Alicante');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $accoms = $sm->allAccomByDates("Alicante", "2015-10-14", "2015-10-16");
+        $this->assertNotNull($accoms);
+        $this->assertEquals(1,count($accoms));
+        $this->assertEquals('Casa rural', $accoms[0]->getTitle());
+    }
 }
