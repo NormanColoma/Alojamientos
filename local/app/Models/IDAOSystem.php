@@ -12,5 +12,6 @@ namespace app\Models;
 interface IDAOSystem
 {
     public function allAcomByCity($city);
+    public function allAccomByDates($city, $c_in, $c_out);
 
 }
