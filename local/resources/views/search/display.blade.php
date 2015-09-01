@@ -80,7 +80,7 @@
                             <div class="accommodation-descrip">
                                 <h3 class="accom-title">{!! $accomm->getTitle() !!} </h3>
                                 <p class="accom-description">
-                                    {!! $accomm->getDesc() !!}
+                                    {!! $accomm->getInitialDesc() !!}
                                 </p>
                             </div>
                             <div class="accommodation-details">

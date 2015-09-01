@@ -4,7 +4,7 @@
 }
 
 .hide-bullets .col-sm-2 {
-    width: 130px;
+    width: 195.6px;
 }
 
 .accommodation-main-container {
@@ -41,7 +41,7 @@
     margin-left: 20px;
     margin-top: 94px;
     position: fixed;
-    left: 900px;
+    right: 20px;
     border: 1px solid #dce0e0;
     border-radius: 2px;
     background-color: white;
@@ -93,8 +93,94 @@
     float:left;
 }
 
+.thumbnail>img {
+    height:100px !important;
+    width: 100% !important;
+}
+
+.carousel-inner>.item>img {
+    width: 100% !important;
+    height: 400px !important;
+}
+
+.prebooking-row{
+    display: none;
+}
+
+.prebooking-row .form-div input{
+    padding: 20px 0px 20px 10px;
+}
+
+.prebooking-row .form-div .glyphicon{
+    display: none;
+}
+
+.prebooking-row .accommodation-right-bar-side-inner {
+    padding: 0px;
+    padding-top: 10px;
+}
+
 @media (min-width: 768px) {
     .accommodation-main-container .col-sm-8 {
         width: 100% !important;
     }
+}
+
+
+@media screen and (min-width: 1004px) and (max-width: 1215px) {
+    .form-schedule p {
+        width: 59%;
+    }
+}
+
+
+@media screen and (min-width: 780px) and (max-width: 1003px) {
+    .form-schedule p {
+        width: 48%;
+    }
+
+    .hide-bullets .col-sm-2 {
+        width: 126.3px;
+    }
+
+    .thumbnail>img {
+        height: 80px !important;
+    }
+}
+
+@media screen and (min-width: 0px) and (max-width: 779px) {
+    .form-schedule p {
+        width: 100%;
+    }
+
+    .hide-bullets .col-sm-2 {
+        width: 187.5px;
+    }
+
+    .thumbnail>img {
+        height: 100px !important;
+    }
+    .accommodation-main-container{
+        width: 100%;
+    }
+    .accommodation-right-bar-side-container{
+        display: none;
+    }
+
+    .prebooking-row{
+        display: inherit;
+    }
+
+    .form-schedule .datepicker{
+        width:100% !important;
+    }
+
+    .form-schedule .datepicker table{
+        width: 100% !important;
+    }
+
+    .form-schedule #datepicker {
+        width: 100%;
+    }
+
 }
