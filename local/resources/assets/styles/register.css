@@ -39,13 +39,13 @@
 
 #btn-signup{
     width: 100%;
-    background-color: #359cd6 !important;
-    border-color: #3890d6 !important;
+    background-color: #5cb85c !important;
+    border-color: #52b84f !important;
 }
 
 #btn-signup:hover{
-    background-color: #006cb7 !important;
-    border-color: #0562b7 !important;
+    background-color: #449d44 !important;
+    border-color: #449d44 !important;
 }
 
 @media (min-width: 992px) {

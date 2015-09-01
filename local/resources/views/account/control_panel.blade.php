@@ -52,7 +52,7 @@
                                                          <p class="accom-description">{!! $accom->getInitialDesc() !!}</p>
                                                          <a class="btn btn-danger btn-delete-accom" id="{!! $accom->getID() !!}"><span class="glyphicon glyphicon-remove"></span> Eliminar</a>
                                                          <a href="{!! URL::to("accommodation/".$accom->getID() . "/update") !!}" class="btn btn-success btn-update-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-pencil"></span> Actualizar</a>
-                                                         <a href="{!! URL::to("accommodation/".$accom->getID() . "/schedule/update") !!}" class="btn btn-primary btn-schedule-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-calendar"></span> Calendario ocupación</a>
+                                                         <a href="{!! URL::to("accommodation/".$accom->getID() . "/schedule/update") !!}" class="btn btn-grey btn-schedule-accom" id={!! $accom->getID() !!}><span class="glyphicon glyphicon-calendar"></span> Calendario ocupación</a>
                                                      </div>
                                                  </div>
                                              </li>
@@ -403,7 +403,7 @@
                                     <label>Selecciona la imagen princiapl</label>
                                     <div class="input-group">
                                         <span class="input-group-btn">
-                                            <span class="btn btn-primary btn-file">
+                                            <span class="btn btn-grey btn-file">
                                                 Principal&hellip; <input type="file" name="new-accom-main-img">
                                             </span>
                                         </span>
@@ -416,7 +416,7 @@
                                     <label>Selecciona las imágenes de la galería</label>
                                     <div class="input-group">
                                         <span class="input-group-btn">
-                                            <span class="btn btn-primary btn-file">
+                                            <span class="btn btn-grey btn-file">
                                                 Galería&hellip; <input type="file" multiple name="galery[]">
                                             </span>
                                         </span>
@@ -427,7 +427,7 @@
                             </div>
                             </div>
                             <div class="form-group form-submit">
-                                <input type="submit" class="btn btn-primary" value="Anunciar">
+                                <input type="submit" class="btn btn-grey" value="Anunciar">
                             </div>
 
                             {!! Form::close() !!}

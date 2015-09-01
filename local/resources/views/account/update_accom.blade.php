@@ -186,7 +186,7 @@
                 <span class="text-danger">{{ $errors->first('new-accom-desc') }}</span>
             </div>
             <div class="form-group form-submit">
-                <input type="submit" class="btn btn-primary" value="Actualizar">
+                <input type="submit" class="btn btn-grey" value="Actualizar">
             </div>
             @include('flash::message')
             <script>
@@ -207,7 +207,7 @@
                         <label>Selecciona la imagen princiapl</label>
                         <div class="input-group">
                                             <span class="input-group-btn">
-                                                <span class="btn btn-primary btn-file">
+                                                <span class="btn btn-grey btn-file">
                                                     Principal&hellip; <input type="file" name="new-accom-main-img">
                                                 </span>
                                             </span>
@@ -257,7 +257,7 @@
                         <label>Selecciona las imágenes de la galería</label>
                         <div class="input-group">
                                             <span class="input-group-btn">
-                                                <span class="btn btn-primary btn-file">
+                                                <span class="btn btn-grey btn-file">
                                                     Galería&hellip; <input type="file" multiple name="galery[]" id="massive-image">
                                                 </span>
                                             </span>
