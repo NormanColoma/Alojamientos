@@ -330,6 +330,7 @@ class SystemAcceptanteTest extends TestCase
 
         $am->createAccom($a1, $um->getID($owner->getEmail()));
 
+
         $accom= $am->createAccom($a1, $um->getID($owner->getEmail()));
         $schedule = new Schedule();
         $schedule->setDays("10/14/2015,10/15/2015,10/16/2015");
@@ -342,6 +343,65 @@ class SystemAcceptanteTest extends TestCase
             ->type('10/16/2015', 'check-out')
             ->press('BUSCAR')
             ->seePageIs('search/accommodations/Elche/checkIn/2015-10-14/checkOut/2015-10-16/page/1');
+    }
 
+
+    /**
+     * Escenario: Ver los detalles del alojamiento selecciona
+     * Dado que soy un usuario del sistema y pretnedo ver los detalles de un alojamiento tras la búsqueda de los mismos
+     * Si pincho en el botón "Reservar"
+     * El sistema debe llevarme a la página de de detalles
+     * Y mostrar los detalles del alojamiento seleccionado
+     *
+     * @return void
+     * @group detailsAcceptance
+     * @test
+     */
+    public function try_view_accommodation_details(){
+
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $am->createAccom($a1, $um->getID($owner->getEmail()));
+
+        $this->visit('/')->see('Destacados')
+            ->type('Elche', 'city')
+            ->press('BUSCAR')
+            ->seePageIs('search/accommodations/Elche/page/1')
+            ->see('Elche')->click("Reservar")->see("Details page")->see("Resérvalo ya");
     }
 }

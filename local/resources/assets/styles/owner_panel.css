@@ -245,6 +245,9 @@ input[readonly] {
 .schedule-deleted{
     margin-top: 20px;
 }
+.accom-descrip .btn{
+    float:right;
+}
 /*endregion*/
 /*region updateAccount*/
 .form-submit-update{

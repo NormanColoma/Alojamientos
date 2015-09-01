@@ -144,7 +144,12 @@ class AccommodationController extends Controller
      */
     public function show($id)
     {
-        //
+        $am = new AccommodationModel();
+        $accomm = $am->accommodationByID($id);
+        if($accomm != null)
+            return view("accommodation/details", ["id" => $id, "accomm" => $accomm]);
+        else
+            return view("errors/503");
     }
 
 

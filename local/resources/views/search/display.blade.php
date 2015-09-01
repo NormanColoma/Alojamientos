@@ -80,7 +80,7 @@
                             <div class="accommodation-descrip">
                                 <h3 class="accom-title">{!! $accomm->getTitle() !!} </h3>
                                 <p class="accom-description">
-                                    {!! $accomm->getDesc() !!}
+                                    {!! $accomm->getInitialDesc() !!}
                                 </p>
                             </div>
                             <div class="accommodation-details">
@@ -96,7 +96,7 @@
                                         <span class="glyphicon glyphicon-star-empty"></span>
                                     </div>
                                 </div>
-                                <a class="btn btn-primary btn-book btn-large">Reservar</a>
+                                <a class="btn btn-primary btn-book btn-large" href="{!! Url::to("accommodation/". $accomm->getID() ."/details") !!}">Reservar</a>
                             </div>
                         </div>
                     </li>
