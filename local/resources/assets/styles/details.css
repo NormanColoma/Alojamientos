@@ -120,6 +120,18 @@
     padding-top: 10px;
 }
 
+.datepicker table tr td.disabled, .datepicker table tr td.disabled:hover{
+    color:red !important;
+}
+
+.day{
+    color:green !important;
+}
+
+.new{
+    color:#999999 !important;
+}
+
 @media (min-width: 768px) {
     .accommodation-main-container .col-sm-8 {
         width: 100% !important;

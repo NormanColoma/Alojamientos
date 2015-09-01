@@ -155,6 +155,7 @@
                         <div class="form-group form-schedule">
                             <div id="datepicker"></div>
                             <input type="hidden" id="my_hidden_input" name="calendar" />
+                            <input type="hidden" id="{!! $accomm->getID() !!}" class="hidden-id">
                             <p>Este es el calendario de ocupación actual en el que usted podrá ver las fechas
                                 que se encuentran disponibles para este alojamiento. Tenga en cuenta que estás fechas podrían
                                 sufrir modificaciones por parte del propietario en cualquier momento</p>
@@ -187,15 +188,43 @@
                         <input type="button" class="btn btn-primary btn-prebooking" value="Prereservar">
                     </div>
                     <script>
-                        $(function() {
-                            $( ".datepicker" ).datepicker();
-                            $("#datepicker").datepicker();
-                        });
-                        $("#datepicker").on("changeDate", function(event) {
-                            $("#my_hidden_input").val(
-                                    $("#datepicker").datepicker('getFormattedDate')
-                            )
-                        });
+                        $(document).ready(function(){
+                            getSchedule();
+                        })
+                        function getSchedule() {
+                            var id = $(".hidden-id").attr("id");
+                            var port = location.port;
+                            var uri = "http://localhost:" + port + "/alojamientos/accommodation/" + id + "/schedule";
+                            $.ajax({
+                                type: "Get",
+                                url: uri,
+                                async: true,
+                                success: function (data) {
+                                    if (data.message == "Schedule is empty") {
+                                        $( ".datepicker" ).datepicker();
+                                        $('#datepicker').datepicker();
+                                    }
+                                    else if (data.message == "Schedule was retrieved") {
+                                        var disabled_dates = new Array();
+                                        for (var i = 0; i < data.schedule.length; i++) {
+                                            disabled_dates.push(new Date(data.schedule[i].year, parseInt(data.schedule[i].month) - 1, parseInt(data.schedule[i].day) + 1));
+                                        }
+                                        setDatePicker(disabled_dates);
+                                    }
+                                }, error: function () {
+                                    alert("bad")
+                                }
+                            });
+                        }
+
+                            function setDatePicker(disabled_dates){
+                                $('.datepicker').datepicker({
+                                    datesDisabled: disabled_dates,
+                                });
+                                $('#datepicker').datepicker({
+                                    datesDisabled: disabled_dates,
+                                });
+                            }
                     </script>
                 </form>
             </div>
