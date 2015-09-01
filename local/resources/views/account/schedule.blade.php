@@ -20,7 +20,7 @@
                     para actualizar el calendario de ocupación. Si deseas desmarcar alguna fecha, solo tienes que volver a pulsarla. Si deseas desmarcarlas todas pulsa
                     "Resetear calendario". Si deseas borrar el calendario, pulsa "Borrar calendario" y se borrará.</p>
                 <input type="submit" class="btn btn-success btn-update-schedule" value="Actualizar calendario" id="{!! $id !!}">
-                <input type="button" class="btn btn-primary btn-clear-schedule" value="Resetear calendario">
+                <input type="button" class="btn btn-grey btn-clear-schedule" value="Resetear calendario">
                 <input type="button" class="btn btn-danger btn-remove-schedule" value="Borrar calendario" id="{!! $id !!}">
                 <div class="alert alert-success schedule-deleted" style="display: none; float:left; width:100%">
                     <strong>Calendario eliminado!</strong> El calendario de ocupación ha sido eliminado correctamente

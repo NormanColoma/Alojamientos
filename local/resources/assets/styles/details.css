@@ -13,7 +13,11 @@
 }
 
 .accommodation-location{
-   color: #2574a9;
+   color: #5cb85c;
+}
+
+.carousel-control{
+    color: #ffffff !important;
 }
 
 .accommodation-about-info{
@@ -131,6 +135,7 @@
 .new{
     color:#999999 !important;
 }
+
 
 @media (min-width: 768px) {
     .accommodation-main-container .col-sm-8 {

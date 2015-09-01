@@ -85,6 +85,24 @@ ul{
 	padding-bottom: 20px;
 }
 
+a{
+	color: #5cb85c !important;
+}
+.btn-success, .btn-danger, .btn-primary{
+	color: white !important;
+}
+.btn-grey{
+	background-color: #444 !important;
+	border-color: #222 !important;
+	color:white !important;
+}
+
+.btn-grey:hover{
+	background-color: #333 !important;
+	border-color: #222 !important;
+	color:white !important;
+}
+
 @media screen and (min-width: 0px) and (max-width: 767px) {
 	.navbar-img img {
 		float: left;
