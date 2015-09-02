@@ -14,7 +14,6 @@ abstract class PreBooking
 
     protected $date;
     protected $preBooking;
-    protected $booking_time;
     protected $check_in;
     protected $check_out;
 
@@ -31,14 +30,6 @@ abstract class PreBooking
 
     function getPreBooking(){
         return $this->preBooking;
-    }
-
-    function setBookingTime(BookingDate $time){
-        $this->booking_time = $time;
-    }
-
-    function getBookingTime(){
-        return $this->booking_time;
     }
 
     function setCheckIn($c_in){

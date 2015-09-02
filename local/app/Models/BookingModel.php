@@ -10,6 +10,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\DTO\Booking;
+use App\Models\DTO\PreBooking;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -48,9 +49,36 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
         try {
 
             if($booking->getPreBooking()){
-                //TODO implement logic for booking
+                $b = BookingModel::create([
+                    'persons' => $booking->getPersons(),
+                    'total_price' => $booking->getPrice(),
+                    'booking_date' => $booking->getDate(),
+                    'prebooking' => $booking->getPreBooking(),
+                    'user_id' => $booking->getUserId(),
+                    'accommodation_id' => $booking->getAccommId(),
+                    'check_in' => $booking->getCheckIn(),
+                    'check_out' => $booking->getCheckOut(),
+                ]);
             }else{
-                //TODO implement logic for prebooking
+
+                $book = DB::table('bookings')
+                    ->where('user_id', '=', $booking->getUserId())
+                    ->where('check_out', '>=', $booking->getCheckIn())
+                    ->first();
+
+                //No existen reservas para esa fecha
+                if(is_null($book)){
+                    $b = BookingModel::create([
+                        'persons' => $booking->getPersons(),
+                        'total_price' => $booking->getPrice(),
+                        'booking_date' => $booking->getDate(),
+                        'prebooking' => $booking->getPreBooking(),
+                        'user_id' => $booking->getUserId(),
+                        'accommodation_id' => $booking->getAccommId(),
+                        'check_in' => $booking->getCheckIn(),
+                        'check_out' => $booking->getCheckOut(),
+                    ]);
+                }
             }
 
         }catch(QueryException $ex){
@@ -95,8 +123,76 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
             return false;
         }
     }
-    public function showBooking($id){}
-    public function showPreBooking($id){}
-    public function confirm($id){}
+    public function showBooking($id){
+
+        $booking = null;
+        $book = new Booking();
+
+        try{
+            $booking = DB::table('bookings')->select('*')
+                ->where('id', $id)
+                ->get();
+
+            if($booking == null){
+                return null;
+            }
+
+            foreach($booking as $bc) {
+                $b = new Booking();
+                $b->setAccommId($bc->accommodation_id);
+                $b->setUserId($bc->user_id);
+                $b->setPrice($bc->total_price);
+                $b->setPersons($bc->persons);
+                $b->setId($bc->id);
+                $b->setPreBooking($bc->prebooking);
+                $b->setCheckIn($bc->check_in);
+                $b->setCheckOut($bc->check_out);
+                $book = $b;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception("No existe el alojamiento");
+        }
+
+        return $book;
+
+    }
+    public function showPreBooking($id){
+
+        $booking = null;
+        $book = new Booking();
+
+        try{
+            $booking = DB::table('bookings')->select('*')
+                ->where('id', $id)
+                ->where('prebooking', 1)
+                ->get();
+
+            if($booking == null){
+                return null;
+            }
+
+            foreach($booking as $bc) {
+                $b = new Booking();
+                $b->setAccommId($bc->accommodation_id);
+                $b->setUserId($bc->user_id);
+                $b->setPrice($bc->total_price);
+                $b->setPersons($bc->persons);
+                $b->setId($bc->id);
+                $b->setPreBooking($bc->prebooking);
+                $b->setCheckIn($bc->check-in);
+                $b->setCheckOut($bc->check-out);
+                $b->setBookingTime($bc->booking_date);
+                $book = $b;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception("No existe el alojamiento");
+        }
+
+        return $book;
+
+    }
+    public function confirm($id){
+
+    }
 
 }

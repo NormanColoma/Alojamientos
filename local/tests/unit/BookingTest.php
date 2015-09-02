@@ -26,13 +26,15 @@ class BookingTest extends TestCase
         $b->setPersons(13);
         $b->setPrice(123);
         $b->setPreBooking(false);
-        $b->setDate('28-08-2015');
+        $b->setUserId(3);
+        $b->setAccommId(5);
 
         $this->assertEquals(1, $b->getId());
         $this->assertEquals(13, $b->getPersons());
         $this->assertEquals(123, $b->getPrice());
-        $this->assertEquals('2015-08-28', $b->getDate());
         $this->assertEquals(false, $b->getPreBooking());
+        $this->assertEquals(3, $b->getUserId());
+        $this->assertEquals(5, $b->getAccommId());
 
     }
 
@@ -49,13 +51,15 @@ class BookingTest extends TestCase
         $b->setPersons(0);
         $b->setPrice(24.00);
         $b->setPreBooking(true);
-        $b->setDate('29-11-2015');
+        $b->setUserId(8);
+        $b->setAccommId(3);
 
         $this->assertEquals(1, $b->getId());
         $this->assertEquals(0, $b->getPersons());
         $this->assertEquals(24.00, $b->getPrice());
-        $this->assertEquals('2015-11-29', $b->getDate());
         $this->assertEquals(true, $b->getPreBooking());
+        $this->assertEquals(8, $b->getUserId());
+        $this->assertEquals(3, $b->getAccommId());
 
     }
 
