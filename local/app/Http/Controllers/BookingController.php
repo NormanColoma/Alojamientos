@@ -60,7 +60,7 @@ class BookingController extends Controller
             $m->to($user->email, $user->name)->subject('Prereserva realizada');
         });
 
-        Mail::send('emails.prebooking_owner', ['check_in' => $check_in, 'check_out' => $check_out, 'user' => $user, 'message' => $message, 'capacity' => $capacity], function ($m) use ($owner) {
+        Mail::send('emails.prebooking_owner', ['capacity' => $capacity, 'text' => $message, 'check_in' => $check_in, 'check_out' => $check_out], function ($m) use ($owner) {
             $m->to($owner->getEmail(), $owner->getName())->subject('Nueva prereserva');
         });
     }

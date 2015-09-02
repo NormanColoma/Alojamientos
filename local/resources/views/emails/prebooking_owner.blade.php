@@ -17,39 +17,28 @@
         ul li{
             margin-bottom: 15px;
         }
-
-        .message{
-            background-color: #e4e4e4;
-            border-radius: 5px;
-        }
-
-        .message p{
-            padding: 20px;
-            font-style: italic;
-        }
-
     </style>
 </head>
 
 <body>
 <h3><strong>Nueva Prereserva</strong></h3>
-<p>El usuario <strong>{!! $user->name !!}</strong> ha realizado una prereserva del <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/1/details") !!}">alojamiento</a>. A continucación le detallamos los datos de la reserva:</p>
+<p>El usuario <strong>{!! Auth::user()->name !!}</strong> ha realizado una prereserva del <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/1/details") !!}">alojamiento</a>. A continucación le detallamos los datos de la reserva:</p>
 
 
 <h4><strong>Datos de la reserva</strong></h4>
 <ul>
     <li>Llegada: {!! $check_in !!}</li>
     <li>Salida: {!! $check_out !!}</li>
-    <li>Número de personas: {!! $capacity !!} personas</li>
+    <li>Número de personas: {!! $capacity !!}  personas</li>
 </ul>
 <h4><strong>Datos del viajero</strong></h4>
 <p>Le facilitamos los datos que el viajero ha proporcionado, para que pueda ponerse en contacto con él si lo desea.</p>
 <ul>
-    <li>Nombre: {!! $user->name !!}</li>
-    <li>Teléfono: {!! $user->phone !!}</li>
-    <li>E-mail: {!! $user->email !!}</li>
+    <li>Nombre: {!! Auth::user()->name !!}</li>
+    <li>Teléfono: {!! Auth::user()->phone !!}</li>
+    <li>E-mail: {!! Auth::user()->email !!}</li>
 </ul>
-<h4><strong>Mensaje enviado por el uuario</strong></h4>
-<div class="message"><p>"{!! $message !!}"</p></div>
+<h4><strong>Mensaje enviado por el usuario</strong></h4>
+<div style="background-color: #e4e4e4;border-radius: 5px;"><p style="padding: 20px;font-style: italic;">"{!! $text !!}"</p></div>
 </body>
 </html>
