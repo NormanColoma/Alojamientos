@@ -73,3 +73,4 @@ Route::get('accommodation/{id}/schedule/update',function($id){
     return view("account/schedule", ["id" => $id]);
 });
 Route::get("accommodation/{id}/details", "AccommodationController@show");
+Route::post("accommodation/{id}/book", "BookingController@createBookingPrebooking");

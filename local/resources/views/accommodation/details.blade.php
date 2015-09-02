@@ -21,13 +21,14 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-default">Enviar</button>
+                <button type="submit" class="btn btn-default btn-send-booking">Enviar</button>
             </div>
         </div>
 
     </div>
 </div>
 <div class="container container-height">
+    @include('flash::message')
     <div class="accommodation-container">
         <div class="accommodation-main-container">
             <h2 class="accommodation-title">{!! $accomm->getTitle() !!}</h2>
@@ -120,13 +121,13 @@
                                 <div class="form-group">
                                     <div class='form-div date date-margin'>
                                         <span class="glyphicon glyphicon-calendar"></span>
-                                        <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                                        <input class="form-control datepicker check-in" id="avialableDate" name="check-in" type="text" placeholder="Llegada">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class='form-div date'>
                                         <span class="glyphicon glyphicon-calendar" style="top: 55%;"></span>
-                                        <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Salida">
+                                        <input class="form-control datepicker check-out" id="avialableDate" name="check-out" type="text" placeholder="Salida">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -190,17 +191,17 @@
                 <h3>Resérvalo ya</h3>
             </div>
             <div class="accommodation-right-bar-side-inner">
-                <form>
+                {!! Form::open(['url' => 'accommodation/' . $id . '/book', 'id'=> 'booking-form']) !!}
                     <div class="form-group">
                         <div class='form-div date date-margin'>
                             <span class="glyphicon glyphicon-calendar"></span>
-                            <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                            <input class="form-control datepicker check-in" id="avialableDate" name="check-in" type="text" placeholder="Llegada">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class='form-div date'>
                             <span class="glyphicon glyphicon-calendar" style="top: 55%;"></span>
-                            <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Salida">
+                            <input class="form-control datepicker check-out" id="avialableDate" name="check-out" type="text" placeholder="Salida">
                         </div>
                     </div>
                     <div class="form-group">
@@ -211,6 +212,10 @@
                             getSchedule();
                             $(".btn-prebooking").click(function(){
                                 $("#myModal").modal();
+                            })
+
+                            $(".btn-send-booking").click(function(){
+                                $("#booking-form").submit();
                             })
                         })
                         function getSchedule() {
@@ -248,7 +253,7 @@
                                 });
                             }
                     </script>
-                </form>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>

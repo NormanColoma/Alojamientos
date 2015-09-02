@@ -153,6 +153,7 @@
     outline: none;
 }
 
+
 @media (min-width: 768px) {
     .accommodation-main-container .col-sm-8 {
         width: 100% !important;
