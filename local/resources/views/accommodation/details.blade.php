@@ -130,7 +130,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="button" class="btn btn-primary btn-prebooking" value="Prereservar">
+                                    <input type="button" class="btn btn-grey btn-prebooking" value="Prereservar">
                                 </div>
                             </form>
                         </div>
@@ -204,7 +204,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="button" class="btn btn-primary btn-prebooking" value="Prereservar">
+                        <input type="button" class="btn btn-grey btn-prebooking" value="Prereservar">
                     </div>
                     <script>
                         $(document).ready(function(){
