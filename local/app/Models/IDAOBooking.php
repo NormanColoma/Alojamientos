@@ -16,8 +16,8 @@ interface IDAOBooking
     public function createBooking(Booking $booking);
     public function updateBooking(Booking $booking, $id);
     public function deleteBooking($id);
-    public function showBooking();
-    public function showPreBooking();
+    public function showBooking($id);
+    public function showPreBooking($id);
     public function confirm($id);
 
 }

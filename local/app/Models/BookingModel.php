@@ -95,8 +95,8 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
             return false;
         }
     }
-    public function showBooking(){}
-    public function showPreBooking(){}
+    public function showBooking($id){}
+    public function showPreBooking($id){}
     public function confirm($id){}
 
 }
