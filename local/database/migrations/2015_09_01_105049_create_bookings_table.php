@@ -17,11 +17,11 @@ class CreateBookingsTable extends Migration
             $table->integer('persons');
             $table->decimal('total_price',6,2);
             $table->timestamp('booking_date');
+            $table->boolean('prebooking');
             $table->integer('user_id')->unsigned();
             $table->integer('accommodation_id')->unsigned();
             $table->foreign('accommodation_id')->references('id')->on('accommodations')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unique(['user_id','accommodation_id','booking_date']);
         });
     }
 

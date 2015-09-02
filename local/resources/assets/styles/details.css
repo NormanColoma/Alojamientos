@@ -132,6 +132,23 @@
     color:#999999 !important;
 }
 
+#myModal .modal-body {
+    position: relative;
+    padding: 15px 0px;
+}
+
+#myModal textarea {
+    overflow: auto;
+    width: 100% !important;
+    border: none;
+    min-height: 200px;
+    padding: 15px;
+}
+
+#myModal textarea:hover, #myModal textarea:active, #myModal textarea:focus{
+    outline: none;
+}
+
 @media (min-width: 768px) {
     .accommodation-main-container .col-sm-8 {
         width: 100% !important;
