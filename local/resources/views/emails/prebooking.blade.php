@@ -14,6 +14,10 @@
             text-decoration: underline;
         }
 
+        ul li{
+            margin-bottom: 15px;
+        }
+
     </style>
 </head>
 
@@ -25,15 +29,16 @@
 
     <h4><strong>Datos de la reserva</strong></h4>
     <ul>
-        <li>Llegada: 2015/10/20</li>
-        <li>Salida: 2015/10/25</li>
+        <li>Llegada: {!! $check_in !!}</li>
+        <li>Salida: {!! $check_out !!}</li>
     </ul>
     <h4><strong>Datos propietario</strong></h4>
     <p>Le facilitamos los datos que el propietario a proporcionado, para que pueda ponerse en contacto con él si lo deasa.</p>
     <ul>
-        <li>Nombre: Norman Coloma</li>
-        <li>Teléfono: 655 38 14 29</li>
-        <li>E-mail: ua.norman@gmail.com</li>
+        <li>Nombre: {!! $owner->getName()!!}</li>
+        <li>Teléfono: {!! $owner->getPhone() !!}</li>
+        <li>E-mail: {!! $owner->getEmail() !!}</li>
     </ul>
+
 </body>
 </html>

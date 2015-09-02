@@ -205,6 +205,11 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <select class="form-control">
+                            
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <input type="button" class="btn btn-grey btn-prebooking" value="Prereservar">
                     </div>
                     <script>
