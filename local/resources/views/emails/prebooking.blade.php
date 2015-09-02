@@ -23,7 +23,11 @@
     que escribió, al propietario del alojamiento. El propietario le responderá con las condiciones establecidas para dicho
     alojamiento, y será entonces cuando pueda cerrar su reserva.</p>
 
-
+    <h4><strong>Datos de la reserva</strong></h4>
+    <ul>
+        <li>Llegada: 2015/10/20</li>
+        <li>Salida: 2015/10/25</li>
+    </ul>
     <h4><strong>Datos propietario</strong></h4>
     <p>Le facilitamos los datos que el propietario a proporcionado, para que pueda ponerse en contacto con él si lo deasa.</p>
     <ul>
