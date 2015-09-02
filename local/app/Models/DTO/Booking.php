@@ -15,9 +15,11 @@ class Booking extends PreBooking
     private $id;
     private $price;
     private $persons;
+    private $accomm_id;
+    private $user_id;
 
     function __construct() {
-
+        parent::__construct();
     }
 
     function setId($id){
@@ -44,4 +46,18 @@ class Booking extends PreBooking
         return $this->persons;
     }
 
+    function setAccommId($ac_id){
+        $this->accomm_id = $ac_id;
+    }
+
+    function getAccommId(){
+        return $this->accomm_id;
+    }
+    function getUserId(){
+        return $this->user_id;
+    }
+
+    function setUserId($us_id){
+        $this->user_id = $us_id;
+    }
 }

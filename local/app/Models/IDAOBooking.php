@@ -13,7 +13,7 @@ use App\Models\DTO\Booking;
 interface IDAOBooking
 {
 
-    public function createBooking(Booking $booking, $userId, $accommId);
+    public function createBooking(Booking $booking);
     public function updateBooking(Booking $booking, $id);
     public function deleteBooking($id);
     public function showBooking();
