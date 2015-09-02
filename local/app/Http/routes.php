@@ -74,3 +74,6 @@ Route::get('accommodation/{id}/schedule/update',function($id){
 });
 Route::get("accommodation/{id}/details", "AccommodationController@show");
 Route::post("accommodation/{id}/book", "BookingController@createBookingPrebooking");
+Route::get("prueba", function(){
+    return view("emails.prebooking");
+});
