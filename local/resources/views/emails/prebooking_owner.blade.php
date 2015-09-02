@@ -18,28 +18,38 @@
             margin-bottom: 15px;
         }
 
+        .message{
+            background-color: #e4e4e4;
+            border-radius: 5px;
+        }
+
+        .message p{
+            padding: 20px;
+            font-style: italic;
+        }
+
     </style>
 </head>
 
 <body>
 <h3><strong>Nueva Prereserva</strong></h3>
-<p>El usuario <strong>Norman</strong> ha realizado una prereserva del <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/1/details") !!}">alojamiento</a>. A continucación le detallamos los datos de la reserva:</p>
+<p>El usuario <strong>{!! $user->name !!}</strong> ha realizado una prereserva del <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/1/details") !!}">alojamiento</a>. A continucación le detallamos los datos de la reserva:</p>
 
 
 <h4><strong>Datos de la reserva</strong></h4>
 <ul>
-    <li>Llegada: {!! "2015-20-10" !!}</li>
-    <li>Salida: {!! "2015-25-10" !!}</li>
-    <li>Número de personas: 3 personas</li>
+    <li>Llegada: {!! $check_in !!}</li>
+    <li>Salida: {!! $check_out !!}</li>
+    <li>Número de personas: {!! $capacity !!} personas</li>
 </ul>
 <h4><strong>Datos del viajero</strong></h4>
 <p>Le facilitamos los datos que el viajero ha proporcionado, para que pueda ponerse en contacto con él si lo desea.</p>
 <ul>
-    <li>Nombre: {!! "Norman"!!}</li>
-    <li>Teléfono: {!! "655381429" !!}</li>
-    <li>E-mail: {!! "ua.norman@gmail.com" !!}</li>
+    <li>Nombre: {!! $user->name !!}</li>
+    <li>Teléfono: {!! $user->phone !!}</li>
+    <li>E-mail: {!! $user->email !!}</li>
 </ul>
-<p>Le recordamos que debe contestar a este mensaje mediante la aplicación para que el usuario pueda confirmar la reserva, una vez que ustes establezca las condiciones de
-    las mismas.</p>
+<h4><strong>Mensaje enviado por el uuario</strong></h4>
+<div class="message"><p>"{!! $message !!}"</p></div>
 </body>
 </html>

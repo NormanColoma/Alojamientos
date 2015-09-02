@@ -205,8 +205,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <select class="form-control">
-                            
+                        <label class="form-label">Número de personas</label>
+                        <select class="form-control" name="persons">
+                            @for($i=1;$i<=$accomm->getCapacity();$i++)
+                                <option>{!! $i !!}</option>
+                            @endfor
                         </select>
                     </div>
                     <div class="form-group">

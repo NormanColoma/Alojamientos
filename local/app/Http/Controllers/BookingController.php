@@ -45,7 +45,7 @@ class BookingController extends Controller
             //TODO Implement logic for create booking or prebooking
             $am = new AccommodationModel();
             $owner = $am->getOwner($id);
-            $this->sendPreBookingEmail($request->input("message"),$owner,$request->input("check-in"), $request->input("check-out"),$request->input("check-out"));
+            $this->sendPreBookingEmail($request->input("message"),$owner,$request->input("check-in"), $request->input("check-out"),$request->input("check-out"), $request->input("persons"));
         }else{
             flash()->error("Debes seleccionar las fechas para poder realizar la prereserva");
             return redirect("accommodation/".$id ."/details");
@@ -58,6 +58,10 @@ class BookingController extends Controller
         $user = Auth::user();
         Mail::send('emails.prebooking', ['check_in' => $check_in, 'check_out' => $check_out, 'owner' => $owner], function ($m) use ($user) {
             $m->to($user->email, $user->name)->subject('Prereserva realizada');
+        });
+
+        Mail::send('emails.prebooking_owner', ['check_in' => $check_in, 'check_out' => $check_out, 'user' => $user, 'message' => $message, 'capacity' => $capacity], function ($m) use ($owner) {
+            $m->to($owner->getEmail(), $owner->getName())->subject('Nueva prereserva');
         });
     }
 
