@@ -17,7 +17,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Envía tu mensaje de prereserva</h4>
             </div>
-            <div class="modal-body"><textarea placeholder="Escribe aquí tu mensaje"></textarea>
+            <div class="modal-body"><textarea placeholder="Escribe aquí tu mensaje" class="booking-message"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -200,9 +200,17 @@
                     </div>
                     <div class="form-group">
                         <div class='form-div date'>
-                            <span class="glyphicon glyphicon-calendar" style="top: 55%;"></span>
+                            <span class="glyphicon glyphicon-calendar" style="top: 43%;"></span>
                             <input class="form-control datepicker check-out" id="avialableDate" name="check-out" type="text" placeholder="Salida">
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Número de personas</label>
+                        <select class="form-control" name="persons">
+                            @for($i=1;$i<=$accomm->getCapacity();$i++)
+                                <option>{!! $i !!}</option>
+                            @endfor
+                        </select>
                     </div>
                     <div class="form-group">
                         <input type="button" class="btn btn-grey btn-prebooking" value="Prereservar">
@@ -215,6 +223,7 @@
                             })
 
                             $(".btn-send-booking").click(function(){
+                                $('<input />').attr("type", "hidden").attr("name", "message").attr("value", $(".booking-message").val()).appendTo($("#booking-form"));
                                 $("#booking-form").submit();
                             })
                         })
