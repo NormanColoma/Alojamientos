@@ -377,17 +377,19 @@ class BookingIntegrationTest extends TestCase
         //Testeamos el método createAccom que inserta tanto en la tabla accommodations como en la tabla photos
         $accom = $am->createAccom($a1, $um->getID($traveler->getEmail()));
 
-        $b->setId(1);
         $b->setPersons(3);
         $b->setPrice(24.00);
         $b->setPreBooking(false);
-        $b->setDate('29-11-2015');
+        $b->setCheckIn('25-11-2015');
+        $b->setCheckOut('30-11-2015');
+        $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setAccommId($accom['id']);
 
-        $book = $bm->createBooking($b, $um->getID($traveler->getEmail()), $accom['id']);
+        $book_id = $bm->createBooking($b, $um->getID($traveler->getEmail()), $accom['id']);
 
         $this->SeeInDatabase('bookings', ['persons' => 3]);
 
-        $bm->deleteBooking($book['id']);
+        $bm->deleteBooking($book_id);
 
         $this->notSeeInDatabase('bookings', ['persons' => 3]);
     }
@@ -401,7 +403,6 @@ class BookingIntegrationTest extends TestCase
     public function testUpdateBooking(){
         $bm = new BookingModel();
         $b = new Booking();
-        $b2 = new Booking();
         $am = new AccommodationModel();
         $a1 = new Accommodation();
         $p1 = new Photo();
@@ -446,22 +447,23 @@ class BookingIntegrationTest extends TestCase
         $b->setPersons(3);
         $b->setPrice(24.00);
         $b->setPreBooking(false);
-        $b->setDate('29-11-2015');
+        $b->setCheckIn('25-11-2015');
+        $b->setCheckOut('30-11-2015');
+        $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setAccommId($accom['id']);
 
-        $b2->setId(1);
-        $b2->setPersons(5);
+        $book_id = $bm->createBooking($b);
+
+        $this->SeeInDatabase('bookings', ['total_price' => 24.00]);
+        $this->assertNotNull($book_id);
+
+        $b2 = new Booking();
         $b2->setPrice(28.00);
-        $b2->setPreBooking(false);
-        $b2->setDate('30-11-2015');
 
-        $book = $bm->createBooking($b, $um->getID($traveler->getEmail()), $accom['id']);
+        $bm->updateBooking($b2, $book_id);
 
-        $this->SeeInDatabase('bookings', ['persons' => 3]);
-
-        $bm->updateBooking($b2, $book['id']);
-
-        $this->notSeeInDatabase('bookings', ['persons' => 3]);
-        $this->SeeInDatabase('bookings', ['persons' => 5]);
+        $this->notSeeInDatabase('bookings', ['total_price' => 24.00]);
+        $this->SeeInDatabase('bookings', ['total_price' => 28.00]);
     }
 
     /**
@@ -518,24 +520,20 @@ class BookingIntegrationTest extends TestCase
         $b->setPersons(3);
         $b->setPrice(24.00);
         $b->setPreBooking(false);
-        $b->setCheckIn('25-11-2015');
-        $b->setCheckOut('30-11-2015');
+        $b->setCheckIn('11/25/2015');
+        $b->setCheckOut('11/30/2015');
         $b->setUserId($um->getID($traveler->getEmail()));
         $b->setAccommId($accom['id']);
 
-        $book = $bm->createBooking($b);
+        $book_id = $bm->createBooking($b);
 
         $this->SeeInDatabase('bookings', ['persons' => 3]);
-        $this->assertNotNull($book);
+        $this->assertNotNull($book_id);
 
-        //$b2 = new Booking();
-        $b2 = $bm->showBooking($book['id']);
+        $b2 = $bm->showBooking($book_id);
 
         $this->assertEquals($b->getPrice(), $b2->getPrice());
         $this->assertEquals($b->getPersons(), $b2->getPersons());
-
-        echo $b->getCheckIn();
-        echo $b2->getCheckIn();
     }
 
 }

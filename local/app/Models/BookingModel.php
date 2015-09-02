@@ -46,10 +46,11 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
     public function createBooking(Booking $booking){
 
         $b = null;
+
         try {
 
             if($booking->getPreBooking()){
-                $b = BookingModel::create([
+                $b = DB::table('bookings')->insertGetId([
                     'persons' => $booking->getPersons(),
                     'total_price' => $booking->getPrice(),
                     'booking_date' => $booking->getDate(),
@@ -68,7 +69,7 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
 
                 //No existen reservas para esa fecha
                 if(is_null($book)){
-                    $b = BookingModel::create([
+                    $b = DB::table('bookings')->insertGetId([
                         'persons' => $booking->getPersons(),
                         'total_price' => $booking->getPrice(),
                         'booking_date' => $booking->getDate(),
@@ -130,7 +131,7 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
 
         try{
             $booking = DB::table('bookings')->select('*')
-                ->where('id', $id)
+                ->where('id', $id)->where('prebooking', 0)
                 ->get();
 
             if($booking == null){
