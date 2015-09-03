@@ -126,4 +126,54 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
 
         return $message_id;
     }
+
+
+    public function allIncomingMessages($user_email){
+        $m = null;
+        $messages = [];
+        try{
+            $m = DB::table('messages')->select("*")->leftJoin('users', 'email', '=', 'to')->where('email', $user_email)->get();
+            if(count($m) == 0) {
+                return null;
+            }
+
+            foreach($m as $message) {
+                $me = new Message();
+                $me->setId($message->id);
+                $me->setFrom($message->from);
+                $me->setTo($message->to);
+                $me->setSubject($message->subject);
+                $me->setText($message->text);
+                $messages [] = $me;
+            }
+        }catch(QueryException $ex){
+            return null;
+        }
+        return $messages;
+    }
+
+    public function allOutcomingMessages($user_email){
+        $m = null;
+        $messages = [];
+        try{
+            $m = DB::table('messages')->select("*")->leftJoin('users', 'email', '=', 'from')->where('email', $user_email)->get();;
+            if(count($m) == 0) {
+                return null;
+            }
+
+            foreach($m as $message) {
+                $me = new Message();
+                $me->setId($message->id);
+                $me->setFrom($message->from);
+                $me->setTo($message->to);
+                $me->setSubject($message->subject);
+                $me->setText($message->text);
+                $messages [] = $me;
+            }
+        }catch(QueryException $ex){
+            return null;
+        }
+        return $messages;
+    }
+
 }

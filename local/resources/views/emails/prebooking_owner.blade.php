@@ -40,5 +40,6 @@
 </ul>
 <h4><strong>Mensaje enviado por el usuario</strong></h4>
 <div style="background-color: #e4e4e4;border-radius: 5px;"><p style="padding: 20px;font-style: italic;">"{!! $text !!}"</p></div>
+<p>Para responder con las condiciones y permitir al usuario confirmar la reserva, acceda a su cuenta, prereservas, y pulse sobre "Enviar condiciones".</p>
 </body>
 </html>

@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <title>Control Panel</title>
         {!! Html::style('/local/resources/assets/styles/owner_panel.css') !!}
+        {!! Html::style('/local/resources/assets/styles/mails.css') !!}
         <meta name="csrf-token" content="<?= csrf_token() ?>">
 </head>
 <body>
@@ -180,6 +181,27 @@
                             @endif
                         <div id="messages" class="tab-pane fade">
                                 <h3>Mensajes</h3>
+                                <ul class="message-list" id="#recived">
+                                    @if(count($incoming)>0)
+                                        @foreach($incoming as $m)
+                                            <li>
+                                                <div>
+                                                    <input type="checkbox"><span class="autor">{!! $m->getFrom()!!}</span><span>{!! $m->getSubject() !!}</span>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    @else
+                                     <p>Todavía no has recivido ningún mensaje</p>
+                                    @endif
+                                </ul>
+                                <div class="form-group message-buttons">
+                                    <button type="button" class="btn btn-danger">
+                                        <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                                    </button>
+                                    <button type="button" class="btn btn-success">
+                                        <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+                                    </button>
+                                </div>
                         </div>
                         <div id="account" class="tab-pane fade">
                             <h3>Configuración de la cuenta</h3>

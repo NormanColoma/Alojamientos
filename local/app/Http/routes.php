@@ -31,13 +31,17 @@ Route::group(['middleware' => ['auth']], function()
 {
     Route::get('/manage/traveler',['middleware' => 'traveler', function()
     {
-        return view("account/control_panel");
+        $sm = new \App\Models\SystemModel();
+        $inc = $sm->allIncomingMessages(Auth::user()->email);
+        return view("account/control_panel",['incoming' => $inc]);
     }]);
 
     Route::get('/manage/owner',['middleware' => 'owner', function()
     {
         $am = new \App\Models\AccommodationModel();
-        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id)]);
+        $sm = new \App\Models\SystemModel();
+        $inc = $sm->allIncomingMessages(Auth::user()->email);
+        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id), 'incoming' => $inc]);
     }]);
 
     Route::get('/manage/owner/accoms/page/{id}',['middleware' => 'owner', function()

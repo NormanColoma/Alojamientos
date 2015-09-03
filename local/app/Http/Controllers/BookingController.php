@@ -73,17 +73,11 @@ class BookingController extends Controller
 
         try{
             $m_owner = new Message();
-            $m_owner->setFrom($user->email);
+            $m_owner->setFrom($user->name ." " . $user->surname);
             $m_owner->setTo($owner->getEmail());
             $m_owner->setText($message);
             $m_owner->setSubject('Nueva prereserva');
-            $m_traveler = new Message();
-            $m_traveler->setFrom($user->email);
-            $m_traveler->setTo($owner->getEmail());
-            $m_traveler->setText($message);
-            $m_traveler->setSubject('Prereserva realizada');
             $sm = new SystemModel();
-            $sm->addMessage($m_traveler, $user->id);
             $sm->addMessage($m_owner, $owner->getId());
         }catch (QueryException $ex){
             throw new \Exception($ex->getMessage());

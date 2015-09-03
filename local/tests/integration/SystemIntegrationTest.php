@@ -663,4 +663,65 @@ class SystemIntegrationTest extends TestCase
         $this->SeeInDatabase('messages', ['from' => $owner->getEmail(), 'to' => $traveler->getEmail(), 'user_id' => $um->getID($owner->getEmail())]);
         $this->SeeInDatabase('messages', ['from' => $owner->getEmail(), 'to' => $traveler->getEmail(), 'user_id' => $um->getID($traveler->getEmail())]);
     }
+
+
+    public function testGetMessages(){
+        $owner = new Owner();
+        $traveler = new Traveler();
+        $um = new UserModel();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $traveler->setName("Pepe");
+        $traveler->setEmail("pepe@email.com");
+        $traveler->setSurname("Gómez");
+        $traveler->setPhone("654983322");
+        $traveler->setPassword("prueba2");
+
+        $um->createUser($owner);
+        $um->createUser($traveler);
+
+        $message  = new Message();
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Probando");
+        $message->setText("Esto es un mensaje de prueba");
+
+        $sm = new SystemModel();
+
+        $sm->addMessage($message, $um->getID($traveler->getEmail()));
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Segunda prueba");
+        $message->setText("Esto es un mensaje de prueba por segunda vez");
+
+        $sm->addMessage($message, $um->getID($traveler->getEmail()));
+
+        $message->setFrom($traveler->getEmail());
+        $message->setTo($owner->getEmail());
+        $message->setSubject("Mensaje enviado");
+        $message->setText("Esto es un mensaje enviado");
+        $sm->addMessage($message, $um->getID($traveler->getEmail()));
+        //Mensajes de entrada
+        $messages = $sm->allIncomingMessages($traveler->getEmail());
+
+        $this->assertEquals(2,count($messages));
+        $this->assertEquals("Probando",$messages[0]->getSubject());
+        $this->assertEquals("Segunda prueba",$messages[1]->getSubject());
+
+
+        //Mensajes de salida
+        $messages = $sm->allOutcomingMessages($traveler->getEmail());
+        $this->assertEquals(1,count($messages));
+        $this->assertEquals("Mensaje enviado",$messages[0]->getSubject());
+        $this->assertEquals("Esto es un mensaje enviado",$messages[0]->getText());
+
+
+    }
 }
