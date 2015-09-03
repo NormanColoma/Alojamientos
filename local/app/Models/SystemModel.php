@@ -9,6 +9,7 @@
 namespace App\Models;
 
 
+use App\Models\DTO\Message;
 use App\Models\IDAOAccommodation;
 use App\Models\DTO\Accommodation;
 use App\Models\DTO\Photo;
@@ -103,5 +104,26 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         }catch(QueryException $ex){
             return null;
         }
+    }
+
+
+    /**
+     * @param Message $message
+     * @param $id_user
+     * @return bool|null
+     */
+    public function addMessage(Message $message, $id_user)
+    {
+        $message_id = null;
+        try {
+            $message_id = DB::table('messages')->insertGetId(
+                ['from' => $message->getFrom(), 'to' => $message->getTo(), 'text' => $message->getText(),
+                'subject' => $message->getSubject(), 'type' => $message->getType(), 'user_id' => $id_user]
+            );
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        return $message_id;
     }
 }

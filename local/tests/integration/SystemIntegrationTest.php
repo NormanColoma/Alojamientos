@@ -8,7 +8,10 @@
  */
 
 use App\Models\AccommodationModel;
+use App\Models\DTO\Message;
 use App\Models\DTO\Schedule;
+use App\Models\DTO\Traveler;
+use App\Models\SystemModel;
 use App\Models\UserModel;
 use App\Models\DTO\Accommodation;
 use App\Models\DTO\Photo;
@@ -623,5 +626,41 @@ class SystemIntegrationTest extends TestCase
         $accoms3 = $sm->allAccomByDates("Madrid", "2015-9-16", "2015-9-18");
         $this->assertNotNull($accoms3);
         $this->assertEquals(2,count($accoms3));
+    }
+
+    public function testAddMessage(){
+        $owner = new Owner();
+        $traveler = new Traveler();
+        $um = new UserModel();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $traveler->setName("Pepe");
+        $traveler->setEmail("pepe@email.com");
+        $traveler->setSurname("Gómez");
+        $traveler->setPhone("654983322");
+        $traveler->setPassword("prueba2");
+
+        $um->createUser($owner);
+        $um->createUser($traveler);
+
+        $message  = new Message();
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Probando");
+        $message->setText("Esto es un mensaje de prueba");
+
+        $sm = new SystemModel();
+
+        $this->assertNotNull($sm->addMessage($message, $um->getID($owner->getEmail())));
+        $this->assertNotNull($sm->addMessage($message, $um->getID($traveler->getEmail())));
+
+        $this->SeeInDatabase('messages', ['from' => $owner->getEmail(), 'to' => $traveler->getEmail(), 'user_id' => $um->getID($owner->getEmail())]);
+        $this->SeeInDatabase('messages', ['from' => $owner->getEmail(), 'to' => $traveler->getEmail(), 'user_id' => $um->getID($traveler->getEmail())]);
     }
 }
