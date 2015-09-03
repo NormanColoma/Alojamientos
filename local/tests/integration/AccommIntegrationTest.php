@@ -953,6 +953,7 @@ class AccommIntegrationTest extends TestCase
         $this->assertEquals("norman@email.com", $owner->getEmail());
         $this->assertEquals("Coloma", $owner->getSurname());
         $this->assertEquals("654987321", $owner->getPhone());
+        $this->assertEquals($um->getID($owner->getEmail()), $owner->getId());
     }
 
 

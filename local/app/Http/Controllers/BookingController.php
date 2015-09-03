@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccommodationModel;
+use App\Models\DTO\Message;
+use App\Models\SystemModel;
 use App\Models\UserModel;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -56,13 +59,35 @@ class BookingController extends Controller
 
     public function sendPreBookingEmail($message, $owner, $check_in, $check_out, $capacity){
         $user = Auth::user();
-        Mail::send('emails.prebooking', ['check_in' => $check_in, 'check_out' => $check_out, 'owner' => $owner], function ($m) use ($user) {
-            $m->to($user->email, $user->name)->subject('Prereserva realizada');
-        });
+        try {
+            Mail::send('emails.prebooking', ['check_in' => $check_in, 'check_out' => $check_out, 'owner' => $owner], function ($m) use ($user) {
+                $m->to($user->email, $user->name)->subject('Prereserva realizada');
+            });
 
-        Mail::send('emails.prebooking_owner', ['capacity' => $capacity, 'text' => $message, 'check_in' => $check_in, 'check_out' => $check_out], function ($m) use ($owner) {
-            $m->to($owner->getEmail(), $owner->getName())->subject('Nueva prereserva');
-        });
+            Mail::send('emails.prebooking_owner', ['capacity' => $capacity, 'text' => $message, 'check_in' => $check_in, 'check_out' => $check_out], function ($m) use ($owner) {
+                $m->to($owner->getEmail(), $owner->getName())->subject('Nueva prereserva');
+            });
+        }catch(\Exception $ex){
+            throw new \Exceptionx($ex->getMessage());
+        }
+
+        try{
+            $m_owner = new Message();
+            $m_owner->setFrom($user->email);
+            $m_owner->setTo($owner->getEmail());
+            $m_owner->setText($message);
+            $m_owner->setSubject('Nueva prereserva');
+            $m_traveler = new Message();
+            $m_traveler->setFrom($user->email);
+            $m_traveler->setTo($owner->getEmail());
+            $m_traveler->setText($message);
+            $m_traveler->setSubject('Prereserva realizada');
+            $sm = new SystemModel();
+            $sm->addMessage($m_traveler, $user->id);
+            $sm->addMessage($m_owner, $owner->getId());
+        }catch (QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
     }
 
     /**

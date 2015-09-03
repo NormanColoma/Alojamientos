@@ -410,7 +410,7 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
     public function getOwner($id){
         $owner = null;
         try {
-            $own = DB::table('users')->select("email", "name", "surname", "phone")
+            $own = DB::table('users')->select("email", "name", "surname", "phone", "users.id")
                 ->leftJoin('accommodations', 'users.id', '=', 'accommodations.user_id')->where('accommodations.id',$id)
                 ->get();
             if($own == null)
@@ -421,6 +421,7 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
                 $o->setName($ow->name);
                 $o->setSurname($ow->surname);
                 $o->setPhone($ow->phone);
+                $o->setId($ow->id);
                 $owner = $o;
             }
         }catch(QueryException $ex){
