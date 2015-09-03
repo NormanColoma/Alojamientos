@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookingModel;
+use App\Models\DTO\Booking;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -38,7 +40,12 @@ class BookingController extends Controller
     public function createBookingPrebooking(Request $request, $id)
     {
         if($request->has("check-in") && $request->has("check-out")){
-            //TODO Implement logic for create booking or prebooking
+            $bm = new BookingModel();
+            $booking = new Booking();
+            $booking->setAccommId($id);
+            $booking->setCheckIn($request->input("check-in"));
+            $booking->setCheckOut($request->input("check-out"));
+            $booking->setUserId(Auth::user()->id);
 
         }else{
             flash()->error("Debes seleccionar las fechas para poder realizar la prereserva");
