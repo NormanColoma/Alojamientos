@@ -132,7 +132,8 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         $m = null;
         $messages = [];
         try{
-            $m = DB::table('messages')->select("*")->leftJoin('users', 'email', '=', 'to')->where('email', $user_email)->get();
+            $m = DB::table('messages')->select("messages.id","messages.from","messages.to","messages.subject","messages.text")
+                ->leftJoin('users', 'email', '=', 'to')->where('email', $user_email)->get();
             if(count($m) == 0) {
                 return null;
             }
@@ -156,7 +157,8 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         $m = null;
         $messages = [];
         try{
-            $m = DB::table('messages')->select("*")->leftJoin('users', 'email', '=', 'from')->where('email', $user_email)->get();;
+            $m = DB::table('messages')->select("messages.id","messages.from","messages.to","messages.subject","messages.text")
+                ->leftJoin('users', 'email', '=', 'from')->where('email', $user_email)->get();;
             if(count($m) == 0) {
                 return null;
             }
@@ -174,6 +176,31 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
             return null;
         }
         return $messages;
+    }
+
+    public function getMessage($id)
+    {
+        $m = null;
+        $messages = [];
+        try{
+            $m= DB::table('messages')->where('id', $id)->get();
+            if(count($m) == 0) {
+                return null;
+            }
+            foreach($m as $message) {
+                $me = new Message();
+                $me->setId($message->id);
+                $me->setFrom($message->from);
+                $me->setTo($message->to);
+                $me->setSubject($message->subject);
+                $me->setText($message->text);
+                $messages [] = $me;
+            }
+
+        }catch(QueryException $ex){
+            return null;
+        }
+        return $messages[0];
     }
 
 }

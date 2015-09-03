@@ -184,7 +184,7 @@
                                 <ul class="message-list" id="#recived">
                                     @if(count($incoming)>0)
                                         @foreach($incoming as $m)
-                                            <li>
+                                            <li id="{!! $m->getId() !!}">
                                                 <div>
                                                     <input type="checkbox"><span class="autor">{!! $m->getFrom()!!}</span><span>{!! $m->getSubject() !!}</span>
                                                 </div>

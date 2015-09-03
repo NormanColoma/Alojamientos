@@ -694,14 +694,14 @@ class SystemIntegrationTest extends TestCase
 
         $sm = new SystemModel();
 
-        $sm->addMessage($message, $um->getID($traveler->getEmail()));
+        $id1=$sm->addMessage($message, $um->getID($traveler->getEmail()));
 
         $message->setFrom($owner->getEmail());
         $message->setTo($traveler->getEmail());
         $message->setSubject("Segunda prueba");
         $message->setText("Esto es un mensaje de prueba por segunda vez");
 
-        $sm->addMessage($message, $um->getID($traveler->getEmail()));
+        $id2=$sm->addMessage($message, $um->getID($traveler->getEmail()));
 
         $message->setFrom($traveler->getEmail());
         $message->setTo($owner->getEmail());
@@ -721,6 +721,45 @@ class SystemIntegrationTest extends TestCase
         $this->assertEquals(1,count($messages));
         $this->assertEquals("Mensaje enviado",$messages[0]->getSubject());
         $this->assertEquals("Esto es un mensaje enviado",$messages[0]->getText());
+
+
+    }
+
+
+    public function testGetSingleMessage(){
+        $owner = new Owner();
+        $traveler = new Traveler();
+        $um = new UserModel();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $traveler->setName("Pepe");
+        $traveler->setEmail("pepe@email.com");
+        $traveler->setSurname("Gómez");
+        $traveler->setPhone("654983322");
+        $traveler->setPassword("prueba2");
+
+        $um->createUser($owner);
+        $um->createUser($traveler);
+
+        $message  = new Message();
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Probando");
+        $message->setText("Esto es un mensaje de prueba");
+
+        $sm = new SystemModel();
+
+        $id=$sm->addMessage($message, $um->getID($traveler->getEmail()));
+
+        $m = $sm->getMessage($id);
+
+        $this->assertEquals("Probando",$m->getSubject());
 
 
     }

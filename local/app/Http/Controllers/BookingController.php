@@ -101,6 +101,7 @@ class BookingController extends Controller
             $m_owner->setTo($owner->getEmail());
             $m_owner->setText($message);
             $m_owner->setSubject('Nueva prereserva');
+            $m_owner->setType("pb");
             $sm = new SystemModel();
             $sm->addMessage($m_owner, $owner->getId());
         }catch (QueryException $ex){
