@@ -10,6 +10,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\DTO\Booking;
+use App\Models\DTO\Schedule;
 use App\Models\DTO\PreBooking;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Auth\Authenticatable;
@@ -180,9 +181,8 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
                 $b->setPersons($bc->persons);
                 $b->setId($bc->id);
                 $b->setPreBooking($bc->prebooking);
-                $b->setCheckIn($bc->check-in);
-                $b->setCheckOut($bc->check-out);
-                $b->setBookingTime($bc->booking_date);
+                $b->setCheckIn($bc->check_in);
+                $b->setCheckOut($bc->check_out);
                 $book = $b;
             }
         }catch(QueryException $ex){
@@ -193,6 +193,33 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
 
     }
     public function confirm($id){
+
+        //cambiar de preBooking a Booking
+        $am = new AccommodationModel();
+        $b = null;
+        try {
+            $b = BookingModel::where('id', $id)
+                ->update([
+                    'prebooking' => 0,
+                ]);
+
+            if($b!=null) {
+                //llamar a showBooking para que devuelva dicho booking
+                $book = $this->showBooking($id);
+                //llamar a makeInterval que devuelve un shcedule
+                $schedule = $book->makeInterval($book->getCheckIn(), $book->getCheckOut());
+                //llamar a formatCalendar
+                $schedule->format_calendar();
+                //en AccommModel addSchedule
+                $am->addSchedule($book->getAccommId(), $schedule);
+
+                return true;
+            }
+
+            return false;
+        }catch(QueryException $ex){
+            return false;
+        }
 
     }
 

@@ -8,6 +8,7 @@
 
 namespace App\Models\DTO;
 
+use App\Models\DTO\Schedule;
 
 class Booking extends PreBooking
 {
@@ -59,5 +60,23 @@ class Booking extends PreBooking
 
     function setUserId($us_id){
         $this->user_id = $us_id;
+    }
+
+    function makeInterval(){
+
+        $schedule = new Schedule();
+        $intervalo = "";
+
+        for($i=$this->check_in;$i<=$this->check_out;$i = date("Y-m-d", strtotime($i ."+ 1 days"))){
+            if($i==$this->check_out)
+                $intervalo .= $i;
+            else
+                $intervalo .= $i . ",";
+        }
+
+        $schedule->setDays($intervalo);
+
+        return $schedule;
+
     }
 }

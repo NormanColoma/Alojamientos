@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\DTO\AbstractUser;
+use App\Models\DTO\Booking;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\QueryException;
+use DB;
 
 class UserModel extends Model implements AuthenticatableContract, CanResetPasswordContract, IDAOUser
 {
@@ -94,11 +96,66 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
 
     public function allBookings($user)
     {
+        $bookings = [];
+        $books = null;
+        try{
+            $books = DB::table('bookings')->select('*')
+                ->where('user_id', $user)->where('prebooking', 0)
+                ->get();
+
+            if($books == null)
+                return null;
+
+            foreach($books as $bk) {
+                $b = new Booking();
+                $b->setId($bk->id);
+                $b->setPersons($bk->persons);
+                $b->setPrice($bk->total_price);
+                $b->setPreBooking($bk->prebooking);
+                $b->setCheckIn($bk->check_in);
+                $b->setCheckOut($bk->check_out);
+                $b->setUserId($bk->user_id);
+                $b->setAccommId($bk->accommodation_id);
+                $bookings[] = $b;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception("No existen reservas.");
+        }
+
+        return $bookings;
 
     }
 
     public function allPreBookings($user)
     {
+
+        $bookings = [];
+        $books = null;
+        try{
+            $books = DB::table('bookings')->select('*')
+                ->where('user_id', $user)->where('prebooking', 1)
+                ->get();
+
+            if($books == null)
+                return null;
+
+            foreach($books as $bk) {
+                $b = new Booking();
+                $b->setId($bk->id);
+                $b->setPersons($bk->persons);
+                $b->setPrice($bk->total_price);
+                $b->setPreBooking($bk->prebooking);
+                $b->setCheckIn($bk->check_in);
+                $b->setCheckOut($bk->check_out);
+                $b->setUserId($bk->user_id);
+                $b->setAccommId($bk->accommodation_id);
+                $bookings[] = $b;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception("No existen reservas.");
+        }
+
+        return $bookings;
 
     }
 

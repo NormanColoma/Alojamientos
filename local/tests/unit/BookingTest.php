@@ -63,4 +63,29 @@ class BookingTest extends TestCase
 
     }
 
+    /**
+     * A basic functional test example.
+     *
+     * @return void
+     * @group prueba
+     */
+    public function testMakeInterval(){
+        $b = new Booking();
+        $s = new \App\Models\DTO\Schedule();
+
+        $b->setId(1);
+        $b->setPersons(0);
+        $b->setPrice(24.00);
+        $b->setPreBooking(true);
+        $b->setUserId(8);
+        $b->setAccommId(3);
+        $b->setCheckIn('11/25/2015');
+        $b->setCheckOut('11/30/2015');
+
+        $s->setDays('2015-11-25,2015-11-26,2015-11-27,2015-11-28,2015-11-29,2015-11-30');
+
+        $this->assertEquals($s->getDays(),$b->makeInterval()->getDays());
+
+    }
+
 }
