@@ -84,7 +84,7 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
             }
 
         }catch(QueryException $ex){
-            throw new \Exception("Ha fallado la inserción");
+            throw new \Exception($ex);
         }
 
         return $b;
@@ -192,7 +192,8 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
         return $book;
 
     }
-    public function confirm($id){
+    public function confirm($id)
+    {
 
         //cambiar de preBooking a Booking
         $am = new AccommodationModel();
@@ -203,7 +204,7 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
                     'prebooking' => 0,
                 ]);
 
-            if($b!=null) {
+            if ($b != null) {
                 //llamar a showBooking para que devuelva dicho booking
                 $book = $this->showBooking($id);
                 //llamar a makeInterval que devuelve un shcedule
@@ -217,10 +218,9 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
             }
 
             return false;
-        }catch(QueryException $ex){
+        } catch (QueryException $ex) {
             return false;
         }
-
     }
 
 }

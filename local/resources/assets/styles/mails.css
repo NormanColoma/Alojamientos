@@ -1,0 +1,53 @@
+.message-list{
+
+}
+
+.message-list li{
+    width: 100%;
+    float: left;
+    background-color: #ddd;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.message-list li div{
+    padding:10px;
+}
+
+.message-list li .autor{
+    margin-left: 20px;
+    margin-right: 40px;
+}
+
+.message-list li input[type='checkbox']{
+    float: left;
+}
+
+.change-list li{
+    display: block;
+    float: left;
+    cursor: pointer;
+}
+.change-list{
+    width: 100%;
+    float:left;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.change-list li:first-child{
+    border-right: 1px solid #ddd;
+    padding-right: 5px;
+}
+
+.change-list li:last-child{
+    padding-left: 5px;
+}
+
+.message-buttons{
+    margin-top: 20px;
+    float: left;
+    width: 100%;
+}
+
+.message-buttons .glyphicon{
+    padding: 0 15px;
+}

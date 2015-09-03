@@ -9,6 +9,7 @@
 namespace App\Models;
 
 
+use App\Models\DTO\Message;
 use App\Models\IDAOAccommodation;
 use App\Models\DTO\Accommodation;
 use App\Models\DTO\Photo;
@@ -104,4 +105,75 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
             return null;
         }
     }
+
+
+    /**
+     * @param Message $message
+     * @param $id_user
+     * @return bool|null
+     */
+    public function addMessage(Message $message, $id_user)
+    {
+        $message_id = null;
+        try {
+            $message_id = DB::table('messages')->insertGetId(
+                ['from' => $message->getFrom(), 'to' => $message->getTo(), 'text' => $message->getText(),
+                'subject' => $message->getSubject(), 'type' => $message->getType(), 'user_id' => $id_user]
+            );
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        return $message_id;
+    }
+
+
+    public function allIncomingMessages($user_email){
+        $m = null;
+        $messages = [];
+        try{
+            $m = DB::table('messages')->select("*")->leftJoin('users', 'email', '=', 'to')->where('email', $user_email)->get();
+            if(count($m) == 0) {
+                return null;
+            }
+
+            foreach($m as $message) {
+                $me = new Message();
+                $me->setId($message->id);
+                $me->setFrom($message->from);
+                $me->setTo($message->to);
+                $me->setSubject($message->subject);
+                $me->setText($message->text);
+                $messages [] = $me;
+            }
+        }catch(QueryException $ex){
+            return null;
+        }
+        return $messages;
+    }
+
+    public function allOutcomingMessages($user_email){
+        $m = null;
+        $messages = [];
+        try{
+            $m = DB::table('messages')->select("*")->leftJoin('users', 'email', '=', 'from')->where('email', $user_email)->get();;
+            if(count($m) == 0) {
+                return null;
+            }
+
+            foreach($m as $message) {
+                $me = new Message();
+                $me->setId($message->id);
+                $me->setFrom($message->from);
+                $me->setTo($message->to);
+                $me->setSubject($message->subject);
+                $me->setText($message->text);
+                $messages [] = $me;
+            }
+        }catch(QueryException $ex){
+            return null;
+        }
+        return $messages;
+    }
+
 }

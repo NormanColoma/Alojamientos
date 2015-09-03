@@ -9,6 +9,7 @@
 namespace App\Models;
 
 
+use App\Models\DTO\Owner;
 use App\Models\DTO\Schedule;
 use App\Models\IDAOAccommodation;
 use App\Models\DTO\Accommodation;
@@ -403,6 +404,30 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
             return false;
         }
 
+    }
+
+
+    public function getOwner($id){
+        $owner = null;
+        try {
+            $own = DB::table('users')->select("email", "name", "surname", "phone", "users.id")
+                ->leftJoin('accommodations', 'users.id', '=', 'accommodations.user_id')->where('accommodations.id',$id)
+                ->get();
+            if($own == null)
+                return null;
+            foreach($own as $ow){
+                $o = new Owner();
+                $o->setEmail($ow->email);
+                $o->setName($ow->name);
+                $o->setSurname($ow->surname);
+                $o->setPhone($ow->phone);
+                $o->setId($ow->id);
+                $owner = $o;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+        return $owner;
     }
 
 }

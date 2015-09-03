@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\BookingModel;
 use App\Models\DTO\Booking;
+use App\Models\AccommodationModel;
+use App\Models\DTO\Message;
+use App\Models\SystemModel;
+use App\Models\UserModel;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -40,18 +48,64 @@ class BookingController extends Controller
     public function createBookingPrebooking(Request $request, $id)
     {
         if($request->has("check-in") && $request->has("check-out")){
+
             $bm = new BookingModel();
+            $am = new AccommodationModel();
+            $accomm = $am->accommodationByID($id);
+            $owner = $am->getOwner($id);
+
             $booking = new Booking();
             $booking->setAccommId($id);
             $booking->setCheckIn($request->input("check-in"));
             $booking->setCheckOut($request->input("check-out"));
             $booking->setUserId(Auth::user()->id);
+            $booking->setPersons($request->input("persons"));
+            $booking->setPrice($accomm->getPrice()*$booking->getPersons());
+            if($bm->createBooking($booking)){
+                $this->sendPreBookingEmail($request->input("message"),$owner,$request->input("check-in"), $request->input("check-out"),$request->input("check-out"), $request->input("persons"));
+                flash()->overlay("Tu prereserva ha sido realizada correctamente. Por favor accede a tu panel de control y comprúebalo.","Preserva realizada");
+                return redirect("/manage/traveler");
+            }
+            else{
+                flash()->error("No se ha podido realizar la reserva.");
+                return redirect("accommodation/".$id ."/details");
+            }
+
+
 
         }else{
             flash()->error("Debes seleccionar las fechas para poder realizar la prereserva");
             return redirect("accommodation/".$id ."/details");
         }
 
+    }
+
+
+    public function sendPreBookingEmail($message, $owner, $check_in, $check_out, $capacity){
+        $user = Auth::user();
+        try {
+            Mail::send('emails.prebooking', ['check_in' => $check_in, 'check_out' => $check_out, 'owner' => $owner], function ($m) use ($user) {
+                $m->to($user->email, $user->name)->subject('Prereserva realizada');
+            });
+
+            Mail::send('emails.prebooking_owner', ['capacity' => $capacity, 'text' => $message, 'check_in' => $check_in, 'check_out' => $check_out], function ($m) use ($owner) {
+                $m->to($owner->getEmail(), $owner->getName())->subject('Nueva prereserva');
+            });
+        }catch(\Exception $ex){
+            throw new \Exceptionx($ex->getMessage());
+        }
+
+        try{
+            $m_owner = new Message();
+            $m_owner->setFrom($user->name ." " . $user->surname);
+            $m_owner->setTo($owner->getEmail());
+            $m_owner->setText($message);
+            $m_owner->setSubject('Nueva prereserva');
+            $sm = new SystemModel();
+            $sm->addMessage($m_owner, $owner->getId());
+        }catch (QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
     }
 
     /**

@@ -192,76 +192,76 @@
             </div>
             <div class="accommodation-right-bar-side-inner">
                 {!! Form::open(['url' => 'accommodation/' . $id . '/book', 'id'=> 'booking-form']) !!}
-                    <div class="form-group">
-                        <div class='form-div date date-margin'>
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            <input class="form-control datepicker check-in" id="avialableDate" name="check-in" type="text" placeholder="Llegada">
-                        </div>
+                <div class="form-group">
+                    <div class='form-div date date-margin'>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <input class="form-control datepicker check-in" id="avialableDate" name="check-in" type="text" placeholder="Llegada">
                     </div>
-                    <div class="form-group">
-                        <div class='form-div date'>
-                            <span class="glyphicon glyphicon-calendar" style="top: 43%;"></span>
-                            <input class="form-control datepicker check-out" id="avialableDate" name="check-out" type="text" placeholder="Salida">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <div class='form-div date'>
+                        <span class="glyphicon glyphicon-calendar" style="top: 43%;"></span>
+                        <input class="form-control datepicker check-out" id="avialableDate" name="check-out" type="text" placeholder="Salida">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Número de personas</label>
-                        <select class="form-control" name="persons">
-                            @for($i=1;$i<=$accomm->getCapacity();$i++)
-                                <option>{!! $i !!}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input type="button" class="btn btn-grey btn-prebooking" value="Prereservar">
-                    </div>
-                    <script>
-                        $(document).ready(function(){
-                            getSchedule();
-                            $(".btn-prebooking").click(function(){
-                                $("#myModal").modal();
-                            })
-
-                            $(".btn-send-booking").click(function(){
-                                $('<input />').attr("type", "hidden").attr("name", "message").attr("value", $(".booking-message").val()).appendTo($("#booking-form"));
-                                $("#booking-form").submit();
-                            })
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Número de personas</label>
+                    <select class="form-control" name="persons">
+                        @for($i=1;$i<=$accomm->getCapacity();$i++)
+                            <option>{!! $i !!}</option>
+                        @endfor
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="button" class="btn btn-grey btn-prebooking" value="Prereservar">
+                </div>
+                <script>
+                    $(document).ready(function(){
+                        getSchedule();
+                        $(".btn-prebooking").click(function(){
+                            $("#myModal").modal();
                         })
-                        function getSchedule() {
-                            var id = $(".hidden-id").attr("id");
-                            var port = location.port;
-                            var uri = "http://localhost:" + port + "/alojamientos/accommodation/" + id + "/schedule";
-                            $.ajax({
-                                type: "Get",
-                                url: uri,
-                                async: true,
-                                success: function (data) {
-                                    if (data.message == "Schedule is empty") {
-                                        $( ".datepicker" ).datepicker();
-                                        $('#datepicker').datepicker();
-                                    }
-                                    else if (data.message == "Schedule was retrieved") {
-                                        var disabled_dates = new Array();
-                                        for (var i = 0; i < data.schedule.length; i++) {
-                                            disabled_dates.push(new Date(data.schedule[i].year, parseInt(data.schedule[i].month) - 1, parseInt(data.schedule[i].day) + 1));
-                                        }
-                                        setDatePicker(disabled_dates);
-                                    }
-                                }, error: function () {
-                                    alert("bad")
-                                }
-                            });
-                        }
 
-                            function setDatePicker(disabled_dates){
-                                $('.datepicker').datepicker({
-                                    datesDisabled: disabled_dates,
-                                });
-                                $('#datepicker').datepicker({
-                                    datesDisabled: disabled_dates,
-                                });
+                        $(".btn-send-booking").click(function(){
+                            $('<input />').attr("type", "hidden").attr("name", "message").attr("value", $(".booking-message").val()).appendTo($("#booking-form"));
+                            $("#booking-form").submit();
+                        })
+                    })
+                    function getSchedule() {
+                        var id = $(".hidden-id").attr("id");
+                        var port = location.port;
+                        var uri = "http://localhost:" + port + "/alojamientos/accommodation/" + id + "/schedule";
+                        $.ajax({
+                            type: "Get",
+                            url: uri,
+                            async: true,
+                            success: function (data) {
+                                if (data.message == "Schedule is empty") {
+                                    $( ".datepicker" ).datepicker();
+                                    $('#datepicker').datepicker();
+                                }
+                                else if (data.message == "Schedule was retrieved") {
+                                    var disabled_dates = new Array();
+                                    for (var i = 0; i < data.schedule.length; i++) {
+                                        disabled_dates.push(new Date(data.schedule[i].year, parseInt(data.schedule[i].month) - 1, parseInt(data.schedule[i].day) + 1));
+                                    }
+                                    setDatePicker(disabled_dates);
+                                }
+                            }, error: function () {
+                                alert("bad")
                             }
-                    </script>
+                        });
+                    }
+
+                    function setDatePicker(disabled_dates){
+                        $('.datepicker').datepicker({
+                            datesDisabled: disabled_dates,
+                        });
+                        $('#datepicker').datepicker({
+                            datesDisabled: disabled_dates,
+                        });
+                    }
+                </script>
                 {!! Form::close() !!}
             </div>
         </div>

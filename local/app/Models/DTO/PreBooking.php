@@ -18,8 +18,9 @@ abstract class PreBooking
     protected $check_out;
 
     function __construct() {
-        $date = date('Y-m-d H:i:s');
-        $preBooking = false;
+        date_default_timezone_set('Europe/Madrid');
+        $this->date = date('Y-m-d H:i:s');
+        $this->preBooking = false;
     }
 
     function getDate(){ return $this->date; }

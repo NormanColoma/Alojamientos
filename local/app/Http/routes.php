@@ -29,15 +29,25 @@ Route::get('/logout',"UserController@logout");
 
 Route::group(['middleware' => ['auth']], function()
 {
+    Route::group(['middleware' => ['traveler']], function()
+    {
+        Route::get("accommodation/{id}/details", "AccommodationController@show");
+        Route::post("accommodation/{id}/book", "BookingController@createBookingPrebooking");
+    });
+
     Route::get('/manage/traveler',['middleware' => 'traveler', function()
     {
-        return view("account/control_panel");
+        $sm = new \App\Models\SystemModel();
+        $inc = $sm->allIncomingMessages(Auth::user()->email);
+        return view("account/control_panel",['incoming' => $inc]);
     }]);
 
     Route::get('/manage/owner',['middleware' => 'owner', function()
     {
         $am = new \App\Models\AccommodationModel();
-        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id)]);
+        $sm = new \App\Models\SystemModel();
+        $inc = $sm->allIncomingMessages(Auth::user()->email);
+        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id), 'incoming' => $inc]);
     }]);
 
     Route::get('/manage/owner/accoms/page/{id}',['middleware' => 'owner', function()
@@ -72,5 +82,7 @@ Route::delete('accommodation/{id}/schedule', "AccommodationController@deleteSche
 Route::get('accommodation/{id}/schedule/update',function($id){
     return view("account/schedule", ["id" => $id]);
 });
-Route::get("accommodation/{id}/details", "AccommodationController@show");
-Route::post("accommodation/{id}/book", "BookingController@createBookingPrebooking");
+
+Route::get("prueba", function(){
+    return view("emails.prebooking_owner");
+});
