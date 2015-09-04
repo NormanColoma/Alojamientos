@@ -23,7 +23,7 @@
 
 <body>
     <h3><strong>Prereserva Realizada</strong></h3>
-    <p>Su prereserva del <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/1/details") !!}">alojamiento</a> ha sido realizada correctamente. Le recordamos que hemos envíado el mensaje
+    <p>Su prereserva del <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$id."/details") !!}">alojamiento</a> ha sido realizada correctamente. Le recordamos que hemos envíado el mensaje
     que escribió, al propietario del alojamiento. El propietario le responderá con las condiciones establecidas para dicho
     alojamiento, y será entonces cuando pueda cerrar su reserva.</p>
 

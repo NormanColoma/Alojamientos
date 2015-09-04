@@ -22,7 +22,7 @@
 
 <body>
 <h3><strong>Nueva Prereserva</strong></h3>
-<p>El usuario <strong>{!! Auth::user()->name !!}</strong> ha realizado una prereserva del <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/1/details") !!}">alojamiento</a>. A continucación le detallamos los datos de la reserva:</p>
+<p>El usuario <strong>{!! Auth::user()->name !!}</strong> ha realizado una prereserva del <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$id."/details") !!}">alojamiento</a>. A continucación le detallamos los datos de la reserva:</p>
 
 
 <h4><strong>Datos de la reserva</strong></h4>

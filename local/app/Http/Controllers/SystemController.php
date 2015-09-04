@@ -108,9 +108,18 @@ class SystemController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function showMessage($id)
     {
-        //
+        $sm = new SystemModel();
+        $message = $sm->getMessage($id);
+        if($message != null){
+            return response()->json([
+                'ok' => false, 'message' => 'Message was retrieved', 'id' => $message->getId(),
+                'from' => $message->getFrom(), 'to' => $message->getTo(), 'subject' => $message->getSubject(),
+                'text' => $message->getText(), 'type' => $message->getType()], 200);
+        }
+        else
+            return response()->json([ 'ok' => false, 'message' => 'Message was not found' ], 404);
     }
 
     /**
@@ -119,9 +128,14 @@ class SystemController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function readMessage($id)
     {
-        //
+        $sm = new SystemModel();
+        if($sm->readMessage($id)){
+            return response()->json(['ok' => false, 'message' => 'Message was read'], 200);
+        }
+        else
+            return response()->json([ 'ok' => false, 'message' => 'Message is already read' ], 404);
     }
 
     /**

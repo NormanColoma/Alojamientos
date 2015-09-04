@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth']], function()
         return view("account/control_panel");
     }]);
 
+    Route::get('message/{id}/show', "SystemController@showMessage");
+    Route::post('message/read/{id}', "SystemController@readMessage");
 });
 
 Route::post('accommodation/publish',"AccommodationController@addAccommodation");
@@ -82,6 +84,7 @@ Route::delete('accommodation/{id}/schedule', "AccommodationController@deleteSche
 Route::get('accommodation/{id}/schedule/update',function($id){
     return view("account/schedule", ["id" => $id]);
 });
+
 
 Route::get("prueba", function(){
     return view("emails.prebooking_owner");

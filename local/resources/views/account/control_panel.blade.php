@@ -13,19 +13,31 @@
             @include('flash::message')
                   <h2>Tu cuenta</h2>
                   <ul class="nav nav-tabs">
+                      <?php
+                          $unread =0;
+                          if(count($incoming)>0){
+                              foreach($incoming as $message){
+                                  if(!$message->isRead())
+                                      $unread++;
+                              }
+                          }
+
+                      ?>
                       @if(Auth::user()->owner)
                         <li class="active"><a data-toggle="tab" href="#accoms" id="btn-display-accoms">Mis alojamientos  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#newAccom" id="btn-add-accom">Añadir alojamiento  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
+                              <li class="active"><a data-toggle="tab" href="#preBookings">Prereservas  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+                              <li><a data-toggle="tab" href="#bookings">Reservas<span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#pers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
-                        <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">0</span></a></li>
+                        <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
                         <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @elseif(Auth::user()->admin)
-                          <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">0</span></a></li>
+                          <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
                           <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @else
                           <li class="active"><a data-toggle="tab" href="#preBookings">Mis Prereservas  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#bookings">Mis Reservas  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
-                          <li><a data-toggle="tab" href="#messages">Bandeja de entrada <span class="badge">0</span></a></li>
+                          <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
                           <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @endif
 
@@ -180,28 +192,141 @@
                                 </div>
                             @endif
                         <div id="messages" class="tab-pane fade">
-                                <h3>Mensajes</h3>
-                                <ul class="message-list" id="#recived">
-                                    @if(count($incoming)>0)
-                                        @foreach($incoming as $m)
-                                            <li id="{!! $m->getId() !!}">
-                                                <div>
-                                                    <input type="checkbox"><span class="autor">{!! $m->getFrom()!!}</span><span>{!! $m->getSubject() !!}</span>
-                                                </div>
-                                            </li>
-                                        @endforeach
-                                    @else
-                                     <p>Todavía no has recivido ningún mensaje</p>
-                                    @endif
-                                </ul>
-                                <div class="form-group message-buttons">
-                                    <button type="button" class="btn btn-danger">
-                                        <span class="glyphicon glyphicon-trash"></span>&nbsp;
-                                    </button>
-                                    <button type="button" class="btn btn-success">
-                                        <span class="glyphicon glyphicon-pencil"></span>&nbsp;
-                                    </button>
+                                <h3 class="message-title">Mensajes</h3>
+                                <div id="recieved">
+                                    <ul class="message-list">
+                                        @if(count($incoming)>0)
+                                            @foreach($incoming as $m)
+                                                @if($m->isRead())
+                                                    <li id="{!! $m->getId() !!}">
+                                                        <div>
+                                                            <input type="checkbox"><span class="autor">{!! $m->getFrom()!!}</span><span>{!! $m->getSubject() !!}</span>
+                                                        </div>
+                                                    </li>
+                                                @else
+                                                    <li id="{!! $m->getId() !!}" class="unread">
+                                                        <div>
+                                                            <input type="checkbox"><span class="autor">{!! $m->getFrom()!!}</span><span>{!! $m->getSubject() !!}</span>
+                                                        </div>
+                                                    </li>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                         <p>Todavía no has recivido ningún mensaje</p>
+                                        @endif
+                                    </ul>
+                                    <div class="form-group message-buttons">
+                                        <button type="button" class="btn btn-danger">
+                                            <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                                        </button>
+                                        <button type="button" class="btn btn-success">
+                                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+                                        </button>
+                                    </div>
                                 </div>
+                                <div id="showMessage">
+                                    <h4 class="message-subject"></h4>
+                                    <div class="message-text">
+                                    </div>
+                                    <ul class="in-message-options">
+                                        <li><a class="new-message">Responder</a></li>
+                                        <li><a class="delete-message">Eliminar</a></li>
+                                        <li><a class="show-messages">Bandeja de entrada</a></li>
+                                    </ul>
+                                    <div id="newMessage">
+                                        {!! Form::open(['url' => 'user/update/' . Auth::user()->id, 'id' => 'normal-message-form']) !!}
+                                        <p class="message-to"></p>
+                                        <div class="form-group">
+                                            <textarea placeholder="Escribe aquí tu mensaje" name="text-message"></textarea>
+                                        </div>
+                                        <input type="submit" value="Enviar" class="btn btn-success btn-send-message">
+                                        {!! Form::close() !!}
+                                    </div>
+                                    <div id="conditions">
+                                        {!! Form::open(['id'=> "conditions-message-form"]) !!}
+                                        <p class="message-to"></p>
+                                        <div class="form-group">
+                                            <textarea placeholder="Escribe aquí cuales serán las condiciones de la reserva" name="text-condtions"></textarea>
+                                        </div>
+                                        <input type="submit" value="Enviar condiciones" class="btn btn-success btn-send-conditions">
+                                        {!! Form::close() !!}
+                                    </div>
+                                </div>
+                                <script>
+                                    $(document).ready(function(){
+                                        $(".message-list li").click(function(){
+                                            $("#recieved").hide();
+                                            var id = $(this).attr("id");
+                                            readMessage(id);
+                                        })
+
+                                        $(".show-messages, .messages").click(function(){
+                                            $("#showMessage").hide();
+                                            $("#newMessage").hide();
+                                            $(".message-title").text("Mensajes")
+                                            $("#recieved").show();
+                                        })
+
+                                        $(".new-message").click(function(){
+                                            if($(this).attr("id") == "pb") {
+                                                $(".message-title").text("Enviar condiciones de reserva")
+                                                $("#conditions").show();
+                                            }
+                                            else {
+                                                $(".message-title").text("Nuevo mensaje")
+                                                $("#newMessage").show();
+                                            }
+                                        })
+
+                                        function readMessage(id){
+                                            var port = location.port;
+                                            var uri = "http://localhost:" + port + "/alojamientos/message/read/"+id;
+                                            $.ajax({
+                                                type: "Post",
+                                                url: uri,
+                                                success: function(data) {
+                                                    $("#"+id).toggleClass("unread");
+                                                    var total_m = $(".badge").text();
+                                                    total_m = parseInt(total_m) - 1;
+                                                    if(total_m >= 0)
+                                                        $(".badge").text(total_m);
+                                                    getMessage(id);
+                                                }, error: function(){
+                                                    getMessage(id);
+                                                }
+                                            });
+                                        }
+
+                                        function getMessage(id){
+                                            var port = location.port;
+                                            var uri = "http://localhost:" + port + "/alojamientos/message/"+id+"/show";
+                                            $.ajax({
+                                                type: "get",
+                                                url: uri,
+                                                success: function(data) {
+                                                    $(".message-text").text(data.text);
+                                                    $(".message-subject").text(data.subject);
+                                                    $(".message-to").text("Mensaje para: "+data.to);
+                                                    $(".message-title").text("Ver mensaje")
+                                                    if(data.type == "pb") {
+                                                        $(".new-message").attr("id", data.type);
+                                                    }
+                                                    $("#showMessage").show();
+
+                                                }, error: function(){
+                                                    $(".message-text").text(data.text);
+                                                    $(".message-subject").text(data.subject);
+                                                    $(".message-to").text("Mensaje para: "+data.to);
+                                                    $(".message-title").text("Ver mensaje")
+                                                    if(data.type == "pb") {
+                                                        $(".new-message").attr("id", data.type);
+                                                    }
+                                                    $("#showMessage").show();
+                                                }
+                                            });
+                                        }
+                                    })
+                                </script>
                         </div>
                         <div id="account" class="tab-pane fade">
                             <h3>Configuración de la cuenta</h3>

@@ -12,16 +12,20 @@ namespace App\Models\DTO;
 class Message
 {
 
+
+
     private $id;
     private $from;
     private $to;
     private $text;
     private $type;
     private $subject;
+    private $read;
 
 
     function __construct(){
         $this->type = "normal";
+        $this->read = false;
     }
 
     public function getId(){
@@ -71,5 +75,15 @@ class Message
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    public function isRead()
+    {
+        return $this->read;
+    }
+
+    public function setRead($read)
+    {
+        $this->read = $read;
     }
 }

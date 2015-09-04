@@ -20,6 +20,7 @@ class CreateTableMessages extends Migration
             $table->string('from', 100);
             $table->string('to', 100);
             $table->string('type', 7);
+            $table->boolean('read');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

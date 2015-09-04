@@ -41,6 +41,6 @@ class Handler extends ExceptionHandler
     {
 
         return parent::render($request, $e);  //Comment this when production
-        return response()->view('errors/503');
+        //return response()->view('errors/503');
     }
 }

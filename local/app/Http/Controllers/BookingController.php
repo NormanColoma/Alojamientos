@@ -61,8 +61,9 @@ class BookingController extends Controller
             $booking->setUserId(Auth::user()->id);
             $booking->setPersons($request->input("persons"));
             $booking->setPrice($accomm->getPrice()*$booking->getPersons());
-            if($bm->createBooking($booking)){
-                $this->sendPreBookingEmail($request->input("message"),$owner,$request->input("check-in"), $request->input("check-out"),$request->input("check-out"), $request->input("persons"));
+            $booking->setOwnerId($am->getOwner($id)->getId());
+            if($bm->createBooking($booking) != null){
+                $this->sendPreBookingEmail($request->input("message"),$owner,$request->input("check-in"), $request->input("check-out"),$request->input("check-out"), $request->input("persons"), $id);
                 flash()->overlay("Tu prereserva ha sido realizada correctamente. Por favor accede a tu panel de control y comprúebalo.","Preserva realizada");
                 return redirect("/manage/traveler");
             }
@@ -81,14 +82,14 @@ class BookingController extends Controller
     }
 
 
-    public function sendPreBookingEmail($message, $owner, $check_in, $check_out, $capacity){
+    public function sendPreBookingEmail($message, $owner, $check_in, $check_out, $capacity, $id){
         $user = Auth::user();
         try {
-            Mail::send('emails.prebooking', ['check_in' => $check_in, 'check_out' => $check_out, 'owner' => $owner], function ($m) use ($user) {
+            Mail::send('emails.prebooking', ['check_in' => $check_in, 'check_out' => $check_out, 'owner' => $owner, 'id' => $id], function ($m) use ($user) {
                 $m->to($user->email, $user->name)->subject('Prereserva realizada');
             });
 
-            Mail::send('emails.prebooking_owner', ['capacity' => $capacity, 'text' => $message, 'check_in' => $check_in, 'check_out' => $check_out], function ($m) use ($owner) {
+            Mail::send('emails.prebooking_owner', ['capacity' => $capacity, 'text' => $message, 'check_in' => $check_in, 'check_out' => $check_out, 'id' => $id], function ($m) use ($owner) {
                 $m->to($owner->getEmail(), $owner->getName())->subject('Nueva prereserva');
             });
         }catch(\Exception $ex){

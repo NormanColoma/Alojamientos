@@ -760,6 +760,86 @@ class SystemIntegrationTest extends TestCase
         $m = $sm->getMessage($id);
 
         $this->assertEquals("Probando",$m->getSubject());
+        $this->assertEquals(false, $m->isRead());
+
+
+    }
+
+
+    public function testReadMessage(){
+        $owner = new Owner();
+        $traveler = new Traveler();
+        $um = new UserModel();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $traveler->setName("Pepe");
+        $traveler->setEmail("pepe@email.com");
+        $traveler->setSurname("Gómez");
+        $traveler->setPhone("654983322");
+        $traveler->setPassword("prueba2");
+
+        $um->createUser($owner);
+        $um->createUser($traveler);
+
+        $message  = new Message();
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Probando");
+        $message->setText("Esto es un mensaje de prueba");
+
+        $sm = new SystemModel();
+
+        $id=$sm->addMessage($message, $um->getID($traveler->getEmail()));
+        $m = $sm->getMessage($id);
+        $this->assertEquals(false,$m->isRead());
+        $this->assertEquals(true,$sm->readMessage($id));
+        $m = $sm->getMessage($id);
+        $this->assertEquals(true,$m->isRead());
+
+
+    }
+
+
+    public function testDeleteMessage(){
+        $owner = new Owner();
+        $traveler = new Traveler();
+        $um = new UserModel();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $traveler->setName("Pepe");
+        $traveler->setEmail("pepe@email.com");
+        $traveler->setSurname("Gómez");
+        $traveler->setPhone("654983322");
+        $traveler->setPassword("prueba2");
+
+        $um->createUser($owner);
+        $um->createUser($traveler);
+
+        $message  = new Message();
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Probando");
+        $message->setText("Esto es un mensaje de prueba");
+
+        $sm = new SystemModel();
+
+        $id=$sm->addMessage($message, $um->getID($traveler->getEmail()));
+        $this->assertNotNull($sm->getMessage($id));
+        $this->assertEquals(true, $sm->deleteMessage($id));
+        $this->assertNull($sm->getMessage($id));
+
 
 
     }

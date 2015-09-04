@@ -118,7 +118,7 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         try {
             $message_id = DB::table('messages')->insertGetId(
                 ['from' => $message->getFrom(), 'to' => $message->getTo(), 'text' => $message->getText(),
-                'subject' => $message->getSubject(), 'type' => $message->getType(), 'user_id' => $id_user]
+                'subject' => $message->getSubject(), 'type' => $message->getType(), 'user_id' => $id_user, 'read' =>$message->isRead()]
             );
         }catch(QueryException $ex){
             throw new \Exception($ex->getMessage());
@@ -132,7 +132,7 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         $m = null;
         $messages = [];
         try{
-            $m = DB::table('messages')->select("messages.id","messages.from","messages.to","messages.subject","messages.text")
+            $m = DB::table('messages')->select("messages.id","messages.from","messages.to","messages.subject","messages.text","messages.read")
                 ->leftJoin('users', 'email', '=', 'to')->where('email', $user_email)->get();
             if(count($m) == 0) {
                 return null;
@@ -145,6 +145,7 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
                 $me->setTo($message->to);
                 $me->setSubject($message->subject);
                 $me->setText($message->text);
+                $me->setRead($message->read);
                 $messages [] = $me;
             }
         }catch(QueryException $ex){
@@ -157,7 +158,7 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         $m = null;
         $messages = [];
         try{
-            $m = DB::table('messages')->select("messages.id","messages.from","messages.to","messages.subject","messages.text")
+            $m = DB::table('messages')->select("messages.id","messages.from","messages.to","messages.subject","messages.text", "messages.read")
                 ->leftJoin('users', 'email', '=', 'from')->where('email', $user_email)->get();;
             if(count($m) == 0) {
                 return null;
@@ -170,6 +171,7 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
                 $me->setTo($message->to);
                 $me->setSubject($message->subject);
                 $me->setText($message->text);
+                $me->setRead($message->read);
                 $messages [] = $me;
             }
         }catch(QueryException $ex){
@@ -194,6 +196,8 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
                 $me->setTo($message->to);
                 $me->setSubject($message->subject);
                 $me->setText($message->text);
+                $me->setRead($message->read);
+                $me->setType($message->type);
                 $messages [] = $me;
             }
 
@@ -201,6 +205,28 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
             return null;
         }
         return $messages[0];
+    }
+
+    public function readMessage($id){
+        try {
+            $read = DB::table('messages')->where('id', $id)->where('read', 0)
+                ->update([
+                    'read' => true,
+                ]);
+            return $read;
+        }catch(QueryException $ex){
+            return false;
+        }
+    }
+
+    public function deleteMessage($id){
+        try {
+            $deleted = DB::table('messages')->where('id', $id)
+                ->delete();
+            return $deleted;
+        }catch(QueryException $ex){
+            return false;
+        }
     }
 
 }

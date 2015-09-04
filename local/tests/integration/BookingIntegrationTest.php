@@ -7,6 +7,7 @@
  * Time: 19:32
  */
 
+use App\Models\DTO\Owner;
 use App\Models\UserModel;
 use App\Models\AccommodationModel;
 use App\Models\BookingModel;
@@ -35,6 +36,7 @@ class BookingIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -43,8 +45,14 @@ class BookingIntegrationTest extends TestCase
         $traveler->setSurname("Coloma");
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
 
         $um->createUser($traveler);
+        $um->createUser($owner);
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -78,6 +86,7 @@ class BookingIntegrationTest extends TestCase
         $b->setCheckOut('30-11-2015');
         $b->setUserId($um->getID($traveler->getEmail()));
         $b->setAccommId($accom['id']);
+        $b->setOwnerId($um->getID($owner->getEmail()));
 
         $book = $bm->createBooking($b);
 
@@ -100,6 +109,7 @@ class BookingIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -109,7 +119,14 @@ class BookingIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
         $um->createUser($traveler);
+        $um->createUser($owner);
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -143,6 +160,7 @@ class BookingIntegrationTest extends TestCase
         $b->setCheckOut('30-11-2015');
         $b->setUserId($um->getID($traveler->getEmail()));
         $b->setAccommId($accom['id']);
+        $b->setOwnerId($um->getID($owner->getEmail()));
 
         $book = $bm->createBooking($b);
 
@@ -157,6 +175,7 @@ class BookingIntegrationTest extends TestCase
         $b2->setCheckOut('30-11-2015');
         $b2->setUserId($um->getID($traveler->getEmail()));
         $b2->setAccommId($accom['id']);
+        $b2->setOwnerId($um->getID($owner->getEmail()));
 
         $book2 = $bm->createBooking($b2);
 
@@ -181,6 +200,7 @@ class BookingIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -190,7 +210,15 @@ class BookingIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
+
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
         $um->createUser($traveler);
+        $um->createUser($owner);
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -224,6 +252,7 @@ class BookingIntegrationTest extends TestCase
         $b->setCheckOut('30-11-2015');
         $b->setUserId($um->getID($traveler->getEmail()));
         $b->setAccommId($accom['id']);
+        $b->setOwnerId($um->getID($owner->getEmail()));
 
         $book = $bm->createBooking($b);
 
@@ -238,6 +267,7 @@ class BookingIntegrationTest extends TestCase
         $b2->setCheckOut('3-12-2015');
         $b2->setUserId($um->getID($traveler->getEmail()));
         $b2->setAccommId($accom['id']);
+        $b2->setOwnerId($um->getID($owner->getEmail()));
 
         $book2 = $bm->createBooking($b2);
 
@@ -262,6 +292,7 @@ class BookingIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -271,7 +302,14 @@ class BookingIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
         $um->createUser($traveler);
+        $um->createUser($owner);
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -304,6 +342,7 @@ class BookingIntegrationTest extends TestCase
         $b->setCheckIn('25-11-2015');
         $b->setCheckOut('30-11-2015');
         $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($owner->getEmail()));
         $b->setAccommId($accom['id']);
 
         $book = $bm->createBooking($b);
@@ -319,6 +358,7 @@ class BookingIntegrationTest extends TestCase
         $b2->setCheckOut('3-12-2015');
         $b2->setUserId($um->getID($traveler->getEmail()));
         $b2->setAccommId($accom['id']);
+        $b2->setOwnerId($um->getID($owner->getEmail()));
 
         $book2 = $bm->createBooking($b2);
 
@@ -342,6 +382,7 @@ class BookingIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -351,7 +392,14 @@ class BookingIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
         $um->createUser($traveler);
+        $um->createUser($owner);
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -383,6 +431,7 @@ class BookingIntegrationTest extends TestCase
         $b->setCheckIn('25-11-2015');
         $b->setCheckOut('30-11-2015');
         $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($owner->getEmail()));
         $b->setAccommId($accom['id']);
 
         $book_id = $bm->createBooking($b, $um->getID($traveler->getEmail()), $accom['id']);
@@ -408,6 +457,7 @@ class BookingIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -417,7 +467,15 @@ class BookingIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
         $um->createUser($traveler);
+        $um->createUser($owner);
+
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -450,6 +508,7 @@ class BookingIntegrationTest extends TestCase
         $b->setCheckIn('25-11-2015');
         $b->setCheckOut('30-11-2015');
         $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($traveler->getEmail()));
         $b->setAccommId($accom['id']);
 
         $book_id = $bm->createBooking($b);
@@ -481,6 +540,7 @@ class BookingIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -490,7 +550,15 @@ class BookingIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
         $um->createUser($traveler);
+        $um->createUser($owner);
+
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -523,6 +591,7 @@ class BookingIntegrationTest extends TestCase
         $b->setCheckIn('11/25/2015');
         $b->setCheckOut('11/30/2015');
         $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($owner->getEmail()));
         $b->setAccommId($accom['id']);
 
         $book_id = $bm->createBooking($b);
@@ -551,6 +620,7 @@ class BookingIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -560,7 +630,14 @@ class BookingIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
         $um->createUser($traveler);
+        $um->createUser($owner);
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -593,6 +670,7 @@ class BookingIntegrationTest extends TestCase
         $b->setCheckIn('25-11-2015');
         $b->setCheckOut('30-11-2015');
         $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($owner->getEmail()));
         $b->setAccommId($accom['id']);
 
         $book = $bm->createBooking($b);
@@ -607,6 +685,7 @@ class BookingIntegrationTest extends TestCase
         $b2->setCheckIn('25-11-2015');
         $b2->setCheckOut('30-11-2015');
         $b2->setUserId($um->getID($traveler->getEmail()));
+        $b2->setOwnerId($um->getID($owner->getEmail()));
         $b2->setAccommId($accom['id']);
 
         $book2 = $bm->createBooking($b2);
@@ -633,6 +712,7 @@ class BookingIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -642,8 +722,14 @@ class BookingIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
-        $um->createUser($traveler);
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
 
+        $um->createUser($traveler);
+        $um->createUser($owner);
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
 
@@ -675,6 +761,7 @@ class BookingIntegrationTest extends TestCase
         $b->setCheckIn('25-11-2015');
         $b->setCheckOut('30-11-2015');
         $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($owner->getEmail()));
         $b->setAccommId($accom['id']);
 
         $book = $bm->createBooking($b);
@@ -689,6 +776,7 @@ class BookingIntegrationTest extends TestCase
         $b2->setCheckIn('25-11-2015');
         $b2->setCheckOut('30-11-2015');
         $b2->setUserId($um->getID($traveler->getEmail()));
+        $b2->setOwnerId($um->getID($owner->getEmail()));
         $b2->setAccommId($accom['id']);
 
         $book2 = $bm->createBooking($b2);
@@ -715,6 +803,7 @@ class BookingIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -724,7 +813,14 @@ class BookingIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
         $um->createUser($traveler);
+        $um->createUser($owner);
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -757,6 +853,7 @@ class BookingIntegrationTest extends TestCase
         $b->setCheckIn('11/25/2015');
         $b->setCheckOut('11/30/2015');
         $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($owner->getEmail()));
         $b->setAccommId($accom['id']);
 
         $book_id = $bm->createBooking($b);
@@ -785,6 +882,7 @@ class BookingIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -794,7 +892,14 @@ class BookingIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
         $um->createUser($traveler);
+        $um->createUser($owner);
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -827,6 +932,7 @@ class BookingIntegrationTest extends TestCase
         $b->setCheckIn('25-11-2015');
         $b->setCheckOut('28-11-2015');
         $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($owner->getEmail()));
         $b->setAccommId($accom['id']);
 
         $book = $bm->createBooking($b);

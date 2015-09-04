@@ -18,6 +18,23 @@ class Booking extends PreBooking
     private $persons;
     private $accomm_id;
     private $user_id;
+    private $owner_id;
+
+    /**
+     * @return mixed
+     */
+    public function getOwnerId()
+    {
+        return $this->owner_id;
+    }
+
+    /**
+     * @param mixed $owner_id
+     */
+    public function setOwnerId($owner_id)
+    {
+        $this->owner_id = $owner_id;
+    }
 
     function __construct() {
         parent::__construct();
