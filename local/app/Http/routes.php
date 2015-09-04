@@ -43,8 +43,10 @@ Route::group(['middleware' => ['auth']], function()
     Route::get('/manage/traveler',['middleware' => 'traveler', function()
     {
         $sm = new \App\Models\SystemModel();
+        $um = new \App\Models\UserModel();
         $inc = $sm->allIncomingMessages(Auth::user()->email);
-        return view("account/control_panel",['incoming' => $inc]);
+        $prebookings = $um->allPreBookings(Auth::user()->id);
+        return view("account/control_panel",['incoming' => $inc, 'prebookings' => $prebookings]);
     }]);
 
     Route::get('/manage/owner',['middleware' => 'owner', function()

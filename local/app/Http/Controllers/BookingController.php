@@ -63,7 +63,7 @@ class BookingController extends Controller
             $booking->setPrice($accomm->getPrice()*$booking->getPersons());
             $booking->setOwnerId($am->getOwner($id)->getId());
             if($bm->createBooking($booking)){
-                $this->sendPreBookingEmail($request->input("message"),$owner,$request->input("check-in"), $request->input("check-out"),$request->input("check-out"), $request->input("persons"), $id);
+                $this->sendPreBookingEmail($request->input("message"),$owner,$request->input("check-in"), $request->input("check-out"), $request->input("persons"), $id);
                 flash()->overlay("Tu prereserva ha sido realizada correctamente. Por favor accede a tu panel de control y comprúebalo.","Preserva realizada");
                 return redirect("/manage/traveler");
             }
@@ -147,6 +147,9 @@ class BookingController extends Controller
         if($bm->confirm($id)){
             flash()->overlay("Su rserva ha sido confirmada. Puede verificarlo desde sus reservas en el panel de control", "Reserva Confirmada");
             return redirect("manage/traveler");
+        }
+        else{
+            return view("errors/503");
         }
     }
 

@@ -280,7 +280,21 @@
                         @endif
                         @if(!Auth::user()->owner && !Auth::user()->admin)
                                 <div id="preBookings" class="tab-pane fade active in">
-                                    <h3>Prereservas realizadas</h3>
+                                    <h3>Tus prereservas realizadas (una vez que las confirmes pasarán a reservas)</h3>
+                                    @if(count($prebookings) > 0)
+                                        <ul class="prebooking-list">
+                                            @foreach($prebookings as $pb)
+                                                <li>
+                                                    <div class="prebooking-header">
+                                                        <span>Prereserva para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$pb->getAccommId()."/details") !!}">alojamiento</a> con id {!! $pb->getAccommId()!!}</span>
+                                                        <div class="prebooking-options">
+                                                            <a class="btn btn-xs btn-danger" id="{!! $pb->getId() !!}">Eliminar</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                 </div>
                                 <div id="bookings" class="tab-pane fade">
                                     <h3>Reservas realizadas</h3>
