@@ -26,7 +26,7 @@
                       @if(Auth::user()->owner)
                         <li class="active"><a data-toggle="tab" href="#accoms" id="btn-display-accoms">Mis alojamientos  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#newAccom" id="btn-add-accom">Añadir alojamiento  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
-                              <li class="active"><a data-toggle="tab" href="#preBookings">Prereservas  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+                              <li><a data-toggle="tab" href="#preBookings">Prereservas  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                               <li><a data-toggle="tab" href="#bookings">Reservas<span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#pers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
@@ -182,6 +182,101 @@
                         <div id="pers" class="tab-pane fade">
                                 <h3>Clientes</h3>
                         </div>
+                          <div id="preBookings" class="tab-pane fade">
+                              <h3 class="prebooking-title">Prereservas realizadas por los usuarios en sus alojamientos</h3>
+                              @if(count($prebookings) > 0)
+                                  <ul class="prebooking-list">
+                                      @foreach($prebookings as $pb)
+                                          <li>
+                                              <div class="prebooking-header">
+                                                  <span>Prereserva para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$pb->getAccommId()."/details") !!}">alojamiento</a> con id {!! $pb->getAccommId()!!}</span>
+                                                  <div class="prebooking-options">
+                                                      <a class="btn btn-xs btn-success btn-send-conditions" id="{!! $pb->getId() !!}">Enviar condiciones</a>
+                                                      <a class="btn btn-xs btn-danger" id="{!! $pb->getId() !!}">Eliminar</a>
+                                                  </div>
+                                              </div>
+                                          </li>
+                                      @endforeach
+                                  </ul>
+                                  <div id="conditions">
+                                      {!! Form::open(['id'=> "conditions-message-form"]) !!}
+                                      <div class="form-group booking-dates">
+                                          <h4>Fechas de reserva</h4>
+                                          <ul>
+                                              <li class="prebooking-cin"></li>
+                                              <li class="prebooking-cout"></li>
+                                          </ul>
+                                      </div>
+                                      <div class="form-group booking-dates">
+                                          <h4>Número de personas</h4>
+                                          <ul>
+                                              <li class="prebooking-persons"></li>
+                                          </ul>
+                                      </div>
+                                      <div class="form-group booking-user">
+                                          <h4>Detalles del usuario</h4>
+                                          <ul>
+                                              <li class="prebooking-user"></li>
+                                              <li class="prebooking-user-email"></li>
+                                              <li class="prebooking-user-phone"></li>
+                                          </ul>
+                                      </div>
+                                      <p class="message-to"></p>
+                                      <div class="form-group">
+                                          <textarea placeholder="Escribe aquí cuales serán las condiciones de la reserva" name="text-conditions"></textarea>
+                                      </div>
+                                      <input type="hidden" name="from" class="h-from">
+                                      <input type="hidden" name="to" class="h-to">
+                                      <input type="hidden" name="user_name" class="h-user">
+                                      <input type="button" value="Enviar condiciones" class="btn btn-success btn-send-conditions-up">
+                                      <input type="button" value="Ver prereservas" class="btn btn-grey btn-back-prebookings">
+                                      {!! Form::close() !!}
+                                  </div>
+                                  <script>
+                                      $(document).ready(function(){
+                                          $(".btn-send-conditions").click(function(){
+                                              var id = $(this).attr("id");
+                                              getBooking(id);
+
+                                          })
+
+                                          $(".btn-send-conditions-up").click(function(){
+                                              var id = $(".btn-send-conditions").attr("id");
+                                              var port = location.port;
+                                              var uri = "http://localhost:" + port + "/alojamientos/booking/"+id+"/send";
+                                              $('#conditions-message-form').attr('action', uri).submit();
+                                          })
+
+                                          function getBooking(id){
+                                              var port = location.port;
+                                              var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/show";
+                                              $.ajax({
+                                                  type: "Get",
+                                                  url: uri,
+                                                  success: function(data) {
+                                                      $(".prebooking-title").text("Detalles de la Prereserva");
+                                                      $(".prebooking-cin").text(data.check_in);
+                                                      $(".prebooking-cout").text(data.check_out);
+                                                      $(".prebooking-persons").text(data.persons);
+                                                      $(".prebooking-user").text(data.traveler_name);
+                                                      $(".h-user").val(data.traveler_name);
+                                                      $(".prebooking-user-email").text(data.traveler_email);
+                                                      $(".h-to").val(data.traveler_email);
+                                                      $(".h-from").val(data.owner_email);
+                                                      $(".prebooking-user-phone").text(data.traveler_phone);
+                                                      $("#conditions").show();
+                                                  }, error: function(){
+
+                                                  }
+                                              });
+                                          }
+                                      })
+                                  </script>
+                              @endif
+                          </div>
+                          <div id="bookings" class="tab-pane fade">
+                              <h3>Reservas realizadas por los usuarios en sus alojamientos</h3>
+                          </div>
                         @endif
                         @if(!Auth::user()->owner && !Auth::user()->admin)
                                 <div id="preBookings" class="tab-pane fade active in">
@@ -242,15 +337,6 @@
                                         <input type="submit" value="Enviar" class="btn btn-success btn-send-message">
                                         {!! Form::close() !!}
                                     </div>
-                                    <div id="conditions">
-                                        {!! Form::open(['id'=> "conditions-message-form"]) !!}
-                                        <p class="message-to"></p>
-                                        <div class="form-group">
-                                            <textarea placeholder="Escribe aquí cuales serán las condiciones de la reserva" name="text-condtions"></textarea>
-                                        </div>
-                                        <input type="submit" value="Enviar condiciones" class="btn btn-success btn-send-conditions">
-                                        {!! Form::close() !!}
-                                    </div>
                                 </div>
                                 <script>
                                     $(document).ready(function(){
@@ -268,14 +354,8 @@
                                         })
 
                                         $(".new-message").click(function(){
-                                            if($(this).attr("id") == "pb") {
-                                                $(".message-title").text("Enviar condiciones de reserva")
-                                                $("#conditions").show();
-                                            }
-                                            else {
                                                 $(".message-title").text("Nuevo mensaje")
                                                 $("#newMessage").show();
-                                            }
                                         })
 
                                         function readMessage(id){
@@ -309,7 +389,8 @@
                                                     $(".message-to").text("Mensaje para: "+data.to);
                                                     $(".message-title").text("Ver mensaje")
                                                     if(data.type == "pb") {
-                                                        $(".new-message").attr("id", data.type);
+                                                        var p = "<p class='prebooking-info-message'>Le recordamos que para poder permitir al usuario reservar, debe enviarle las condiciones de la reserva. Acceda a prereservas, y encontrará está preserva con los detalles de la misma. Una vez allí, podrá enviarle las condicione sy permitir así al usuario confirmar la reserva. Si lo desea, también puede comunicarse con el usuario para aclarar cuestiones.</p>";
+                                                        $(".message-text").append(p);
                                                     }
                                                     $("#showMessage").show();
 
@@ -319,7 +400,8 @@
                                                     $(".message-to").text("Mensaje para: "+data.to);
                                                     $(".message-title").text("Ver mensaje")
                                                     if(data.type == "pb") {
-                                                        $(".new-message").attr("id", data.type);
+                                                        var p = "<p class='prebooking-info-message'>Le recordamos que para poder permitir al usuario reservar, debe enviarle las condiciones de la reserva. Acceda a prereservas, y encontrará está preserva con los detalles de la misma. Una vez allí, podrá enviarle las condicione sy permitir así al usuario confirmar la reserva</p>";
+                                                        $(".message-text").append(p);
                                                     }
                                                     $("#showMessage").show();
                                                 }

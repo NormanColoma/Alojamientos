@@ -62,7 +62,7 @@ class BookingController extends Controller
             $booking->setPersons($request->input("persons"));
             $booking->setPrice($accomm->getPrice()*$booking->getPersons());
             $booking->setOwnerId($am->getOwner($id)->getId());
-            if($bm->createBooking($booking) != null){
+            if($bm->createBooking($booking)){
                 $this->sendPreBookingEmail($request->input("message"),$owner,$request->input("check-in"), $request->input("check-out"),$request->input("check-out"), $request->input("persons"), $id);
                 flash()->overlay("Tu prereserva ha sido realizada correctamente. Por favor accede a tu panel de control y comprúebalo.","Preserva realizada");
                 return redirect("/manage/traveler");
@@ -116,9 +116,23 @@ class BookingController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function showPrebooking($id)
     {
-        //
+        $bm = new BookingModel();
+        $b = $bm->showPreBooking($id);
+        if($b != null){
+            $um = new UserModel();
+            $owner = $um->userById($b->getOwnerId(), "owner");
+            $traveler = $um->userById($b->getUserId(), "traveler");
+            return response()->json(['ok' => true, 'message' => 'Booking was retrieved', 'id' => $b->getId(),
+                'check_in'=> $b->getCheckIn(), 'check_out' => $b->getCheckOut(), 'traveler' => $b->getUserId(),
+                'traveler_email' => $traveler->getEmail(), 'traveler_name' => $traveler->getName() ." ". $traveler->getSurname(),
+                'traveler_phone' => $traveler->getPhone(), 'owner_email' => $owner->getEmail(),
+                'owner' => $b->getOwnerId(), 'accomm' => $b->getAccommId(), 'date' => $b->getDate(),
+                'persons' => $b->getPersons(), 'price' => $b->getPrice()], 200);
+        }
+        else
+            return response()->json([ 'ok' => false, 'message' => 'Message is already read' ], 404);
     }
 
     /**
@@ -127,9 +141,9 @@ class BookingController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function confirmBooking($id)
     {
-        //
+       echo("su reserva ha sido confirmada");
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookingModel;
 use App\Models\DTO\Admin;
 use App\Models\DTO\Owner;
 use App\Models\DTO\Traveler;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Mail;
 use Validator;
 use Auth;
 
@@ -243,6 +245,25 @@ class UserController extends Controller
         }
     }
 
+
+    public function sendConditions(Request $request, $id)
+    {
+        $u_email = $request->input("to");
+        $u_name = $request->input("user-name");
+        $owner = Auth::getUser();
+        $user = new Traveler();
+        $user->setEmail($u_email);
+        $user->setName($u_name);
+        $bm = new BookingModel();
+        $b = $bm->showPreBooking($id);
+        try {
+            Mail::send('emails.confirmBooking', ['check_in' => $b->getCheckIn(), 'check_out' => $b->getCheckOut(), 'owner' => $owner, 'id' => $id, 'text' => $request->input("text-conditions")], function ($m) use ($user) {
+                $m->to($user->getEmail(), $user->getEmail())->subject('Confirmar reserva');
+            });
+        }catch(\Exception $ex){
+            throw new \Exceptionx($ex->getMessage());
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *

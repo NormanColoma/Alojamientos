@@ -185,6 +185,8 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
                 $b->setPreBooking($bc->prebooking);
                 $b->setCheckIn($bc->check_in);
                 $b->setCheckOut($bc->check_out);
+                $b->setOwnerId($bc->owner_id);
+                $b->setDate($bc->booking_date);
                 $book = $b;
             }
         }catch(QueryException $ex){

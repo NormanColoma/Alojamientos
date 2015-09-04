@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SystemModel;
 use DB;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -131,11 +132,15 @@ class SystemController extends Controller
     public function readMessage($id)
     {
         $sm = new SystemModel();
-        if($sm->readMessage($id)){
-            return response()->json(['ok' => false, 'message' => 'Message was read'], 200);
+        try{
+            if($sm->readMessage($id)){
+                return response()->json(['ok' => false, 'message' => 'Message was read'], 200);
+            }
+            else
+                return response()->json([ 'ok' => false, 'message' => 'Message is already read' ], 404);
+        }catch(QueryException $ex){
+            throw new \Exception($ex);
         }
-        else
-            return response()->json([ 'ok' => false, 'message' => 'Message is already read' ], 404);
     }
 
     /**

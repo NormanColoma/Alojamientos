@@ -120,6 +120,7 @@ class UserIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -129,7 +130,15 @@ class UserIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
+
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
         $um->createUser($traveler);
+        $um->createUser($owner);
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -162,6 +171,7 @@ class UserIntegrationTest extends TestCase
         $b->setCheckIn('25-10-2015');
         $b->setCheckOut('30-10-2015');
         $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($owner->getEmail()));
         $b->setAccommId($accom['id']);
 
         $b2->setId(2);
@@ -171,6 +181,7 @@ class UserIntegrationTest extends TestCase
         $b2->setCheckIn('25-11-2015');
         $b2->setCheckOut('30-11-2015');
         $b2->setUserId($um->getID($traveler->getEmail()));
+        $b2->setOwnerId($um->getID($owner->getEmail()));
         $b2->setAccommId($accom['id']);
 
         $b3->setId(3);
@@ -180,6 +191,7 @@ class UserIntegrationTest extends TestCase
         $b3->setCheckIn('25-12-2015');
         $b3->setCheckOut('30-12-2015');
         $b3->setUserId($um->getID($traveler->getEmail()));
+        $b3->setOwnerId($um->getID($owner->getEmail()));
         $b3->setAccommId($accom['id']);
 
         $book = $bm->createBooking($b);
@@ -195,11 +207,11 @@ class UserIntegrationTest extends TestCase
     }
 
     /**
-     * Recuperamos todas las pre-reservas de un usuario
-     *
-     * @return void
-     * @group allPreBook
-     */
+ * Recuperamos todas las pre-reservas de un usuario
+ *
+ * @return void
+ * @group allPreBook
+ */
     public function testAllPreBookings(){
         $bm = new BookingModel();
         $b = new Booking();
@@ -209,6 +221,7 @@ class UserIntegrationTest extends TestCase
         $p1 = new Photo();
         $p2 = new Photo();
         $traveler = new Traveler();
+        $owner = new Owner();
         $um = new UserModel();
         $arrayPhoto = [];
 
@@ -218,7 +231,15 @@ class UserIntegrationTest extends TestCase
         $traveler->setPhone("654987321");
         $traveler->setPassword("prueba");
 
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
         $um->createUser($traveler);
+        $um->createUser($owner);
+
 
         $p1->setUrl('url/photo1');
         $p1->setMain(1);
@@ -251,6 +272,7 @@ class UserIntegrationTest extends TestCase
         $b->setCheckIn('25-10-2015');
         $b->setCheckOut('30-10-2015');
         $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($owner->getEmail()));
         $b->setAccommId($accom['id']);
 
         $b2->setId(2);
@@ -260,6 +282,7 @@ class UserIntegrationTest extends TestCase
         $b2->setCheckIn('25-11-2015');
         $b2->setCheckOut('30-11-2015');
         $b2->setUserId($um->getID($traveler->getEmail()));
+        $b2->setOwnerId($um->getID($owner->getEmail()));
         $b2->setAccommId($accom['id']);
 
         $book = $bm->createBooking($b);
@@ -270,6 +293,139 @@ class UserIntegrationTest extends TestCase
         $this->assertNotNull($book);
 
         $this->assertEquals(2, count($um->allPreBookings($um->getID($traveler->getEmail()))));
+    }
+
+
+    /**
+     * Recuperamos todas las pre-reservas de un propietario
+     *
+     * @return void
+     * @group allPreBook
+     */
+    public function testAllPreBookingsByOwner(){
+        $bm = new BookingModel();
+        $b = new Booking();
+        $b2 = new Booking();
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $traveler = new Traveler();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $traveler->setName("Norman");
+        $traveler->setEmail("norman@email.com");
+        $traveler->setSurname("Coloma");
+        $traveler->setPhone("654987321");
+        $traveler->setPassword("prueba");
+
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
+        $um->createUser($traveler);
+        $um->createUser($owner);
+
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        //Testeamos el método createAccom que inserta tanto en la tabla accommodations como en la tabla photos
+        $accom = $am->createAccom($a1, $um->getID($traveler->getEmail()));
+
+        $b->setId(1);
+        $b->setPersons(3);
+        $b->setPrice(24.00);
+        $b->setPreBooking(true);
+        $b->setCheckIn('25-10-2015');
+        $b->setCheckOut('30-10-2015');
+        $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($owner->getEmail()));
+        $b->setAccommId($accom['id']);
+
+        $b2->setId(2);
+        $b2->setPersons(6);
+        $b2->setPrice(45.00);
+        $b2->setPreBooking(true);
+        $b2->setCheckIn('25-11-2015');
+        $b2->setCheckOut('30-11-2015');
+        $b2->setUserId($um->getID($traveler->getEmail()));
+        $b2->setOwnerId($um->getID($owner->getEmail()));
+        $b2->setAccommId($accom['id']);
+
+        $book = $bm->createBooking($b);
+        $bm->createBooking($b2);
+
+        $this->SeeInDatabase('bookings', ['persons' => 3]);
+        $this->SeeInDatabase('bookings', ['persons' => 6]);
+        $this->assertNotNull($book);
+
+        $this->assertEquals(2, count($um->allPreBookingsByOwner($um->getID($owner->getEmail()))));
+    }
+
+
+    /**
+     * Insertamos un usuario en la base de datos
+     *
+     * @return void
+     * @group insert
+     */
+    public function testGetUserByID(){
+
+        $this->notSeeInDatabase('users', ['email' => 'javier@email.com']);
+
+        $userModel = new UserModel();
+        $traveler = new Traveler();
+
+        $traveler->setEmail('javier@email.com');
+        $traveler->setAdmin(false);
+        $traveler->setPassword('123456');
+        $traveler->setName('Javier');
+        $traveler->setOwner(false);
+        $traveler->setPhone('654321987');
+        $traveler->setSurname('Comino');
+
+        $userModel->createUser($traveler);
+
+        $this->seeInDatabase('users', ['email' => 'javier@email.com']);
+
+        $traveler2 = new Owner();
+
+        $traveler2->setEmail('norman@email.com');
+        $traveler2->setAdmin(false);
+        $traveler2->setPassword('123456');
+        $traveler2->setName('Norman');
+        $traveler2->setOwner(true);
+        $traveler2->setPhone('654321987');
+        $traveler2->setSurname('Coloma');
+
+        $userModel->createUser($traveler2);
+
+        $u1 = $userModel->userById($userModel->getID("javier@email.com"), "traveler");
+        $this->assertEquals("javier@email.com",$u1->getEmail());
+
     }
 
 }

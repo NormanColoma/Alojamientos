@@ -31,8 +31,13 @@ Route::group(['middleware' => ['auth']], function()
 {
     Route::group(['middleware' => ['traveler']], function()
     {
-        Route::get("accommodation/{id}/details", "AccommodationController@show");
         Route::post("accommodation/{id}/book", "BookingController@createBookingPrebooking");
+        Route::get("booking/{id}/confirm", "BookingController@confirmBooking");
+    });
+
+    Route::group(['middleware' => ['owner']], function()
+    {
+        Route::post("booking/{id}/send","UserController@sendConditions");
     });
 
     Route::get('/manage/traveler',['middleware' => 'traveler', function()
@@ -45,9 +50,11 @@ Route::group(['middleware' => ['auth']], function()
     Route::get('/manage/owner',['middleware' => 'owner', function()
     {
         $am = new \App\Models\AccommodationModel();
+        $um = new \App\Models\UserModel();
         $sm = new \App\Models\SystemModel();
         $inc = $sm->allIncomingMessages(Auth::user()->email);
-        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id), 'incoming' => $inc]);
+        $prebookings = $um->allPreBookingsByOwner(Auth::user()->id);
+        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id), 'incoming' => $inc, 'prebookings' => $prebookings]);
     }]);
 
     Route::get('/manage/owner/accoms/page/{id}',['middleware' => 'owner', function()
@@ -62,9 +69,10 @@ Route::group(['middleware' => ['auth']], function()
     {
         return view("account/control_panel");
     }]);
-
+    Route::get("accommodation/{id}/details", "AccommodationController@show");
     Route::get('message/{id}/show', "SystemController@showMessage");
     Route::post('message/read/{id}', "SystemController@readMessage");
+    Route::get('prebooking/{id}/show', "BookingController@showPrebooking");
 });
 
 Route::post('accommodation/publish',"AccommodationController@addAccommodation");
@@ -87,5 +95,5 @@ Route::get('accommodation/{id}/schedule/update',function($id){
 
 
 Route::get("prueba", function(){
-    return view("emails.prebooking_owner");
+    return view("emails.confirmBooking");
 });

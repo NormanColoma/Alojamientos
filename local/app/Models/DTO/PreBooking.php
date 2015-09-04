@@ -13,6 +13,14 @@ abstract class PreBooking
 {
 
     protected $date;
+
+    /**
+     * @param bool|string $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
     protected $preBooking;
     protected $check_in;
     protected $check_out;
@@ -20,7 +28,7 @@ abstract class PreBooking
     function __construct() {
         date_default_timezone_set('Europe/Madrid');
         $this->date = date('Y-m-d H:i:s');
-        $this->preBooking = false;
+        $this->preBooking = true;
     }
 
     function getDate(){ return $this->date; }
