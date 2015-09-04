@@ -143,7 +143,11 @@ class BookingController extends Controller
      */
     public function confirmBooking($id)
     {
-       echo("su reserva ha sido confirmada");
+       $bm = new BookingModel();
+        if($bm->confirm($id)){
+            flash()->overlay("Su rserva ha sido confirmada. Puede verificarlo desde sus reservas en el panel de control", "Reserva Confirmada");
+            return redirect("manage/traveler");
+        }
     }
 
     /**
