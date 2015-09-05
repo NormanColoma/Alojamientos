@@ -145,6 +145,7 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
                 $b = new Booking();
                 $b->setAccommId($bc->accommodation_id);
                 $b->setUserId($bc->user_id);
+                $b->setOwnerId($bc->owner_id);
                 $b->setPrice($bc->total_price);
                 $b->setPersons($bc->persons);
                 $b->setId($bc->id);

@@ -90,43 +90,43 @@
     outline: none;
 }
 
-#showMessage, #newMessage, #conditions, #details{
+#showMessage, #newMessage, #conditions, #details, #booking-details{
     display: none;
     margin-top: 20px;
 }
 
-#conditions ul, #details ul{
+#conditions ul, #details ul, #booking-details ul{
     padding: 20px;
 }
 
-#conditions ul li, #details ul li{
+#conditions ul li, #details ul li, #booking-details ul li{
     margin-bottom: 10px;
 }
 
-.prebooking-info-message{
+.prebooking-info-message, .booking-info-message{
     font-style: italic;
     margin-top: 30px;
     font-size: 13px;
 }
 
-.prebooking-list, .prebooking-user-list{
+.prebooking-list, .prebooking-user-list, .booking-user-list{
     width:100%;
     float:left;
     margin-top: 20px;
 }
 
-.prebooking-list li, .prebooking-user-list li{
+.prebooking-list li, .prebooking-user-list li, .booking-user-list li{
     float:left;
     width:100%;
     margin-bottom: 20px;
 }
 
-.prebooking-list .prebooking-header, .prebooking-user-list .prebooking-header{
+.prebooking-list .prebooking-header, .prebooking-user-list .prebooking-header, .booking-user-list .booking-header{
     float:left;
     width: 100%;
 }
 
-.prebooking-header .prebooking-options{
+.prebooking-header .prebooking-options, .booking-header .booking-options{
     float:right;
 }
 

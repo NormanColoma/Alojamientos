@@ -27,7 +27,7 @@
                         <li class="active"><a data-toggle="tab" href="#accoms" id="btn-display-accoms">Mis alojamientos  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#newAccom" id="btn-add-accom">Añadir alojamiento  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
                               <li><a data-toggle="tab" href="#preBookings" class="prebookings">Prereservas  <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></li>
-                              <li><a data-toggle="tab" href="#bookings">Reservas<span class="glyphicon glyphicon-book" aria-hidden="true"></span></a></li>
+                              <li><a data-toggle="tab" href="#bookings" class="bookings">Reservas<span class="glyphicon glyphicon-book" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#pers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
                         <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
@@ -36,7 +36,7 @@
                           <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @else
                           <li class="active"><a data-toggle="tab" href="#preBookings" class="prebookings">Mis Prereservas  <span class="glyphicon glyphicon-book" aria-hidden="true"></span></a></li>
-                          <li><a data-toggle="tab" href="#bookings">Mis Reservas  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+                          <li><a data-toggle="tab" href="#bookings" class="bookings">Mis Reservas  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
                           <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @endif
@@ -244,95 +244,192 @@
                                       <input type="button" value="Ver prereservas" class="btn btn-grey btn-back-prebookings">
                                       {!! Form::close() !!}
                                   </div>
-                                  <script>
-                                      $(document).ready(function(){
-                                          $(".btn-send-conditions").click(function(){
-                                              var id = $(this).attr("id");
-                                              getBooking(id);
 
-                                          })
-
-
-                                          $(".btn-delete-prebooking").click(function (){
-                                              var id = $(this).attr("id");
-                                              deleteBooking(id);
-
-                                          })
-
-                                          $(".btn-back-prebookings, .prebookings").click(function(){
-                                              $(".prebooking-title").text("Prereservas realizadas por los usuarios en sus alojamientos");
-                                              $(".prebooking-options-info").text('Pulse sobre "Enviar condiciones" para poder verificar primero los datos de la prereserva en cuestión');
-                                              $("#conditions").hide();
-                                              $(".prebooking-list").show();
-                                          })
-
-                                          $(".btn-send-conditions-up").click(function(){
-                                              var id = $(".btn-send-conditions").attr("id");
-                                              var port = location.port;
-                                              var uri = "http://localhost:" + port + "/alojamientos/booking/"+id+"/send";
-                                              $('#conditions-message-form').attr('action', uri).submit();
-                                          })
-
-                                          function getBooking(id){
-                                              var port = location.port;
-                                              var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/show";
-                                              $.ajax({
-                                                  type: "Get",
-                                                  url: uri,
-                                                  success: function(data) {
-                                                      $(".prebooking-title").text("Detalles de la Prereserva");
-                                                      $(".prebooking-options-info").text("A continuación podrá ver los detalles de la prereserva solicitada por el usuario");
-                                                      $(".prebooking-cin").text("LLegada: "+data.check_in);
-                                                      $(".prebooking-cout").text("Salida: "+data.check_out);
-                                                      $(".prebooking-persons").text("Número de personas para la reserva: "+data.persons);
-                                                      $(".prebooking-user").text(data.traveler_name);
-                                                      $(".prebooking-id").text("Identificador de la reserva: "+data.id);
-                                                      $(".prebooking-price").text("Precio estimado por AlojaRural bajo las condiciones de la reserva: "+data.price+"€");
-                                                      $(".prebooking-date").text("La reserva fue realizada: "+data.date);
-                                                      $(".h-user").val(data.traveler_name);
-                                                      $(".prebooking-user-email").text(data.traveler_email);
-                                                      $(".h-to").val(data.traveler_email);
-                                                      $(".h-from").val(data.owner_email);
-                                                      $(".prebooking-user-phone").text(data.traveler_phone);
-                                                      $(".prebooking-list").hide();
-                                                      $("#conditions").show();
-                                                  }, error: function(){
-
-                                                  }
-                                              });
-                                          }
-                                      })
-
-                                      function deleteBooking(id){
-                                          var port = location.port;
-                                          var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/delete";
-                                          $.ajax({
-                                              type: "Delete",
-                                              url: uri,
-                                              success: function(data) {
-                                                  $("#"+id).closest("li").remove();
-                                                  $(".prebooking-deleted").show();
-                                                  $(".alert").delay(3000).slideUp(200);
-                                              }, error: function(){
-                                                  $("#"+id).closest("li").remove();
-                                                  $(".prebooking-not-found").show();
-                                                  $(".alert").delay(3000).slideUp(200);
-                                              }
-                                          });
-                                      }
-                                      $(function() {
-                                          $.ajaxSetup({
-                                              headers: {
-                                                  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                                              }
-                                          });
-                                      });
-                                  </script>
                               @endif
                           </div>
                           <div id="bookings" class="tab-pane fade">
-                              <h3>Reservas realizadas por los usuarios en sus alojamientos</h3>
+                              <h3 class="booking-title">Reservas realizadas por los usuarios en sus alojamientos</h3>
+                              <p class="booking-options-info">Pulse sobre "Ver Detalles" para poder verificar los detalles de la reserva en cuestión</p>
+                              @if(count($bookings) > 0)
+                                  <ul class="booking-list">
+                                      @foreach($bookings as $b)
+                                          <li>
+                                              <div class="booking-header">
+                                                  <span>Reserva para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$b->getAccommId()."/details") !!}">alojamiento</a> con id {!! $pb->getAccommId()!!}</span>
+                                                  <div class="booking-options">
+                                                      <a class="btn btn-xs btn-success btn-show-booking-details" id="{!! $b->getId() !!}">Ver detalles</a>
+                                                      <a class="btn btn-xs btn-danger" id="{!! $b->getId() !!}">Eliminar</a>
+                                                  </div>
+                                              </div>
+                                          </li>
+                                      @endforeach
+                                  </ul>
+                                  <div class="alert alert-success prebooking-deleted">
+                                      <strong>Preserva eliminada!</strong> La Rereserva ha sido eliminada correctemte.
+                                  </div>
+                                  <div class="alert alert-danger prebooking-not-found">
+                                      <strong>Error!</strong> La Reserva no se encuentra disponible, o ya ha sido eliminada.
+                                  </div>
+                                  <div id="booking-details">
+                                      <div class="form-group booking-info">
+                                          <h4>Información de la Reserva</h4>
+                                          <ul>
+                                              <li class="booking-id"></li>
+                                              <li class="booking-date"></li>
+                                              <li class="booking-persons"></li>
+                                              <li class="booking-price"></li>
+                                          </ul>
+                                      </div>
+                                      <div class="form-group booking-dates">
+                                          <h4>Fechas de reserva</h4>
+                                          <p>Fechas de reserva solicitadas para ocupar el alojamiento</p>
+                                          <ul>
+                                              <li class="booking-cin"></li>
+                                              <li class="booking-cout"></li>
+                                          </ul>
+                                      </div>
+                                      <div class="form-group booking-user">
+                                          <h4>Detalles del propietario</h4>
+                                          <p>Detalles del propietario del alojamiento</p>
+                                          <ul>
+                                              <li class="booking-owner-name"></li>
+                                              <li class="booking-owner-email"></li>
+                                              <li class="booking-owner-phone"></li>
+                                          </ul>
+                                      </div>
+                                      <input type="button" value="Ver Reservas" class="btn btn-grey btn-back-bookings">
+                                  </div>
+                              @endif
                           </div>
+                          <script>
+                              $(document).ready(function(){
+                                  $(".btn-send-conditions").click(function(){
+                                      var id = $(this).attr("id");
+                                      getBooking(id);
+
+                                  })
+
+                                  $(".btn-show-booking-details").click(function(){
+                                      var id = $(this).attr("id");
+                                      showBooking(id);
+
+                                  })
+
+
+                                  $(".btn-delete-prebooking").click(function (){
+                                      var id = $(this).attr("id");
+                                      deleteBooking(id);
+
+                                  })
+
+                                  $(".btn-back-prebookings, .prebookings").click(function(){
+                                      $(".prebooking-title").text("Prereservas realizadas por los usuarios en sus alojamientos");
+                                      $(".prebooking-options-info").text('Pulse sobre "Enviar condiciones" para poder verificar primero los datos de la prereserva en cuestión');
+                                      $("#conditions").hide();
+                                      $(".prebooking-list").show();
+                                  })
+
+                                  $(".btn-back-bookings, .bookings").click(function(){
+                                      $(".booking-title").text("Reservas realizadas en AlojaRural");
+                                      $(".booking-options-info").text('Desde aquí podrás ver los detalles de tus reservas');
+                                      $("#booking-details").hide();
+                                      $(".booking-list").show();
+                                  })
+
+                                  $(".btn-send-conditions-up").click(function(){
+                                      var id = $(".btn-send-conditions").attr("id");
+                                      var port = location.port;
+                                      var uri = "http://localhost:" + port + "/alojamientos/booking/"+id+"/send";
+                                      $('#conditions-message-form').attr('action', uri).submit();
+                                  })
+
+                                  function getBooking(id){
+                                      var port = location.port;
+                                      var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/show";
+                                      $.ajax({
+                                          type: "Get",
+                                          url: uri,
+                                          success: function(data) {
+                                              $(".prebooking-title").text("Detalles de la Prereserva");
+                                              $(".prebooking-options-info").text("A continuación podrá ver los detalles de la prereserva solicitada por el usuario");
+                                              $(".prebooking-cin").text("LLegada: "+data.check_in);
+                                              $(".prebooking-cout").text("Salida: "+data.check_out);
+                                              $(".prebooking-persons").text("Número de personas para la reserva: "+data.persons);
+                                              $(".prebooking-user").text(data.traveler_name);
+                                              $(".prebooking-id").text("Identificador de la reserva: "+data.id);
+                                              $(".prebooking-price").text("Precio estimado por AlojaRural bajo las condiciones de la reserva: "+data.price+"€");
+                                              $(".prebooking-date").text("La reserva fue realizada: "+data.date);
+                                              $(".h-user").val(data.traveler_name);
+                                              $(".prebooking-user-email").text(data.traveler_email);
+                                              $(".h-to").val(data.traveler_email);
+                                              $(".h-from").val(data.owner_email);
+                                              $(".prebooking-user-phone").text(data.traveler_phone);
+                                              $(".prebooking-list").hide();
+                                              $("#conditions").show();
+                                          }, error: function(){
+                                              $("#"+id).closest("li").remove();
+                                              $(".prebooking-not-found").show();
+                                              $(".alert").delay(3000).slideUp(200);
+
+                                          }
+                                      });
+                                  }
+                              })
+
+                              function showBooking(id){
+                                  var port = location.port;
+                                  var uri = "http://localhost:" + port + "/alojamientos/booking/"+id+"/show";
+                                  $.ajax({
+                                      type: "Get",
+                                      url: uri,
+                                      success: function(data) {
+                                          $(".booking-title").text("Detalles de la Reserva");
+                                          $(".booking-options-info").text("A continuación podrá ver los detalles de la Reserva solicitada por el usuario");
+                                          $(".booking-cin").text("LLegada: "+data.check_in);
+                                          $(".booking-cout").text("Salida: "+data.check_out);
+                                          $(".booking-persons").text("Número de personas para la reserva: "+data.persons);
+                                          $(".booking-id").text("Identificador de la reserva: "+data.id);
+                                          $(".booking-price").text("Precio final establecido: "+data.price+"€");
+                                          $(".booking-date").text("La reserva fue realizada: "+data.date);
+                                          $(".booking-owner-email").text(data.traveler_email);
+                                          $(".booking-owner-phone").text(data.traveler_phone);
+                                          $(".booking-owner-name").text(data.traveler_phone);
+                                          $(".booking-list").hide();
+                                          $("#booking-details").show();
+                                      }, error: function(){
+                                          $("#"+id).closest("li").remove();
+                                          $(".prebooking-not-found").show();
+                                          $(".alert").delay(3000).slideUp(200);
+
+                                      }
+                                  });
+                              }
+
+                              function deleteBooking(id){
+                                  var port = location.port;
+                                  var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/delete";
+                                  $.ajax({
+                                      type: "Delete",
+                                      url: uri,
+                                      success: function(data) {
+                                          $("#"+id).closest("li").remove();
+                                          $(".prebooking-deleted").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }, error: function(){
+                                          $("#"+id).closest("li").remove();
+                                          $(".prebooking-not-found").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }
+                                  });
+                              }
+                              $(function() {
+                                  $.ajaxSetup({
+                                      headers: {
+                                          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                                      }
+                                  });
+                              });
+                          </script>
                         @endif
                         @if(!Auth::user()->owner && !Auth::user()->admin)
                                 <div id="preBookings" class="tab-pane fade active in">
@@ -388,86 +485,178 @@
                                         </div>
                                         <input type="button" value="Ver prereservas" class="btn btn-grey btn-back-prebookings">
                                     </div>
-                                    <script>
-                                        $(document).ready(function(){
-                                            $(".btn-show-details").click(function(){
-                                                var id = $(this).attr("id");
-                                                getBooking(id);
-
-                                            })
-
-                                            $(".btn-back-prebookings, .prebookings").click(function(){
-                                                $(".prebooking-user-title").text("Tus prereservas realizadas (una vez que las confirmes pasarán a reservas)");
-                                                $(".prebooking-user-options-info").text('Elimine o vea los detalles de sus prereservas');
-                                                $("#details").hide();
-                                                $(".prebooking-user-list").show();
-                                            })
-
-                                            $(".btn-delete-prebooking").click(function (){
-                                                var id = $(this).attr("id");
-                                                deleteBooking(id);
-
-                                            })
-
-
-                                            function deleteBooking(id){
-                                                var port = location.port;
-                                                var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/delete";
-                                                $.ajax({
-                                                    type: "Delete",
-                                                    url: uri,
-                                                    success: function(data) {
-                                                        $("#"+id).closest("li").remove();
-                                                        $(".prebooking-deleted").show();
-                                                        $(".alert").delay(3000).slideUp(200);
-                                                    }, error: function(){
-                                                        $("#"+id).closest("li").remove();
-                                                        $(".prebooking-not-found").show();
-                                                        $(".alert").delay(3000).slideUp(200);
-                                                    }
-                                                });
-                                            }
-
-                                            function getBooking(id){
-                                                var port = location.port;
-                                                var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/show";
-                                                $.ajax({
-                                                    type: "Get",
-                                                    url: uri,
-                                                    success: function(data) {
-                                                        $(".prebooking-user-title").text("Detalles de la Prereserva");
-                                                        $(".prebooking-user-options-info").text("A continuación podrá ver los detalles de la prereserva solicitada por el usuario");
-                                                        $(".prebooking-cin").text("LLegada: "+data.check_in);
-                                                        $(".prebooking-cout").text("Salida: "+data.check_out);
-                                                        $(".prebooking-persons").text("Número de personas para la reserva: "+data.persons);
-                                                        $(".prebooking-user").text(data.traveler_name);
-                                                        $(".prebooking-id").text("Identificador de la reserva: "+data.id);
-                                                        $(".prebooking-price").text("Precio estimado por AlojaRural: "+data.price+"€ (Le recordamos que este precio puede variar en función de las condiciones establecias por el usuario)");
-                                                        $(".prebooking-date").text("La reserva fue realizada: "+data.date);
-                                                        $(".prebooking-owner-email").text(data.traveler_email);
-                                                        $(".prebooking-owner-phone").text(data.traveler_phone);
-                                                        $(".prebooking-owner-name").text(data.traveler_phone);
-                                                        $(".prebooking-user-list").hide();
-                                                        $("#details").show();
-                                                    }, error: function(){
-
-                                                    }
-                                                });
-                                            }
-
-                                            $(function() {
-                                                $.ajaxSetup({
-                                                    headers: {
-                                                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                                                    }
-                                                });
-                                            });
-                                        })
-                                    </script>
                                 </div>
                                 <div id="bookings" class="tab-pane fade">
-                                    <h3>Reservas realizadas</h3>
+                                    <h3 class="booking-user-title">Reservas realizadas en AlojaRural</h3>
+                                    <p class="booking-user-options-info">Desde aquí podrás ver los detalles de tus reservas</p>
+                                    @if(count($bookings) > 0)
+                                        <ul class="booking-user-list">
+                                            @foreach($bookings as $b)
+                                                <li>
+                                                    <div class="booking-header">
+                                                        <span>Reserva confirmada para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$b->getAccommId()."/details") !!}">alojamiento</a>. Pinchando en "Ver detalles" verá los detalles de la misma.</span>
+                                                        <div class="booking-options">
+                                                            <a class="btn btn-xs btn-success btn-show-booking-details" id="{!! $b->getId() !!}">Ver detalles</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                        <div class="alert alert-danger booking-not-found">
+                                            <strong>Error!</strong> La reserva no se encuentra disponible, o ya ha sido eliminada por el propietario del alojamiento.
+                                        </div>
+                                    @endif
+                                    <div id="booking-details">
+                                        <div class="form-group booking-info">
+                                            <h4>Información de la Reserva</h4>
+                                            <ul>
+                                                <li class="booking-id"></li>
+                                                <li class="booking-date"></li>
+                                                <li class="booking-persons"></li>
+                                                <li class="booking-price"></li>
+                                            </ul>
+                                        </div>
+                                        <div class="form-group booking-dates">
+                                            <h4>Fechas de reserva</h4>
+                                            <p>Fechas de reserva solicitadas para ocupar el alojamiento</p>
+                                            <ul>
+                                                <li class="booking-cin"></li>
+                                                <li class="booking-cout"></li>
+                                            </ul>
+                                        </div>
+                                        <div class="form-group booking-user">
+                                            <h4>Detalles del propietario</h4>
+                                            <p>Detalles del propietario del alojamiento</p>
+                                            <ul>
+                                                <li class="booking-owner-name"></li>
+                                                <li class="booking-owner-email"></li>
+                                                <li class="booking-owner-phone"></li>
+                                            </ul>
+                                        </div>
+                                        <input type="button" value="Ver Reservas" class="btn btn-grey btn-back-bookings">
+                                    </div>
                                 </div>
+                                <script>
+                                    $(document).ready(function(){
+                                        $(".btn-show-details").click(function(){
+                                            var id = $(this).attr("id");
+                                            getBooking(id);
+
+                                        })
+
+                                        $(".btn-show-booking-details").click(function(){
+                                            var id = $(this).attr("id");
+                                            showBooking(id);
+
+                                        })
+
+                                        $(".btn-back-prebookings, .prebookings").click(function(){
+                                            $(".prebooking-user-title").text("Tus prereservas realizadas (una vez que las confirmes pasarán a reservas)");
+                                            $(".prebooking-user-options-info").text('Elimine o vea los detalles de sus prereservas');
+                                            $("#details").hide();
+                                            $(".prebooking-user-list").show();
+                                        })
+
+                                        $(".btn-back-bookings, .bookings").click(function(){
+                                            $(".booking-user-title").text("Reservas realizadas en AlojaRural");
+                                            $(".booking-user-options-info").text('Desde aquí podrás ver los detalles de tus reservas');
+                                            $("#booking-details").hide();
+                                            $(".booking-user-list").show();
+                                        })
+
+                                        $(".btn-delete-prebooking").click(function (){
+                                            var id = $(this).attr("id");
+                                            deleteBooking(id);
+
+                                        })
+
+
+                                        function deleteBooking(id){
+                                            var port = location.port;
+                                            var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/delete";
+                                            $.ajax({
+                                                type: "Delete",
+                                                url: uri,
+                                                success: function(data) {
+                                                    $("#"+id).closest("li").remove();
+                                                    $(".prebooking-deleted").show();
+                                                    $(".alert").delay(3000).slideUp(200);
+                                                }, error: function(){
+                                                    $("#"+id).closest("li").remove();
+                                                    $(".prebooking-not-found").show();
+                                                    $(".alert").delay(3000).slideUp(200);
+                                                }
+                                            });
+                                        }
+
+                                        function getBooking(id){
+                                            var port = location.port;
+                                            var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/show";
+                                            $.ajax({
+                                                type: "Get",
+                                                url: uri,
+                                                success: function(data) {
+                                                    $(".prebooking-user-title").text("Detalles de la Prereserva");
+                                                    $(".prebooking-user-options-info").text("A continuación podrá ver los detalles de la prereserva solicitada");
+                                                    $(".prebooking-cin").text("LLegada: "+data.check_in);
+                                                    $(".prebooking-cout").text("Salida: "+data.check_out);
+                                                    $(".prebooking-persons").text("Número de personas para la reserva: "+data.persons);
+                                                    $(".prebooking-id").text("Identificador de la reserva: "+data.id);
+                                                    $(".prebooking-price").text("Precio estimado por AlojaRural: "+data.price+"€ (Le recordamos que este precio puede variar en función de las condiciones establecias por el propietario)");
+                                                    $(".prebooking-date").text("La reserva fue realizada: "+data.date);
+                                                    $(".prebooking-owner-email").text(data.owner_email);
+                                                    $(".prebooking-owner-phone").text(data.owner_phone);
+                                                    $(".prebooking-owner-name").text(data.owner_name);
+                                                    $(".prebooking-user-list").hide();
+                                                    $("#details").show();
+                                                }, error: function(){
+                                                    $("#"+id).closest("li").remove();
+                                                    $(".prebooking-not-found").show();
+                                                    $(".alert").delay(3000).slideUp(200);
+
+                                                }
+                                            });
+                                        }
+
+
+                                        function showBooking(id){
+                                            var port = location.port;
+                                            var uri = "http://localhost:" + port + "/alojamientos/booking/"+id+"/show";
+                                            $.ajax({
+                                                type: "Get",
+                                                url: uri,
+                                                success: function(data) {
+                                                    $(".booking-user-title").text("Detalles de la Reserva");
+                                                    $(".booking-user-options-info").text("A continuación podrá ver los detalles de la Reserva solicitada");
+                                                    $(".booking-cin").text("LLegada: "+data.check_in);
+                                                    $(".booking-cout").text("Salida: "+data.check_out);
+                                                    $(".booking-persons").text("Número de personas para la reserva: "+data.persons);
+                                                    $(".booking-id").text("Identificador de la reserva: "+data.id);
+                                                    $(".booking-price").text("Precio establecido por el propietario: "+data.price+"€");
+                                                    $(".booking-date").text("La reserva fue realizada: "+data.date);
+                                                    $(".booking-owner-email").text(data.owner_email);
+                                                    $(".booking-owner-phone").text(data.owner_phone);
+                                                    $(".booking-owner-name").text(data.owner_phone);
+                                                    $(".booking-user-list").hide();
+                                                    $("#booking-details").show();
+                                                }, error: function(){
+                                                    $("#"+id).closest("li").remove();
+                                                    $(".prebooking-not-found").show();
+                                                    $(".alert").delay(3000).slideUp(200);
+
+                                                }
+                                            });
+                                        }
+
+                                        $(function() {
+                                            $.ajaxSetup({
+                                                headers: {
+                                                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                                                }
+                                            });
+                                        });
+                                    })
+                                </script>
                             @endif
                         <div id="messages" class="tab-pane fade">
                                 <h3 class="message-title">Mensajes</h3>

@@ -135,6 +135,32 @@ class BookingController extends Controller
             return response()->json([ 'ok' => false, 'message' => 'Prebooking was not found or was removed' ], 404);
     }
 
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function showBooking($id)
+    {
+        $bm = new BookingModel();
+        $b = $bm->showBooking($id);
+        if($b != null){
+            $um = new UserModel();
+            $owner = $um->userById($b->getOwnerId(), "owner");
+            $traveler = $um->userById($b->getUserId(), "traveler");
+            return response()->json(['ok' => true, 'message' => 'Booking was retrieved', 'id' => $b->getId(),
+                'check_in'=> $b->getCheckIn(), 'check_out' => $b->getCheckOut(), 'traveler' => $b->getUserId(),
+                'traveler_email' => $traveler->getEmail(), 'traveler_name' => $traveler->getName() ." ". $traveler->getSurname(),
+                'traveler_phone' => $traveler->getPhone(), 'owner_email' => $owner->getEmail(), 'owner_name' => $owner->getName() ." " . $owner->getSurname(),
+                'owner_phone' => $owner->getPhone(),'owner' => $b->getOwnerId(), 'accomm' => $b->getAccommId(), 'date' => $b->getDate(),
+                'persons' => $b->getPersons(), 'price' => $b->getPrice()], 200);
+        }
+        else
+            return response()->json([ 'ok' => false, 'message' => 'Booking was not found or was removed' ], 404);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
