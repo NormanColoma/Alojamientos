@@ -26,7 +26,7 @@
                       @if(Auth::user()->owner)
                         <li class="active"><a data-toggle="tab" href="#accoms" id="btn-display-accoms">Mis alojamientos  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#newAccom" id="btn-add-accom">Añadir alojamiento  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
-                              <li><a data-toggle="tab" href="#preBookings">Prereservas  <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></li>
+                              <li><a data-toggle="tab" href="#preBookings" class="prebookings">Prereservas  <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></li>
                               <li><a data-toggle="tab" href="#bookings">Reservas<span class="glyphicon glyphicon-book" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#pers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
@@ -35,7 +35,7 @@
                           <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
                           <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @else
-                          <li class="active"><a data-toggle="tab" href="#preBookings">Mis Prereservas  <span class="glyphicon glyphicon-book" aria-hidden="true"></span></a></li>
+                          <li class="active"><a data-toggle="tab" href="#preBookings" class="prebookings">Mis Prereservas  <span class="glyphicon glyphicon-book" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#bookings">Mis Reservas  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
                           <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
@@ -193,12 +193,18 @@
                                                   <span>Prereserva para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$pb->getAccommId()."/details") !!}">alojamiento</a> con id {!! $pb->getAccommId()!!}</span>
                                                   <div class="prebooking-options">
                                                       <a class="btn btn-xs btn-success btn-send-conditions" id="{!! $pb->getId() !!}">Enviar condiciones</a>
-                                                      <a class="btn btn-xs btn-danger" id="{!! $pb->getId() !!}">Eliminar</a>
+                                                      <a class="btn btn-xs btn-danger btn-delete-prebooking" id="{!! $pb->getId() !!}">Eliminar</a>
                                                   </div>
                                               </div>
                                           </li>
                                       @endforeach
                                   </ul>
+                                  <div class="alert alert-success prebooking-deleted">
+                                      <strong>Preserva eliminada!</strong> La prereserva ha sido eliminada correctemte.
+                                  </div>
+                                  <div class="alert alert-danger prebooking-not-found">
+                                      <strong>Error!</strong> La prereserva no se encuentra disponible, o ya ha sido eliminada por el usuario que la realizó.
+                                  </div>
                                   <div id="conditions">
                                       {!! Form::open(['id'=> "conditions-message-form"]) !!}
                                       <div class="form-group booking-info">
@@ -246,7 +252,14 @@
 
                                           })
 
-                                          $(".btn-back-prebookings").click(function(){
+
+                                          $(".btn-delete-prebooking").click(function (){
+                                              var id = $(this).attr("id");
+                                              deleteBooking(id);
+
+                                          })
+
+                                          $(".btn-back-prebookings, .prebookings").click(function(){
                                               $(".prebooking-title").text("Prereservas realizadas por los usuarios en sus alojamientos");
                                               $(".prebooking-options-info").text('Pulse sobre "Enviar condiciones" para poder verificar primero los datos de la prereserva en cuestión');
                                               $("#conditions").hide();
@@ -289,6 +302,31 @@
                                               });
                                           }
                                       })
+
+                                      function deleteBooking(id){
+                                          var port = location.port;
+                                          var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/delete";
+                                          $.ajax({
+                                              type: "Delete",
+                                              url: uri,
+                                              success: function(data) {
+                                                  $("#"+id).closest("li").remove();
+                                                  $(".prebooking-deleted").show();
+                                                  $(".alert").delay(3000).slideUp(200);
+                                              }, error: function(){
+                                                  $("#"+id).closest("li").remove();
+                                                  $(".prebooking-not-found").show();
+                                                  $(".alert").delay(3000).slideUp(200);
+                                              }
+                                          });
+                                      }
+                                      $(function() {
+                                          $.ajaxSetup({
+                                              headers: {
+                                                  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                                              }
+                                          });
+                                      });
                                   </script>
                               @endif
                           </div>
@@ -308,12 +346,18 @@
                                                         <span>Prereserva para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$pb->getAccommId()."/details") !!}">alojamiento</a> con id {!! $pb->getAccommId()!!}</span>
                                                         <div class="prebooking-options">
                                                             <a class="btn btn-xs btn-success btn-show-details" id="{!! $pb->getId() !!}">Ver detalles</a>
-                                                            <a class="btn btn-xs btn-danger" id="{!! $pb->getId() !!}">Eliminar</a>
+                                                            <a class="btn btn-xs btn-danger btn-delete-prebooking" id="{!! $pb->getId() !!}">Eliminar</a>
                                                         </div>
                                                     </div>
                                                 </li>
                                             @endforeach
                                         </ul>
+                                        <div class="alert alert-success prebooking-deleted">
+                                            <strong>Preserva eliminada!</strong> La prereserva ha sido eliminada correctemte.
+                                        </div>
+                                        <div class="alert alert-danger prebooking-not-found">
+                                            <strong>Error!</strong> La prereserva no se encuentra disponible, o ya ha sido eliminada por el propietario del alojamiento.
+                                        </div>
                                     @endif
                                     <div id="details">
                                         <div class="form-group booking-info">
@@ -352,12 +396,37 @@
 
                                             })
 
-                                            $(".btn-back-prebookings").click(function(){
+                                            $(".btn-back-prebookings, .prebookings").click(function(){
                                                 $(".prebooking-user-title").text("Tus prereservas realizadas (una vez que las confirmes pasarán a reservas)");
                                                 $(".prebooking-user-options-info").text('Elimine o vea los detalles de sus prereservas');
                                                 $("#details").hide();
                                                 $(".prebooking-user-list").show();
                                             })
+
+                                            $(".btn-delete-prebooking").click(function (){
+                                                var id = $(this).attr("id");
+                                                deleteBooking(id);
+
+                                            })
+
+
+                                            function deleteBooking(id){
+                                                var port = location.port;
+                                                var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/delete";
+                                                $.ajax({
+                                                    type: "Delete",
+                                                    url: uri,
+                                                    success: function(data) {
+                                                        $("#"+id).closest("li").remove();
+                                                        $(".prebooking-deleted").show();
+                                                        $(".alert").delay(3000).slideUp(200);
+                                                    }, error: function(){
+                                                        $("#"+id).closest("li").remove();
+                                                        $(".prebooking-not-found").show();
+                                                        $(".alert").delay(3000).slideUp(200);
+                                                    }
+                                                });
+                                            }
 
                                             function getBooking(id){
                                                 var port = location.port;
@@ -385,6 +454,14 @@
                                                     }
                                                 });
                                             }
+
+                                            $(function() {
+                                                $.ajaxSetup({
+                                                    headers: {
+                                                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                                                    }
+                                                });
+                                            });
                                         })
                                     </script>
                                 </div>

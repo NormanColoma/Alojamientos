@@ -132,7 +132,7 @@ class BookingController extends Controller
                 'persons' => $b->getPersons(), 'price' => $b->getPrice()], 200);
         }
         else
-            return response()->json([ 'ok' => false, 'message' => 'Prebookin was not found or was removed' ], 404);
+            return response()->json([ 'ok' => false, 'message' => 'Prebooking was not found or was removed' ], 404);
     }
 
     /**
@@ -171,8 +171,14 @@ class BookingController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function deletePrebooking($id)
     {
-        //
+        $bm = new BookingModel();
+        if($bm->deleteBooking($id)){
+            return response()->json([ 'ok' => true, 'message' => 'Prebooking was removed' ], 200);
+        }
+        else{
+            return response()->json([ 'ok' => false, 'message' => 'Prebooking was not found or was removed' ], 404);
+        }
     }
 }

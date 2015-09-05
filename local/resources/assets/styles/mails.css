@@ -129,3 +129,9 @@
 .prebooking-header .prebooking-options{
     float:right;
 }
+
+.alert{
+    display:none;
+    width: 100%;
+    float:left;
+}

@@ -75,6 +75,7 @@ Route::group(['middleware' => ['auth']], function()
     Route::get('message/{id}/show', "SystemController@showMessage");
     Route::post('message/read/{id}', "SystemController@readMessage");
     Route::get('prebooking/{id}/show', "BookingController@showPrebooking");
+    Route::delete('prebooking/{id}/delete', "BookingController@deletePrebooking");
 });
 
 Route::post('accommodation/publish',"AccommodationController@addAccommodation");
