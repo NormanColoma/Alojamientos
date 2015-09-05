@@ -90,16 +90,16 @@
     outline: none;
 }
 
-#showMessage, #newMessage, #conditions{
+#showMessage, #newMessage, #conditions, #details{
     display: none;
     margin-top: 20px;
 }
 
-#conditions ul{
+#conditions ul, #details ul{
     padding: 20px;
 }
 
-#conditions ul li{
+#conditions ul li, #details ul li{
     margin-bottom: 10px;
 }
 
@@ -109,19 +109,19 @@
     font-size: 13px;
 }
 
-.prebooking-list{
+.prebooking-list, .prebooking-user-list{
     width:100%;
     float:left;
     margin-top: 20px;
 }
 
-.prebooking-list li{
+.prebooking-list li, .prebooking-user-list li{
     float:left;
     width:100%;
     margin-bottom: 20px;
 }
 
-.prebooking-list .prebooking-header{
+.prebooking-list .prebooking-header, .prebooking-user-list .prebooking-header{
     float:left;
     width: 100%;
 }

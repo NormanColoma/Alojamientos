@@ -184,6 +184,7 @@
                         </div>
                           <div id="preBookings" class="tab-pane fade">
                               <h3 class="prebooking-title">Prereservas realizadas por los usuarios en sus alojamientos</h3>
+                              <p class="prebooking-options-info">Pulse sobre "Enviar condiciones" para poder verificar primero los datos de la prereserva en cuestión</p>
                               @if(count($prebookings) > 0)
                                   <ul class="prebooking-list">
                                       @foreach($prebookings as $pb)
@@ -200,21 +201,26 @@
                                   </ul>
                                   <div id="conditions">
                                       {!! Form::open(['id'=> "conditions-message-form"]) !!}
+                                      <div class="form-group booking-info">
+                                          <h4>Información de la prereserva</h4>
+                                          <ul>
+                                              <li class="prebooking-id"></li>
+                                              <li class="prebooking-date"></li>
+                                              <li class="prebooking-persons"></li>
+                                              <li class="prebooking-price"></li>
+                                          </ul>
+                                      </div>
                                       <div class="form-group booking-dates">
-                                          <h4>Fechas de reserva</h4>
+                                          <h4>Fechas de reserva solicitadas</h4>
+                                          <p>Fechas de reserva solicitadas por el usuario para ocupar el alojamiento</p>
                                           <ul>
                                               <li class="prebooking-cin"></li>
                                               <li class="prebooking-cout"></li>
                                           </ul>
                                       </div>
-                                      <div class="form-group booking-dates">
-                                          <h4>Número de personas</h4>
-                                          <ul>
-                                              <li class="prebooking-persons"></li>
-                                          </ul>
-                                      </div>
                                       <div class="form-group booking-user">
                                           <h4>Detalles del usuario</h4>
+                                          <p>Detalles del usuario que realizó la prereserva a través de AlojaRural</p>
                                           <ul>
                                               <li class="prebooking-user"></li>
                                               <li class="prebooking-user-email"></li>
@@ -240,6 +246,13 @@
 
                                           })
 
+                                          $(".btn-back-prebookings").click(function(){
+                                              $(".prebooking-title").text("Prereservas realizadas por los usuarios en sus alojamientos");
+                                              $(".prebooking-options-info").text('Pulse sobre "Enviar condiciones" para poder verificar primero los datos de la prereserva en cuestión');
+                                              $("#conditions").hide();
+                                              $(".prebooking-list").show();
+                                          })
+
                                           $(".btn-send-conditions-up").click(function(){
                                               var id = $(".btn-send-conditions").attr("id");
                                               var port = location.port;
@@ -255,15 +268,20 @@
                                                   url: uri,
                                                   success: function(data) {
                                                       $(".prebooking-title").text("Detalles de la Prereserva");
-                                                      $(".prebooking-cin").text(data.check_in);
-                                                      $(".prebooking-cout").text(data.check_out);
-                                                      $(".prebooking-persons").text(data.persons);
+                                                      $(".prebooking-options-info").text("A continuación podrá ver los detalles de la prereserva solicitada por el usuario");
+                                                      $(".prebooking-cin").text("LLegada: "+data.check_in);
+                                                      $(".prebooking-cout").text("Salida: "+data.check_out);
+                                                      $(".prebooking-persons").text("Número de personas para la reserva: "+data.persons);
                                                       $(".prebooking-user").text(data.traveler_name);
+                                                      $(".prebooking-id").text("Identificador de la reserva: "+data.id);
+                                                      $(".prebooking-price").text("Precio estimado por AlojaRural bajo las condiciones de la reserva: "+data.price+"€");
+                                                      $(".prebooking-date").text("La reserva fue realizada: "+data.date);
                                                       $(".h-user").val(data.traveler_name);
                                                       $(".prebooking-user-email").text(data.traveler_email);
                                                       $(".h-to").val(data.traveler_email);
                                                       $(".h-from").val(data.owner_email);
                                                       $(".prebooking-user-phone").text(data.traveler_phone);
+                                                      $(".prebooking-list").hide();
                                                       $("#conditions").show();
                                                   }, error: function(){
 
@@ -280,14 +298,16 @@
                         @endif
                         @if(!Auth::user()->owner && !Auth::user()->admin)
                                 <div id="preBookings" class="tab-pane fade active in">
-                                    <h3>Tus prereservas realizadas (una vez que las confirmes pasarán a reservas)</h3>
+                                    <h3 class="prebooking-user-title">Tus prereservas realizadas (una vez que las confirmes pasarán a reservas)</h3>
+                                    <p class="prebooking-user-options-info">Elimine o vea los detalles de sus prereservas</p>
                                     @if(count($prebookings) > 0)
-                                        <ul class="prebooking-list">
+                                        <ul class="prebooking-user-list">
                                             @foreach($prebookings as $pb)
                                                 <li>
                                                     <div class="prebooking-header">
                                                         <span>Prereserva para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$pb->getAccommId()."/details") !!}">alojamiento</a> con id {!! $pb->getAccommId()!!}</span>
                                                         <div class="prebooking-options">
+                                                            <a class="btn btn-xs btn-success btn-show-details" id="{!! $pb->getId() !!}">Ver detalles</a>
                                                             <a class="btn btn-xs btn-danger" id="{!! $pb->getId() !!}">Eliminar</a>
                                                         </div>
                                                     </div>
@@ -295,6 +315,78 @@
                                             @endforeach
                                         </ul>
                                     @endif
+                                    <div id="details">
+                                        <div class="form-group booking-info">
+                                            <h4>Información de la prereserva</h4>
+                                            <ul>
+                                                <li class="prebooking-id"></li>
+                                                <li class="prebooking-date"></li>
+                                                <li class="prebooking-persons"></li>
+                                                <li class="prebooking-price"></li>
+                                            </ul>
+                                        </div>
+                                        <div class="form-group booking-dates">
+                                            <h4>Fechas de reserva</h4>
+                                            <p>Fechas de reserva solicitadas para ocupar el alojamiento</p>
+                                            <ul>
+                                                <li class="prebooking-cin"></li>
+                                                <li class="prebooking-cout"></li>
+                                            </ul>
+                                        </div>
+                                        <div class="form-group booking-user">
+                                            <h4>Detalles del propietario</h4>
+                                            <p>Detalles del propietario del alojamiento</p>
+                                            <ul>
+                                                <li class="prebooking-owner-name"></li>
+                                                <li class="prebooking-owner-email"></li>
+                                                <li class="prebooking-owner-phone"></li>
+                                            </ul>
+                                        </div>
+                                        <input type="button" value="Ver prereservas" class="btn btn-grey btn-back-prebookings">
+                                    </div>
+                                    <script>
+                                        $(document).ready(function(){
+                                            $(".btn-show-details").click(function(){
+                                                var id = $(this).attr("id");
+                                                getBooking(id);
+
+                                            })
+
+                                            $(".btn-back-prebookings").click(function(){
+                                                $(".prebooking-user-title").text("Tus prereservas realizadas (una vez que las confirmes pasarán a reservas)");
+                                                $(".prebooking-user-options-info").text('Elimine o vea los detalles de sus prereservas');
+                                                $("#details").hide();
+                                                $(".prebooking-user-list").show();
+                                            })
+
+                                            function getBooking(id){
+                                                var port = location.port;
+                                                var uri = "http://localhost:" + port + "/alojamientos/prebooking/"+id+"/show";
+                                                $.ajax({
+                                                    type: "Get",
+                                                    url: uri,
+                                                    success: function(data) {
+                                                        $(".prebooking-user-title").text("Detalles de la Prereserva");
+                                                        $(".prebooking-user-options-info").text("A continuación podrá ver los detalles de la prereserva solicitada por el usuario");
+                                                        $(".prebooking-cin").text("LLegada: "+data.check_in);
+                                                        $(".prebooking-cout").text("Salida: "+data.check_out);
+                                                        $(".prebooking-persons").text("Número de personas para la reserva: "+data.persons);
+                                                        $(".prebooking-user").text(data.traveler_name);
+                                                        $(".prebooking-id").text("Identificador de la reserva: "+data.id);
+                                                        $(".prebooking-price").text("Precio estimado por AlojaRural: "+data.price+"€ (Le recordamos que este precio puede variar en función de las condiciones establecias por el usuario)");
+                                                        $(".prebooking-date").text("La reserva fue realizada: "+data.date);
+                                                        $(".prebooking-owner-email").text(data.traveler_email);
+                                                        $(".prebooking-owner-phone").text(data.traveler_phone);
+                                                        $(".prebooking-owner-name").text(data.traveler_phone);
+                                                        $(".prebooking-user-list").hide();
+                                                        $("#details").show();
+                                                    }, error: function(){
+
+                                                    }
+                                                });
+                                            }
+                                        })
+                                    </script>
                                 </div>
                                 <div id="bookings" class="tab-pane fade">
                                     <h3>Reservas realizadas</h3>

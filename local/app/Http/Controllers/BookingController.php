@@ -127,12 +127,12 @@ class BookingController extends Controller
             return response()->json(['ok' => true, 'message' => 'Booking was retrieved', 'id' => $b->getId(),
                 'check_in'=> $b->getCheckIn(), 'check_out' => $b->getCheckOut(), 'traveler' => $b->getUserId(),
                 'traveler_email' => $traveler->getEmail(), 'traveler_name' => $traveler->getName() ." ". $traveler->getSurname(),
-                'traveler_phone' => $traveler->getPhone(), 'owner_email' => $owner->getEmail(),
-                'owner' => $b->getOwnerId(), 'accomm' => $b->getAccommId(), 'date' => $b->getDate(),
+                'traveler_phone' => $traveler->getPhone(), 'owner_email' => $owner->getEmail(), 'owner_name' => $owner->getName() ." " . $owner->getSurname(),
+                'owner_phone' => $owner->getPhone(),'owner' => $b->getOwnerId(), 'accomm' => $b->getAccommId(), 'date' => $b->getDate(),
                 'persons' => $b->getPersons(), 'price' => $b->getPrice()], 200);
         }
         else
-            return response()->json([ 'ok' => false, 'message' => 'Message is already read' ], 404);
+            return response()->json([ 'ok' => false, 'message' => 'Prebookin was not found or was removed' ], 404);
     }
 
     /**
