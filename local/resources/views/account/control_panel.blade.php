@@ -255,7 +255,7 @@
                                       @foreach($bookings as $b)
                                           <li>
                                               <div class="booking-header">
-                                                  <span>Reserva para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$b->getAccommId()."/details") !!}">alojamiento</a> con id {!! $pb->getAccommId()!!}</span>
+                                                  <span>Reserva para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$b->getAccommId()."/details") !!}">alojamiento</a></span>
                                                   <div class="booking-options">
                                                       <a class="btn btn-xs btn-success btn-show-booking-details" id="{!! $b->getId() !!}">Ver detalles</a>
                                                       <a class="btn btn-xs btn-danger" id="{!! $b->getId() !!}">Eliminar</a>
@@ -664,14 +664,14 @@
                                     <ul class="message-list">
                                         @if(count($incoming)>0)
                                             @foreach($incoming as $m)
-                                                @if($m->isRead())
-                                                    <li id="{!! $m->getId() !!}">
+                                                @if(!$m->isRead())
+                                                    <li id="{!! $m->getId() !!}" class="unread">
                                                         <div>
                                                             <input type="checkbox"><span class="autor">{!! $m->getFrom()!!}</span><span>{!! $m->getSubject() !!}</span>
                                                         </div>
                                                     </li>
                                                 @else
-                                                    <li id="{!! $m->getId() !!}" class="unread">
+                                                    <li id="{!! $m->getId() !!}">
                                                         <div>
                                                             <input type="checkbox"><span class="autor">{!! $m->getFrom()!!}</span><span>{!! $m->getSubject() !!}</span>
                                                         </div>

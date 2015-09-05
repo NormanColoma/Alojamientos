@@ -118,6 +118,7 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
                 $us->setName($u->name);
                 $us->setSurname($u->surname);
                 $us->setPhone($u->phone);
+                $us->setId($id);
                 $user = $us;
             }
         }catch(QueryException $ex){
@@ -133,7 +134,7 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
         $books = null;
         try{
             $books = DB::table('bookings')->select('*')
-                ->where('user_id', $user)->where('prebooking', 0)
+                ->where('user_id', $user)->where('prebooking', 0)->orderBy("booking_date", "desc")
                 ->get();
 
             if($books == null)
@@ -166,7 +167,7 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
         $books = null;
         try{
             $books = DB::table('bookings')->select('*')
-                ->where('owner_id', $owner)->where('prebooking', 0)
+                ->where('owner_id', $owner)->where('prebooking', 0)->orderBy("booking_date", "desc")
                 ->get();
 
             if($books == null)
@@ -200,7 +201,7 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
         $books = null;
         try{
             $books = DB::table('bookings')->select('*')
-                ->where('user_id', $user)->where('prebooking', 1)
+                ->where('user_id', $user)->where('prebooking', 1)->orderBy("booking_date", "desc")
                 ->get();
 
             if($books == null)
@@ -234,7 +235,7 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
         $books = null;
         try{
             $books = DB::table('bookings')->select('*')
-                ->where('owner_id', $owner)->where('prebooking', 1)
+                ->where('owner_id', $owner)->where('prebooking', 1)->orderBy("booking_date", "desc")
                 ->get();
 
             if($books == null)

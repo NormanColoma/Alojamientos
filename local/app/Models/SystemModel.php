@@ -133,7 +133,7 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         $messages = [];
         try{
             $m = DB::table('messages')->select("messages.id","messages.from","messages.to","messages.subject","messages.text","messages.read")
-                ->leftJoin('users', 'email', '=', 'to')->where('email', $user_email)->get();
+                ->leftJoin('users', 'email', '=', 'to')->where('email', $user_email)->orderBy("messages.read", "asc")->get();
             if(count($m) == 0) {
                 return null;
             }

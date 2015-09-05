@@ -260,6 +260,8 @@ class UserController extends Controller
             Mail::send('emails.confirmBooking', ['check_in' => $b->getCheckIn(), 'check_out' => $b->getCheckOut(), 'owner' => $owner, 'id' => $id, 'text' => $request->input("text-conditions")], function ($m) use ($user) {
                 $m->to($user->getEmail(), $user->getEmail())->subject('Confirmar reserva');
             });
+            flash()->overlay("Las condiciones han sido enviadas correctamente", "Condiciones enviadas");
+            return redirect("manage/owner");
         }catch(\Exception $ex){
             throw new \Exceptionx($ex->getMessage());
         }

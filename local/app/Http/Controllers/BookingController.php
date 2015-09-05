@@ -169,13 +169,42 @@ class BookingController extends Controller
      */
     public function confirmBooking($id)
     {
-       $bm = new BookingModel();
+        $bm = new BookingModel();
         if($bm->confirm($id)){
-            flash()->overlay("Su rserva ha sido confirmada. Puede verificarlo desde sus reservas en el panel de control", "Reserva Confirmada");
+            $um = new UserModel();
+            $booking = $bm->showBooking($id);
+            $owner = $um->userById($booking->getOwnerId(),"owner");
+            $this->sendBookingConfirmedEmail($booking, $owner);
+            flash()->overlay("Su reserva ha sido confirmada. Puede verificarlo desde sus reservas en el panel de control", "Reserva Confirmada");
             return redirect("manage/traveler");
         }
         else{
             return view("errors/503");
+        }
+    }
+
+
+    public function sendBookingConfirmedEmail($b, $owner){
+        $user = Auth::user();
+        try {
+            Mail::send('emails.booking_confirmed', ['capacity' => $b->getPersons(), 'check_in' => $b->getCheckin(), 'check_out' => $b->getCheckout(), 'id' => $b->getAccommId(), 'booking_id' => $b->getId(), 'price' => $b->getPrice()], function ($m) use ($owner) {
+                $m->to($owner->getEmail(), $owner->getName())->subject('Reserva Confirmada');
+            });
+        }catch(\Exception $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        try{
+            $m_owner = new Message();
+            $m_owner->setFrom("AlojaRural");
+            $m_owner->setTo($owner->getEmail());
+            $m_owner->setText("Tiene una nueva reserva confirmada, por favor, acceda al panel de control, Reservas, y podrá ver los detalles de la misma");
+            $m_owner->setSubject('Reserva confirmada');
+            $m_owner->setType("booking");
+            $sm = new SystemModel();
+            $sm->addMessage($m_owner, $owner->getId());
+        }catch (QueryException $ex){
+            throw new \Exception($ex->getMessage());
         }
     }
 
