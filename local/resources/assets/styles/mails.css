@@ -1,0 +1,137 @@
+.message-list{
+
+}
+
+.message-list li{
+    width: 100%;
+    float: left;
+    background-color: #ddd;
+    border-bottom: 1px solid #d4d4d4;
+    cursor: pointer;
+}
+
+.message-list .unread{
+    background-color: white;
+    font-weight: 700;
+}
+
+.message-list li div{
+    padding:10px;
+}
+
+.message-list li .autor{
+    margin-left: 20px;
+    margin-right: 40px;
+    float: left;
+    width: 150px;
+}
+
+.message-list li input[type='checkbox']{
+    float: left;
+    cursor: default;
+}
+
+.change-list li{
+    display: block;
+    float: left;
+    cursor: pointer;
+}
+.change-list{
+    width: 100%;
+    float:left;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.change-list li:first-child{
+    border-right: 1px solid #ddd;
+    padding-right: 5px;
+}
+
+.change-list li:last-child{
+    padding-left: 5px;
+}
+
+.message-buttons{
+    margin-top: 20px;
+    float: left;
+    width: 100%;
+}
+
+.message-buttons .glyphicon{
+    padding: 0 15px;
+}
+
+.in-message-options{
+    float:left;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.in-message-options li{
+    float: left;
+    margin-right: 10px;
+}
+
+.in-message-options li a{
+    cursor: pointer;
+}
+
+
+#newMessage textarea, #conditions textarea{
+    float: left;
+    width: 100%;
+    height: 100px;
+    margin-bottom: 20px;
+    border: 1px solid #d4d4d4;
+    padding: 15px;
+}
+
+#newMessage textarea:hover, #newMessage textarea:focus, #newMessage textarea:active, #conditions textarea:hover, #conditions textarea:focus, #conditions textarea:active{
+    outline: none;
+}
+
+#showMessage, #newMessage, #conditions, #details, #booking-details{
+    display: none;
+    margin-top: 20px;
+}
+
+#conditions ul, #details ul, #booking-details ul{
+    padding: 20px;
+}
+
+#conditions ul li, #details ul li, #booking-details ul li{
+    margin-bottom: 10px;
+}
+
+.prebooking-info-message, .booking-info-message{
+    font-style: italic;
+    margin-top: 30px;
+    font-size: 13px;
+}
+
+.prebooking-list, .prebooking-user-list, .booking-user-list, .booking-list{
+    width:100%;
+    float:left;
+    margin-top: 20px;
+}
+
+.prebooking-list li, .prebooking-user-list li, .booking-user-list li, .booking-list li{
+    float:left;
+    width:100%;
+    margin-bottom: 20px;
+}
+
+.prebooking-list .prebooking-header, .prebooking-user-list .prebooking-header, .booking-user-list .booking-header, .booking-list .booking-header{
+    float:left;
+    width: 100%;
+}
+
+.prebooking-header .prebooking-options, .booking-header .booking-options{
+    float:right;
+}
+
+.alert{
+    display:none;
+    width: 100%;
+    float:left;
+}

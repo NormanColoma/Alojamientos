@@ -29,15 +29,36 @@ Route::get('/logout',"UserController@logout");
 
 Route::group(['middleware' => ['auth']], function()
 {
+    Route::group(['middleware' => ['traveler']], function()
+    {
+        Route::post("accommodation/{id}/book", "BookingController@createBookingPrebooking");
+        Route::get("booking/{id}/confirm", "BookingController@confirmBooking");
+    });
+
+    Route::group(['middleware' => ['owner']], function()
+    {
+        Route::post("booking/{id}/send","UserController@sendConditions");
+    });
+
     Route::get('/manage/traveler',['middleware' => 'traveler', function()
     {
-        return view("account/control_panel");
+        $sm = new \App\Models\SystemModel();
+        $um = new \App\Models\UserModel();
+        $inc = $sm->allIncomingMessages(Auth::user()->email);
+        $prebookings = $um->allPreBookings(Auth::user()->id);
+        $bookings = $um->allBookings(Auth::user()->id);
+        return view("account/control_panel",['incoming' => $inc, 'prebookings' => $prebookings, 'bookings' => $bookings]);
     }]);
 
     Route::get('/manage/owner',['middleware' => 'owner', function()
     {
         $am = new \App\Models\AccommodationModel();
-        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id)]);
+        $um = new \App\Models\UserModel();
+        $sm = new \App\Models\SystemModel();
+        $inc = $sm->allIncomingMessages(Auth::user()->email);
+        $prebookings = $um->allPreBookingsByOwner(Auth::user()->id);
+        $bookings = $um->allBookingsByOwner(Auth::user()->id);
+        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id), 'incoming' => $inc, 'prebookings' => $prebookings, 'bookings' => $bookings]);
     }]);
 
     Route::get('/manage/owner/accoms/page/{id}',['middleware' => 'owner', function()
@@ -52,7 +73,12 @@ Route::group(['middleware' => ['auth']], function()
     {
         return view("account/control_panel");
     }]);
-
+    Route::get("accommodation/{id}/details", "AccommodationController@show");
+    Route::get('message/{id}/show', "SystemController@showMessage");
+    Route::post('message/read/{id}', "SystemController@readMessage");
+    Route::get('prebooking/{id}/show', "BookingController@showPrebooking");
+    Route::delete('prebooking/{id}/delete', "BookingController@deletePrebooking");
+    Route::get('booking/{id}/show', "BookingController@showBooking");
 });
 
 Route::post('accommodation/publish',"AccommodationController@addAccommodation");
@@ -72,4 +98,8 @@ Route::delete('accommodation/{id}/schedule', "AccommodationController@deleteSche
 Route::get('accommodation/{id}/schedule/update',function($id){
     return view("account/schedule", ["id" => $id]);
 });
-Route::get("accommodation/{id}/details", "AccommodationController@show");
+
+
+Route::get("prueba", function(){
+    return view("emails.confirmBooking");
+});

@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\DTO\Admin;
+use App\Models\DTO\Owner;
+use App\Models\DTO\Traveler;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\DTO\AbstractUser;
+use App\Models\DTO\Booking;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\QueryException;
+use DB;
 
 class UserModel extends Model implements AuthenticatableContract, CanResetPasswordContract, IDAOUser
 {
@@ -92,13 +97,168 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
 
     }
 
+    public function userById($id, $type)
+    {
+        $users = null;
+        $user = null;
+        try{
+            $users = DB::table('users')->where('id', $id)->get();
+            if($users == null){
+                return null;
+            }
+
+            foreach($users as $u) {
+                if($type == "traveler")
+                    $us = new Traveler();
+                else if($type == "owner")
+                    $us = new Owner();
+                else
+                    $us = new Admin();
+                $us->setEmail($u->email);
+                $us->setName($u->name);
+                $us->setSurname($u->surname);
+                $us->setPhone($u->phone);
+                $us->setId($id);
+                $user = $us;
+            }
+        }catch(QueryException $ex){
+           throw new \Exception($ex);
+        }
+
+        return $user;
+    }
+
     public function allBookings($user)
     {
+        $bookings = [];
+        $books = null;
+        try{
+            $books = DB::table('bookings')->select('*')
+                ->where('user_id', $user)->where('prebooking', 0)->orderBy("booking_date", "desc")
+                ->get();
+
+            if($books == null)
+                return null;
+
+            foreach($books as $bk) {
+                $b = new Booking();
+                $b->setId($bk->id);
+                $b->setPersons($bk->persons);
+                $b->setPrice($bk->total_price);
+                $b->setPreBooking($bk->prebooking);
+                $b->setCheckIn($bk->check_in);
+                $b->setCheckOut($bk->check_out);
+                $b->setUserId($bk->user_id);
+                $b->setAccommId($bk->accommodation_id);
+                $b->setOwnerId($bk->owner_id);
+                $bookings[] = $b;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception("No existen reservas.");
+        }
+
+        return $bookings;
+
+    }
+
+    public function allBookingsByOwner($owner)
+    {
+        $bookings = [];
+        $books = null;
+        try{
+            $books = DB::table('bookings')->select('*')
+                ->where('owner_id', $owner)->where('prebooking', 0)->orderBy("booking_date", "desc")
+                ->get();
+
+            if($books == null)
+                return null;
+
+            foreach($books as $bk) {
+                $b = new Booking();
+                $b->setId($bk->id);
+                $b->setPersons($bk->persons);
+                $b->setPrice($bk->total_price);
+                $b->setPreBooking($bk->prebooking);
+                $b->setCheckIn($bk->check_in);
+                $b->setCheckOut($bk->check_out);
+                $b->setUserId($bk->user_id);
+                $b->setAccommId($bk->accommodation_id);
+                $b->setOwnerId($bk->owner_id);
+                $bookings[] = $b;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception("No existen reservas.");
+        }
+
+        return $bookings;
 
     }
 
     public function allPreBookings($user)
     {
+
+        $bookings = [];
+        $books = null;
+        try{
+            $books = DB::table('bookings')->select('*')
+                ->where('user_id', $user)->where('prebooking', 1)->orderBy("booking_date", "desc")
+                ->get();
+
+            if($books == null)
+                return null;
+
+            foreach($books as $bk) {
+                $b = new Booking();
+                $b->setId($bk->id);
+                $b->setPersons($bk->persons);
+                $b->setPrice($bk->total_price);
+                $b->setPreBooking($bk->prebooking);
+                $b->setCheckIn($bk->check_in);
+                $b->setCheckOut($bk->check_out);
+                $b->setUserId($bk->user_id);
+                $b->setOwnerId($bk->owner_id);
+                $b->setAccommId($bk->accommodation_id);
+                $bookings[] = $b;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception("No existen reservas.");
+        }
+
+        return $bookings;
+
+    }
+
+    public function allPreBookingsByOwner($owner)
+    {
+
+        $bookings = [];
+        $books = null;
+        try{
+            $books = DB::table('bookings')->select('*')
+                ->where('owner_id', $owner)->where('prebooking', 1)->orderBy("booking_date", "desc")
+                ->get();
+
+            if($books == null)
+                return null;
+
+            foreach($books as $bk) {
+                $b = new Booking();
+                $b->setId($bk->id);
+                $b->setPersons($bk->persons);
+                $b->setPrice($bk->total_price);
+                $b->setPreBooking($bk->prebooking);
+                $b->setCheckIn($bk->check_in);
+                $b->setCheckOut($bk->check_out);
+                $b->setUserId($bk->user_id);
+                $b->setOwnerId($bk->owner_id);
+                $b->setAccommId($bk->accommodation_id);
+                $bookings[] = $b;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception("No existen reservas.");
+        }
+
+        return $bookings;
 
     }
 

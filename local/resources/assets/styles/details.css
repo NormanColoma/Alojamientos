@@ -73,7 +73,7 @@
 
 .accommodation-right-bar-side-container .form-div .glyphicon{
     position: absolute;
-    top: 30.5%;
+    top: 24.5%;
     margin-left: 15px;
     color: #d3d3d3;
 }
@@ -134,6 +134,23 @@
 
 .new{
     color:#999999 !important;
+}
+
+#myModal .modal-body {
+    position: relative;
+    padding: 15px 0px;
+}
+
+#myModal textarea {
+    overflow: auto;
+    width: 100% !important;
+    border: none;
+    min-height: 200px;
+    padding: 15px;
+}
+
+#myModal textarea:hover, #myModal textarea:active, #myModal textarea:focus{
+    outline: none;
 }
 
 

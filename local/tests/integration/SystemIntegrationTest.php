@@ -8,7 +8,10 @@
  */
 
 use App\Models\AccommodationModel;
+use App\Models\DTO\Message;
 use App\Models\DTO\Schedule;
+use App\Models\DTO\Traveler;
+use App\Models\SystemModel;
 use App\Models\UserModel;
 use App\Models\DTO\Accommodation;
 use App\Models\DTO\Photo;
@@ -623,5 +626,281 @@ class SystemIntegrationTest extends TestCase
         $accoms3 = $sm->allAccomByDates("Madrid", "2015-9-16", "2015-9-18");
         $this->assertNotNull($accoms3);
         $this->assertEquals(2,count($accoms3));
+    }
+
+    public function testAddMessage(){
+        $owner = new Owner();
+        $traveler = new Traveler();
+        $um = new UserModel();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $traveler->setName("Pepe");
+        $traveler->setEmail("pepe@email.com");
+        $traveler->setSurname("Gómez");
+        $traveler->setPhone("654983322");
+        $traveler->setPassword("prueba2");
+
+        $um->createUser($owner);
+        $um->createUser($traveler);
+
+        $message  = new Message();
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Probando");
+        $message->setText("Esto es un mensaje de prueba");
+
+        $sm = new SystemModel();
+
+        $this->assertNotNull($sm->addMessage($message, $um->getID($owner->getEmail())));
+        $this->assertNotNull($sm->addMessage($message, $um->getID($traveler->getEmail())));
+
+        $this->SeeInDatabase('messages', ['from' => $owner->getEmail(), 'to' => $traveler->getEmail(), 'user_id' => $um->getID($owner->getEmail())]);
+        $this->SeeInDatabase('messages', ['from' => $owner->getEmail(), 'to' => $traveler->getEmail(), 'user_id' => $um->getID($traveler->getEmail())]);
+    }
+
+
+    public function testGetMessages(){
+        $owner = new Owner();
+        $traveler = new Traveler();
+        $um = new UserModel();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $traveler->setName("Pepe");
+        $traveler->setEmail("pepe@email.com");
+        $traveler->setSurname("Gómez");
+        $traveler->setPhone("654983322");
+        $traveler->setPassword("prueba2");
+
+        $um->createUser($owner);
+        $um->createUser($traveler);
+
+        $message  = new Message();
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Probando");
+        $message->setText("Esto es un mensaje de prueba");
+
+        $sm = new SystemModel();
+
+        $id1=$sm->addMessage($message, $um->getID($traveler->getEmail()));
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Segunda prueba");
+        $message->setText("Esto es un mensaje de prueba por segunda vez");
+
+        $id2=$sm->addMessage($message, $um->getID($traveler->getEmail()));
+
+        $message->setFrom($traveler->getEmail());
+        $message->setTo($owner->getEmail());
+        $message->setSubject("Mensaje enviado");
+        $message->setText("Esto es un mensaje enviado");
+        $sm->addMessage($message, $um->getID($traveler->getEmail()));
+        //Mensajes de entrada
+        $messages = $sm->allIncomingMessages($traveler->getEmail());
+
+        $this->assertEquals(2,count($messages));
+        $this->assertEquals("Probando",$messages[0]->getSubject());
+        $this->assertEquals("Segunda prueba",$messages[1]->getSubject());
+
+
+        //Mensajes de salida
+        $messages = $sm->allOutcomingMessages($traveler->getEmail());
+        $this->assertEquals(1,count($messages));
+        $this->assertEquals("Mensaje enviado",$messages[0]->getSubject());
+        $this->assertEquals("Esto es un mensaje enviado",$messages[0]->getText());
+
+
+    }
+
+
+
+    public function testSortMessages(){
+        $owner = new Owner();
+        $traveler = new Traveler();
+        $um = new UserModel();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $traveler->setName("Pepe");
+        $traveler->setEmail("pepe@email.com");
+        $traveler->setSurname("Gómez");
+        $traveler->setPhone("654983322");
+        $traveler->setPassword("prueba2");
+
+        $um->createUser($owner);
+        $um->createUser($traveler);
+
+        $message  = new Message();
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Probando");
+        $message->setText("Esto es un mensaje de prueba");
+
+        $sm = new SystemModel();
+
+        $id1=$sm->addMessage($message, $um->getID($traveler->getEmail()));
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Segunda prueba");
+        $message->setText("Esto es un mensaje de prueba por segunda vez");
+
+        $id2=$sm->addMessage($message, $um->getID($traveler->getEmail()));
+
+        $message->setFrom($traveler->getEmail());
+        $message->setTo($owner->getEmail());
+        $message->setSubject("Mensaje enviado");
+        $message->setText("Esto es un mensaje enviado");
+        $sm->addMessage($message, $um->getID($traveler->getEmail()));
+        //Mensajes de entrada
+        $messages = $sm->allIncomingMessages($traveler->getEmail());
+
+        $this->assertEquals(2,count($messages));
+        $this->assertEquals("Probando",$messages[0]->getSubject());
+        $this->assertEquals("Segunda prueba",$messages[1]->getSubject());
+
+        $sm->readMessage($messages[0]->getId());
+
+        $messages = $sm->allIncomingMessages($traveler->getEmail());
+        $this->assertEquals("Segunda prueba",$messages[0]->getSubject());
+        $this->assertEquals("Probando",$messages[1]->getSubject());
+
+    }
+
+
+    public function testGetSingleMessage(){
+        $owner = new Owner();
+        $traveler = new Traveler();
+        $um = new UserModel();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $traveler->setName("Pepe");
+        $traveler->setEmail("pepe@email.com");
+        $traveler->setSurname("Gómez");
+        $traveler->setPhone("654983322");
+        $traveler->setPassword("prueba2");
+
+        $um->createUser($owner);
+        $um->createUser($traveler);
+
+        $message  = new Message();
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Probando");
+        $message->setText("Esto es un mensaje de prueba");
+
+        $sm = new SystemModel();
+
+        $id=$sm->addMessage($message, $um->getID($traveler->getEmail()));
+
+        $m = $sm->getMessage($id);
+
+        $this->assertEquals("Probando",$m->getSubject());
+        $this->assertEquals(false, $m->isRead());
+
+
+    }
+
+
+    public function testReadMessage(){
+        $owner = new Owner();
+        $traveler = new Traveler();
+        $um = new UserModel();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $traveler->setName("Pepe");
+        $traveler->setEmail("pepe@email.com");
+        $traveler->setSurname("Gómez");
+        $traveler->setPhone("654983322");
+        $traveler->setPassword("prueba2");
+
+        $um->createUser($owner);
+        $um->createUser($traveler);
+
+        $message  = new Message();
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Probando");
+        $message->setText("Esto es un mensaje de prueba");
+
+        $sm = new SystemModel();
+
+        $id=$sm->addMessage($message, $um->getID($traveler->getEmail()));
+        $m = $sm->getMessage($id);
+        $this->assertEquals(false,$m->isRead());
+        $this->assertEquals(true,$sm->readMessage($id));
+        $m = $sm->getMessage($id);
+        $this->assertEquals(true,$m->isRead());
+
+
+    }
+
+
+    public function testDeleteMessage(){
+        $owner = new Owner();
+        $traveler = new Traveler();
+        $um = new UserModel();
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $traveler->setName("Pepe");
+        $traveler->setEmail("pepe@email.com");
+        $traveler->setSurname("Gómez");
+        $traveler->setPhone("654983322");
+        $traveler->setPassword("prueba2");
+
+        $um->createUser($owner);
+        $um->createUser($traveler);
+
+        $message  = new Message();
+
+        $message->setFrom($owner->getEmail());
+        $message->setTo($traveler->getEmail());
+        $message->setSubject("Probando");
+        $message->setText("Esto es un mensaje de prueba");
+
+        $sm = new SystemModel();
+
+        $id=$sm->addMessage($message, $um->getID($traveler->getEmail()));
+        $this->assertNotNull($sm->getMessage($id));
+        $this->assertEquals(true, $sm->deleteMessage($id));
+        $this->assertNull($sm->getMessage($id));
+
+
+
     }
 }

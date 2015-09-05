@@ -8,7 +8,27 @@
 </head>
 <body>
 @include("include.header")
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Envía tu mensaje de prereserva</h4>
+            </div>
+            <div class="modal-body"><textarea placeholder="Escribe aquí tu mensaje" class="booking-message"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-default btn-send-booking">Enviar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 <div class="container container-height">
+    @include('flash::message')
     <div class="accommodation-container">
         <div class="accommodation-main-container">
             <h2 class="accommodation-title">{!! $accomm->getTitle() !!}</h2>
@@ -101,13 +121,13 @@
                                 <div class="form-group">
                                     <div class='form-div date date-margin'>
                                         <span class="glyphicon glyphicon-calendar"></span>
-                                        <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                                        <input class="form-control datepicker check-in" id="avialableDate" name="check-in" type="text" placeholder="Llegada">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class='form-div date'>
                                         <span class="glyphicon glyphicon-calendar" style="top: 55%;"></span>
-                                        <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Salida">
+                                        <input class="form-control datepicker check-out" id="avialableDate" name="check-out" type="text" placeholder="Salida">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -171,62 +191,78 @@
                 <h3>Resérvalo ya</h3>
             </div>
             <div class="accommodation-right-bar-side-inner">
-                <form>
-                    <div class="form-group">
-                        <div class='form-div date date-margin'>
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
-                        </div>
+                {!! Form::open(['url' => 'accommodation/' . $id . '/book', 'id'=> 'booking-form']) !!}
+                <div class="form-group">
+                    <div class='form-div date date-margin'>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <input class="form-control datepicker check-in" id="avialableDate" name="check-in" type="text" placeholder="Llegada">
                     </div>
-                    <div class="form-group">
-                        <div class='form-div date'>
-                            <span class="glyphicon glyphicon-calendar" style="top: 55%;"></span>
-                            <input class="form-control datepicker" id="avialableDate" name="avialableDate" type="text" placeholder="Salida">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <div class='form-div date'>
+                        <span class="glyphicon glyphicon-calendar" style="top: 43%;"></span>
+                        <input class="form-control datepicker check-out" id="avialableDate" name="check-out" type="text" placeholder="Salida">
                     </div>
-                    <div class="form-group">
-                        <input type="button" class="btn btn-grey btn-prebooking" value="Prereservar">
-                    </div>
-                    <script>
-                        $(document).ready(function(){
-                            getSchedule();
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Número de personas</label>
+                    <select class="form-control" name="persons">
+                        @for($i=1;$i<=$accomm->getCapacity();$i++)
+                            <option>{!! $i !!}</option>
+                        @endfor
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="button" class="btn btn-grey btn-prebooking" value="Prereservar">
+                </div>
+                <script>
+                    $(document).ready(function(){
+                        getSchedule();
+                        $(".btn-prebooking").click(function(){
+                            $("#myModal").modal();
                         })
-                        function getSchedule() {
-                            var id = $(".hidden-id").attr("id");
-                            var port = location.port;
-                            var uri = "http://localhost:" + port + "/alojamientos/accommodation/" + id + "/schedule";
-                            $.ajax({
-                                type: "Get",
-                                url: uri,
-                                async: true,
-                                success: function (data) {
-                                    if (data.message == "Schedule is empty") {
-                                        $( ".datepicker" ).datepicker();
-                                        $('#datepicker').datepicker();
-                                    }
-                                    else if (data.message == "Schedule was retrieved") {
-                                        var disabled_dates = new Array();
-                                        for (var i = 0; i < data.schedule.length; i++) {
-                                            disabled_dates.push(new Date(data.schedule[i].year, parseInt(data.schedule[i].month) - 1, parseInt(data.schedule[i].day) + 1));
-                                        }
-                                        setDatePicker(disabled_dates);
-                                    }
-                                }, error: function () {
-                                    alert("bad")
-                                }
-                            });
-                        }
 
-                            function setDatePicker(disabled_dates){
-                                $('.datepicker').datepicker({
-                                    datesDisabled: disabled_dates,
-                                });
-                                $('#datepicker').datepicker({
-                                    datesDisabled: disabled_dates,
-                                });
+                        $(".btn-send-booking").click(function(){
+                            $('<input />').attr("type", "hidden").attr("name", "message").attr("value", $(".booking-message").val()).appendTo($("#booking-form"));
+                            $("#booking-form").submit();
+                        })
+                    })
+                    function getSchedule() {
+                        var id = $(".hidden-id").attr("id");
+                        var port = location.port;
+                        var uri = "http://localhost:" + port + "/alojamientos/accommodation/" + id + "/schedule";
+                        $.ajax({
+                            type: "Get",
+                            url: uri,
+                            async: true,
+                            success: function (data) {
+                                if (data.message == "Schedule is empty") {
+                                    $( ".datepicker" ).datepicker();
+                                    $('#datepicker').datepicker();
+                                }
+                                else if (data.message == "Schedule was retrieved") {
+                                    var disabled_dates = new Array();
+                                    for (var i = 0; i < data.schedule.length; i++) {
+                                        disabled_dates.push(new Date(data.schedule[i].year, parseInt(data.schedule[i].month) - 1, parseInt(data.schedule[i].day) + 1));
+                                    }
+                                    setDatePicker(disabled_dates);
+                                }
+                            }, error: function () {
+                                alert("bad")
                             }
-                    </script>
-                </form>
+                        });
+                    }
+
+                    function setDatePicker(disabled_dates){
+                        $('.datepicker').datepicker({
+                            datesDisabled: disabled_dates,
+                        });
+                        $('#datepicker').datepicker({
+                            datesDisabled: disabled_dates,
+                        });
+                    }
+                </script>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>
