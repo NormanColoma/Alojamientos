@@ -87,6 +87,7 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
 
     }
 
+
     public function userByEmail($email)
     {
         try{
@@ -103,6 +104,37 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
     public function userByName($name)
     {
 
+    }
+
+    public function getUserByEmail($email)
+    {
+        $users = null;
+        $user = null;
+        try{
+            $users = DB::table('users')->where('email', $email)->get();
+            if($users == null){
+                return null;
+            }
+
+            foreach($users as $u) {
+                if(!$u->admin && !$u->owner)
+                    $us = new Traveler();
+                else if($u->owner)
+                    $us = new Owner();
+                else
+                    $us = new Admin();
+                $us->setEmail($u->email);
+                $us->setName($u->name);
+                $us->setSurname($u->surname);
+                $us->setPhone($u->phone);
+                $us->setId($u->id);
+                $user = $us;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception($ex);
+        }
+
+        return $user;
     }
 
     public function userById($id, $type)
