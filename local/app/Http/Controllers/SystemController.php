@@ -143,6 +143,14 @@ class SystemController extends Controller
         }
     }
 
+    public function deleteMessage($id){
+        $sm = new SystemModel();
+        if($sm->deleteMessage(id))
+            return response()->json(['ok' => true, 'message' => 'Message was deleted'], 200);
+        else
+            return response()->json(['ok' => false, 'message' => 'Message was not found'], 404);
+    }
+
     /**
      * Update the specified resource in storage.
      *

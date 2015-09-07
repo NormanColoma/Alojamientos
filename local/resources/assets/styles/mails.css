@@ -7,6 +7,10 @@
     float: left;
     background-color: #ddd;
     border-bottom: 1px solid #d4d4d4;
+
+}
+
+.message-list li span{
     cursor: pointer;
 }
 
