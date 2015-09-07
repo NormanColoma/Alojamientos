@@ -89,7 +89,15 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
 
     public function userByEmail($email)
     {
-
+        try{
+            $email = DB::table('users')->where('email', $email)->get();
+            if($email == null){
+                return false;
+            }
+            return true;
+        }catch(QueryException $ex){
+            return false;
+        }
     }
 
     public function userByName($name)
