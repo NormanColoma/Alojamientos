@@ -668,6 +668,12 @@
                                 </script>
                             @endif
                         <div id="messages" class="tab-pane fade">
+                                <div class="alert alert-success message-deleted">
+                                    <strong>Mensaje eliminado!</strong> El mensaje ha sido eliminado correctamente
+                                </div>
+                                <div class="alert alert-danger message-not-found">
+                                    <strong>Error!</strong> El mensaje ya ha sido eliminado o no se encuentra disponible
+                                </div>
                                 <h3 class="message-title">Mensajes</h3>
                                 <div id="recieved">
                                     <ul class="message-list">
@@ -692,7 +698,7 @@
                                         @endif
                                     </ul>
                                     <div class="form-group message-buttons">
-                                        <button type="button" class="btn btn-danger">
+                                        <button type="button" class="btn btn-danger btn-delete-message">
                                             <span class="glyphicon glyphicon-trash"></span>&nbsp;
                                         </button>
                                         <button type="button" class="btn btn-success btn-new-message">
@@ -744,9 +750,9 @@
                                 </div>
                                 <script>
                                     $(document).ready(function(){
-                                        $(".message-list li").click(function(){
+                                        $(".message-list li span").click(function(){
                                             $("#recieved").hide();
-                                            var id = $(this).attr("id");
+                                            var id = $(this).closest("li").attr("id");
                                             readMessage(id);
                                         })
 
@@ -798,6 +804,57 @@
                                             }
                                         })
 
+                                        $(".delete-message").click(function(){
+                                            var id = $(this).attr("id");
+                                            deleteMessage(id);
+                                        })
+
+                                        $(".btn-delete-message").click(function(){
+                                            $(".message-list li").each(function(){
+                                                if($(this).find("input").is(":checked")) {
+                                                    var id = $(this).closest("li").attr("id");
+                                                    deleteMessage(id);
+                                                }
+                                            })
+
+                                        })
+
+                                        function deleteMessage(id){
+                                            var validate = true;
+                                            var port = location.port;
+                                            var uri = "http://localhost:" + port + "/alojamientos/message/"+id+"/delete";
+                                            $.ajax({
+                                                type: "Delete",
+                                                url: uri,
+                                                success: function(data) {
+                                                    $("#showMessage").hide();
+                                                    $("#newMessage").hide();
+                                                    $("#sendMessage").hide();
+                                                    $(".message-title").text("Mensajes")
+                                                    $(".message-list li").each(function(){
+                                                        if($(this).attr("id") == id)
+                                                            $(this).remove();
+                                                    })
+                                                    $("#recieved").show();
+                                                    $(".message-deleted").show();
+                                                    $(".alert").delay(3000).slideUp(200);
+
+                                                }, error: function(){
+                                                    $("#showMessage").hide();
+                                                    $("#newMessage").hide();
+                                                    $("#sendMessage").hide();
+                                                    $(".message-title").text("Mensajes")
+                                                    $(".message-list li").each(function(){
+                                                        if($(this).attr("id") == id)
+                                                            $(this).remove();
+                                                    })
+                                                    $("#recieved").show();
+                                                    $(".message-not-found").show();
+                                                    $(".alert").delay(3000).slideUp(200);
+                                                }
+                                            });
+                                        }
+
                                         function checkEmail(email){
                                             var validate = true;
                                             var port = location.port;
@@ -842,6 +899,7 @@
                                                     $(".message-subject").text(data.subject);
                                                     $(".message-to").text("Mensaje para: "+data.to);
                                                     $(".message-title").text("Ver mensaje")
+                                                    $(".delete-message").attr("id", data.id);
                                                     if(data.type == "pb") {
                                                         var p = "<p class='prebooking-info-message'>Le recordamos que para poder permitir al usuario reservar, debe enviarle las condiciones de la reserva. Acceda a prereservas, y encontrará está preserva con los detalles de la misma. Una vez allí, podrá enviarle las condicione sy permitir así al usuario confirmar la reserva. Si lo desea, también puede comunicarse con el usuario para aclarar cuestiones.</p>";
                                                         $(".message-text").append(p);
@@ -853,6 +911,7 @@
                                                     $(".message-subject").text(data.subject);
                                                     $(".message-to").text("Mensaje para: "+data.to);
                                                     $(".message-title").text("Ver mensaje")
+                                                    $(".delete-message").attr("id", data.id);
                                                     if(data.type == "pb") {
                                                         var p = "<p class='prebooking-info-message'>Le recordamos que para poder permitir al usuario reservar, debe enviarle las condiciones de la reserva. Acceda a prereservas, y encontrará está preserva con los detalles de la misma. Una vez allí, podrá enviarle las condicione sy permitir así al usuario confirmar la reserva</p>";
                                                         $(".message-text").append(p);
