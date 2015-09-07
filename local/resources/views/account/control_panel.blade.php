@@ -184,7 +184,7 @@
                         </div>
                           <div id="preBookings" class="tab-pane fade">
                               <h3 class="prebooking-title">Prereservas realizadas por los usuarios en sus alojamientos</h3>
-                              <p class="prebooking-options-info">Pulse sobre "Enviar condiciones" para poder verificar primero los datos de la prereserva en cuestión</p>
+                              <p class="prebooking-options-info">Pulse sobre "Ver detalles" para poder verificar primero los datos de la prereserva en cuestión</p>
                               @if(count($prebookings) > 0)
                                   <ul class="prebooking-list">
                                       @foreach($prebookings as $pb)
@@ -192,7 +192,7 @@
                                               <div class="prebooking-header">
                                                   <span>Prereserva para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$pb->getAccommId()."/details") !!}">alojamiento</a> con id {!! $pb->getAccommId()!!}</span>
                                                   <div class="prebooking-options">
-                                                      <a class="btn btn-xs btn-success btn-send-conditions" id="{!! $pb->getId() !!}">Enviar condiciones</a>
+                                                      <a class="btn btn-xs btn-success btn-send-conditions" id="{!! $pb->getId() !!}">Ver detalles</a>
                                                       <a class="btn btn-xs btn-danger btn-delete-prebooking" id="{!! $pb->getId() !!}">Eliminar</a>
                                                   </div>
                                               </div>
@@ -235,7 +235,7 @@
                                       </div>
                                       <p class="message-to"></p>
                                       <div class="form-group">
-                                          <textarea placeholder="Escribe aquí cuales serán las condiciones de la reserva" name="text-conditions"></textarea>
+                                          <textarea placeholder="Escribe aquí cuales serán las condiciones de la reserva" class="text-conditions" name="text-conditions"></textarea>
                                       </div>
                                       <input type="hidden" name="from" class="h-from">
                                       <input type="hidden" name="to" class="h-to">
@@ -243,6 +243,9 @@
                                       <input type="button" value="Enviar condiciones" class="btn btn-success btn-send-conditions-up">
                                       <input type="button" value="Ver prereservas" class="btn btn-grey btn-back-prebookings">
                                       {!! Form::close() !!}
+                                      <div class="alert alert-danger prebooking-conditions-empty" style="margin-top:20px;">
+                                          <strong>Error!</strong> Debe escribir las condiciones para poder enviarlas.
+                                      </div>
                                   </div>
 
                               @endif
@@ -324,7 +327,7 @@
 
                                   $(".btn-back-prebookings, .prebookings").click(function(){
                                       $(".prebooking-title").text("Prereservas realizadas por los usuarios en sus alojamientos");
-                                      $(".prebooking-options-info").text('Pulse sobre "Enviar condiciones" para poder verificar primero los datos de la prereserva en cuestión');
+                                      $(".prebooking-options-info").text('Pulse sobre "Ver detalles" para poder verificar primero los datos de la prereserva en cuestión');
                                       $("#conditions").hide();
                                       $(".prebooking-list").show();
                                   })
@@ -340,7 +343,13 @@
                                       var id = $(".btn-send-conditions").attr("id");
                                       var port = location.port;
                                       var uri = "http://localhost:" + port + "/alojamientos/booking/"+id+"/send";
-                                      $('#conditions-message-form').attr('action', uri).submit();
+                                      if($(".text-conditions").val())
+                                          $('#conditions-message-form').attr('action', uri).submit();
+                                      else {
+                                          $(".prebooking-conditions-empty").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }
+
                                   })
 
                                   function getBooking(id){
