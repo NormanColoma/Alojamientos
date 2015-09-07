@@ -269,12 +269,68 @@ class UserController extends Controller
         }
     }
 
+    public function sendQuestion(Request $request)
+    {
+        $messages = [
+            'email.required' => 'El email es obligatorio',
+            'name.required' => 'El nombre es obligatorio',
+            'text.required' => 'El mensaje es obligatorio',
+            'subject.required' => 'El asunto es obligatorio',
+            'email.email' => 'El email introducido no es correcto',
+            'name.regex' => 'El nombre solo puede contener letras',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|regex:/^[A-Z]+[a-zA-ZÁÉÍÓÚáéíóuñÑ\s\']+$/',
+            'email' => 'required|email',
+            'subject' => 'required',
+            'text' => 'required',
+
+        ],$messages);
+
+        if ($validator->fails()) {
+            return redirect("contact")
+                ->withErrors($validator)
+                ->withInput();
+        }
+        else {
+            $um = new UserModel();
+            $user = $um->getUserByEmail("alojarural.info@gmail.com");
+            try {
+                Mail::send('emails.question', ['text' => $request->input("text"), 'name' => $request->input("name"), 'email' => $request->input("email")], function ($message) use($user, $request) {
+                    $message->to($user->getEmail())->subject($request->input("subject"));
+                });
+                Mail::send('emails.question_sent', ['text' => $request->input("text"), 'name' => $request->input("name"), 'email' => $request->input("email")], function ($message) use($request) {
+                    $message->from('alojarural.info@gmail.com', 'AlojaRural');
+                    $message->to($request->input("email"))->subject("Consulta enviada");
+                });
+            }catch(\Exception $ex){
+                throw new \Exception($ex->getMessage());
+            }
+
+            try{
+                $m = new Message();
+                $m->setFrom($user->getName() ." " .$user->getSurname());
+                $m->setTo($user->getEmail());
+                $m->setText($request->input("text"));
+                $m->setSubject($request->input("subject"));
+                $m->setType("normal");
+                $sm = new SystemModel();
+                $sm->addMessage($m, $user->getId());
+                flash()->overlay("Tu mensaje ha sido enviado correctamente.","Mensaje enviado");
+                return redirect("contact");
+            }catch (QueryException $ex){
+                throw new \Exception($ex->getMessage());
+            }
+        }
+    }
+
     public function sendMessage(Request $request){
         $um = new UserModel();
         $user = $um->userById($um->getID($request->input("from")), 'traveler');
         try {
             Mail::send('emails.new', ['text' => $request->input("new-text-message"), 'user' => Auth::user()], function ($message) use($user) {
-                $message->from('ua.norman@gmail.com', 'AlojaRural');
+                $message->from('alojarural.info@gmail.com', 'AlojaRural');
                 $message->to($user->getEmail())->subject("Nuevo mensaje");
             });
 

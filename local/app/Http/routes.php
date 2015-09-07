@@ -71,7 +71,9 @@ Route::group(['middleware' => ['auth']], function()
 
     Route::get('/manage/admin', ['middleware' => 'admin', function()
     {
-        return view("account/control_panel");
+        $sm = new \App\Models\SystemModel();
+        $inc = $sm->allIncomingMessages(Auth::user()->email);
+        return view("account/control_panel", ['incoming' => $inc]);
     }]);
     Route::get("accommodation/{id}/details", "AccommodationController@show");
     Route::get('message/{id}/show', "SystemController@showMessage");
@@ -106,3 +108,7 @@ Route::get("prueba", function(){
     return view("emails.confirmBooking");
 });
 Route::get("user/check/email/{email}","UserController@existsEmail");
+Route::get("contact",function(){
+    return view("account.contact");
+});
+Route::post("sendQuestion", "UserController@sendQuestion");

@@ -451,4 +451,28 @@ class UserIntegrationTest extends TestCase
         $this->assertFalse($userModel->userByEmail("pepe@gmail.com"));
 
     }
+
+    public function testGetUserByEmail(){
+
+        $this->notSeeInDatabase('users', ['email' => 'javier@email.com']);
+
+        $userModel = new UserModel();
+        $traveler = new Traveler();
+
+        $traveler->setEmail('javier@email.com');
+        $traveler->setAdmin(false);
+        $traveler->setPassword(bcrypt('prueba'));
+        $traveler->setName('Javier');
+        $traveler->setOwner(false);
+        $traveler->setPhone('654321987');
+        $traveler->setSurname('Comino');
+
+        $userModel->createUser($traveler);
+        $traveler->setId($userModel->getID("javier@email.com"));
+        $traveler->setPassword(null);
+
+        $this->seeInDatabase('users', ['email' => 'javier@email.com']);
+        $this->assertEquals($traveler, $userModel->getUserByEmail("javier@email.com"));
+
+    }
 }
