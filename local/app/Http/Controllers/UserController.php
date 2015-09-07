@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\BookingModel;
 use App\Models\DTO\Admin;
+use App\Models\DTO\Message;
 use App\Models\DTO\Owner;
 use App\Models\DTO\Traveler;
+use App\Models\SystemModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 
@@ -266,6 +268,45 @@ class UserController extends Controller
             throw new \Exceptionx($ex->getMessage());
         }
     }
+
+    public function sendMessage(Request $request){
+        $um = new UserModel();
+        $user = $um->userById($um->getID($request->input("from")), 'traveler');
+        try {
+            Mail::send('emails.new', ['text' => $request->input("new-text-message"), 'user' => Auth::user()], function ($message) use($user) {
+                $message->from('ua.norman@gmail.com', 'AlojaRural');
+                $message->to($user->getEmail())->subject("Nuevo mensaje");
+            });
+
+        }catch(\Exception $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        try{
+            $m = new Message();
+            $m->setFrom(Auth::user()->name ." " . Auth::user()->surname);
+            $m->setTo($user->getEmail());
+            $m->setText($request->input("new-text-message"));
+            $m->setSubject('Nuevo mensaje');
+            $m->setType("normal");
+            $sm = new SystemModel();
+            $sm->addMessage($m, $user->getId());
+            $redirect = null;
+            if(Auth::user()->admin) {
+                $redirect = "/manage/admin";
+            }
+            else if(Auth::user()->owner) {
+                $redirect = "/manage/owner";
+            }
+            else {
+                $redirect = "/manage/traveler";
+            }
+            flash()->overlay("Tu mensaje ha sido enviado correctamente.","Mensaje enviado");
+            return redirect($redirect);
+        }catch (QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -275,5 +316,13 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function existsEmail($email){
+        $um = new UserModel();
+        if($um->userByEmail($email))
+            return response()->json(['ok' => true, 'message' => 'Email was found'], 200);
+        else
+            return response()->json(['ok' => false, 'message' => 'Email was not found'], 404);
     }
 }

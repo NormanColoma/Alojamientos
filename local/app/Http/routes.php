@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth']], function()
     Route::get('prebooking/{id}/show', "BookingController@showPrebooking");
     Route::delete('prebooking/{id}/delete', "BookingController@deletePrebooking");
     Route::get('booking/{id}/show', "BookingController@showBooking");
+    Route::post('message/send', "UserController@sendMessage");
 });
 
 Route::post('accommodation/publish',"AccommodationController@addAccommodation");
@@ -103,3 +104,4 @@ Route::get('accommodation/{id}/schedule/update',function($id){
 Route::get("prueba", function(){
     return view("emails.confirmBooking");
 });
+Route::get("user/check/email/{email}","UserController@existsEmail");

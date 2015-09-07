@@ -695,7 +695,7 @@
                                         <button type="button" class="btn btn-danger">
                                             <span class="glyphicon glyphicon-trash"></span>&nbsp;
                                         </button>
-                                        <button type="button" class="btn btn-success">
+                                        <button type="button" class="btn btn-success btn-new-message">
                                             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
                                         </button>
                                     </div>
@@ -719,6 +719,29 @@
                                         {!! Form::close() !!}
                                     </div>
                                 </div>
+                                <div id="sendMessage">
+                                    {!! Form::open(['url' => 'message/send', 'id' => 'send-message-form']) !!}
+                                        {!! csrf_field() !!}
+                                    <div class="form-group">
+                                        <label>Para:</label>
+                                        <input type="text" class="form-control" name="from">
+                                        <span class="text-danger text-danger-from"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Asunto:</label>
+                                        <input type="text" class="form-control" name="subject">
+                                        <span class="text-danger text-danger-subject"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea placeholder="Escribe aquí tu mensaje" name="new-text-message" class="new-text-message"></textarea>
+                                        <span class="text-danger text-danger-message"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="button" class="btn btn-success btn-send-message" value="Enviar">
+                                        <input type="button" class="btn btn-grey messages" value="Volver">
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
                                 <script>
                                     $(document).ready(function(){
                                         $(".message-list li").click(function(){
@@ -727,9 +750,16 @@
                                             readMessage(id);
                                         })
 
+                                        $(".btn-new-message").click(function(){
+                                            $(".message-title").text("Nuevo mensaje")
+                                            $("#recieved").hide();
+                                            $("#sendMessage").show();
+                                        })
+
                                         $(".show-messages, .messages").click(function(){
                                             $("#showMessage").hide();
                                             $("#newMessage").hide();
+                                            $("#sendMessage").hide();
                                             $(".message-title").text("Mensajes")
                                             $("#recieved").show();
                                         })
@@ -739,6 +769,49 @@
                                                 $("#newMessage").show();
                                         })
 
+                                        $(".btn-send-message").click(function(){
+                                            var validate = true;
+                                            if(!$("input[name=from]").val()){
+                                                $(".text-danger-from").text("Campo obligatorio");
+                                                $(".text-danger-from").show();
+                                                validate=false;
+                                            }else{
+                                                $(".text-danger-from").hide();
+                                            }
+                                            if(!$("input[name=subject]").val()){
+                                                $(".text-danger-subject").text("Campo obligatorio");
+                                                $(".text-danger-subject").show();
+                                                validate=false;
+                                            }
+                                            else
+                                                $(".text-danger-subject").hide();
+                                            if(!$(".new-text-message").val()){
+                                                $(".text-danger-message").text("Campo obligatorio");
+                                                $(".text-danger-message").show();
+                                                validate=false;
+                                            }
+                                            else
+                                                $(".text-danger-message").hide();
+                                            if(validate){
+                                                var email = $("input[name=from]").val();
+                                                checkEmail(email);
+                                            }
+                                        })
+
+                                        function checkEmail(email){
+                                            var validate = true;
+                                            var port = location.port;
+                                            var uri = "http://localhost:" + port + "/alojamientos/user/check/email/"+email;
+                                            $.get(uri)
+                                                    .done(function(data){
+                                                        $(".text-danger-from").hide();
+                                                        $("#send-message-form").submit();
+                                                    })
+                                                    .fail(function(){
+                                                        $(".text-danger-from").text("No existe ningún usuario registrado con el e-mail introducido");
+                                                        $(".text-danger-from").show();
+                                                    });
+                                        }
                                         function readMessage(id){
                                             var port = location.port;
                                             var uri = "http://localhost:" + port + "/alojamientos/message/read/"+id;

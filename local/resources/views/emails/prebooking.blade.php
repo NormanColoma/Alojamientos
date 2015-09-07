@@ -33,7 +33,7 @@
         <li>Salida: {!! $check_out !!}</li>
     </ul>
     <h4><strong>Datos propietario</strong></h4>
-    <p>Le facilitamos los datos que el propietario a proporcionado, para que pueda ponerse en contacto con él si lo deasa.</p>
+    <p>Le facilitamos los datos que el propietario ha proporcionado, para que pueda ponerse en contacto con él si lo deasa.</p>
     <ul>
         <li>Nombre: {!! $owner->getName()!!}</li>
         <li>Teléfono: {!! $owner->getPhone() !!}</li>

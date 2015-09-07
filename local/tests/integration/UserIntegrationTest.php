@@ -428,4 +428,27 @@ class UserIntegrationTest extends TestCase
 
     }
 
+
+    public function testExistsEMail(){
+
+        $this->notSeeInDatabase('users', ['email' => 'javier@email.com']);
+
+        $userModel = new UserModel();
+        $traveler = new Traveler();
+
+        $traveler->setEmail('javier@email.com');
+        $traveler->setAdmin(false);
+        $traveler->setPassword('123456');
+        $traveler->setName('Javier');
+        $traveler->setOwner(false);
+        $traveler->setPhone('654321987');
+        $traveler->setSurname('Comino');
+
+        $userModel->createUser($traveler);
+
+        $this->seeInDatabase('users', ['email' => 'javier@email.com']);
+        $this->assertEquals(true,$userModel->userByEmail("javier@email.com"));
+        $this->assertFalse($userModel->userByEmail("pepe@gmail.com"));
+
+    }
 }
