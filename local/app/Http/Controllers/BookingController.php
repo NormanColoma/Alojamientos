@@ -93,7 +93,7 @@ class BookingController extends Controller
                 $m->to($owner->getEmail(), $owner->getName())->subject('Nueva prereserva');
             });
         }catch(\Exception $ex){
-            throw new \Exceptionx($ex->getMessage());
+            throw new \Exception($ex->getMessage());
         }
 
         try{
