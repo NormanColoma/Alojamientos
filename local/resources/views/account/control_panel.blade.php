@@ -184,7 +184,7 @@
                         </div>
                           <div id="preBookings" class="tab-pane fade">
                               <h3 class="prebooking-title">Prereservas realizadas por los usuarios en sus alojamientos</h3>
-                              <p class="prebooking-options-info">Pulse sobre "Enviar condiciones" para poder verificar primero los datos de la prereserva en cuestión</p>
+                              <p class="prebooking-options-info">Pulse sobre "Ver detalles" para poder verificar primero los datos de la prereserva en cuestión</p>
                               @if(count($prebookings) > 0)
                                   <ul class="prebooking-list">
                                       @foreach($prebookings as $pb)
@@ -192,7 +192,7 @@
                                               <div class="prebooking-header">
                                                   <span>Prereserva para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$pb->getAccommId()."/details") !!}">alojamiento</a> con id {!! $pb->getAccommId()!!}</span>
                                                   <div class="prebooking-options">
-                                                      <a class="btn btn-xs btn-success btn-send-conditions" id="{!! $pb->getId() !!}">Enviar condiciones</a>
+                                                      <a class="btn btn-xs btn-success btn-send-conditions" id="{!! $pb->getId() !!}">Ver detalles</a>
                                                       <a class="btn btn-xs btn-danger btn-delete-prebooking" id="{!! $pb->getId() !!}">Eliminar</a>
                                                   </div>
                                               </div>
@@ -235,7 +235,7 @@
                                       </div>
                                       <p class="message-to"></p>
                                       <div class="form-group">
-                                          <textarea placeholder="Escribe aquí cuales serán las condiciones de la reserva" name="text-conditions"></textarea>
+                                          <textarea placeholder="Escribe aquí cuales serán las condiciones de la reserva" class="text-conditions" name="text-conditions"></textarea>
                                       </div>
                                       <input type="hidden" name="from" class="h-from">
                                       <input type="hidden" name="to" class="h-to">
@@ -243,6 +243,9 @@
                                       <input type="button" value="Enviar condiciones" class="btn btn-success btn-send-conditions-up">
                                       <input type="button" value="Ver prereservas" class="btn btn-grey btn-back-prebookings">
                                       {!! Form::close() !!}
+                                      <div class="alert alert-danger prebooking-conditions-empty" style="margin-top:20px;">
+                                          <strong>Error!</strong> Debe escribir las condiciones para poder enviarlas.
+                                      </div>
                                   </div>
 
                               @endif
@@ -324,7 +327,7 @@
 
                                   $(".btn-back-prebookings, .prebookings").click(function(){
                                       $(".prebooking-title").text("Prereservas realizadas por los usuarios en sus alojamientos");
-                                      $(".prebooking-options-info").text('Pulse sobre "Enviar condiciones" para poder verificar primero los datos de la prereserva en cuestión');
+                                      $(".prebooking-options-info").text('Pulse sobre "Ver detalles" para poder verificar primero los datos de la prereserva en cuestión');
                                       $("#conditions").hide();
                                       $(".prebooking-list").show();
                                   })
@@ -340,7 +343,13 @@
                                       var id = $(".btn-send-conditions").attr("id");
                                       var port = location.port;
                                       var uri = "http://localhost:" + port + "/alojamientos/booking/"+id+"/send";
-                                      $('#conditions-message-form').attr('action', uri).submit();
+                                      if($(".text-conditions").val())
+                                          $('#conditions-message-form').attr('action', uri).submit();
+                                      else {
+                                          $(".prebooking-conditions-empty").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }
+
                                   })
 
                                   function getBooking(id){
@@ -659,6 +668,12 @@
                                 </script>
                             @endif
                         <div id="messages" class="tab-pane fade">
+                                <div class="alert alert-success message-deleted">
+                                    <strong>Mensaje eliminado!</strong> El mensaje ha sido eliminado correctamente
+                                </div>
+                                <div class="alert alert-danger message-not-found">
+                                    <strong>Error!</strong> El mensaje ya ha sido eliminado o no se encuentra disponible
+                                </div>
                                 <h3 class="message-title">Mensajes</h3>
                                 <div id="recieved">
                                     <ul class="message-list">
@@ -683,10 +698,10 @@
                                         @endif
                                     </ul>
                                     <div class="form-group message-buttons">
-                                        <button type="button" class="btn btn-danger">
+                                        <button type="button" class="btn btn-danger btn-delete-message">
                                             <span class="glyphicon glyphicon-trash"></span>&nbsp;
                                         </button>
-                                        <button type="button" class="btn btn-success">
+                                        <button type="button" class="btn btn-success btn-new-message">
                                             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
                                         </button>
                                     </div>
@@ -710,17 +725,47 @@
                                         {!! Form::close() !!}
                                     </div>
                                 </div>
+                                <div id="sendMessage">
+                                    {!! Form::open(['url' => 'message/send', 'id' => 'send-message-form']) !!}
+                                        {!! csrf_field() !!}
+                                    <div class="form-group">
+                                        <label>Para:</label>
+                                        <input type="text" class="form-control" name="from">
+                                        <span class="text-danger text-danger-from"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Asunto:</label>
+                                        <input type="text" class="form-control" name="subject">
+                                        <span class="text-danger text-danger-subject"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea placeholder="Escribe aquí tu mensaje" name="new-text-message" class="new-text-message"></textarea>
+                                        <span class="text-danger text-danger-message"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="button" class="btn btn-success btn-send-message" value="Enviar">
+                                        <input type="button" class="btn btn-grey messages" value="Volver">
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
                                 <script>
                                     $(document).ready(function(){
-                                        $(".message-list li").click(function(){
+                                        $(".message-list li span").click(function(){
                                             $("#recieved").hide();
-                                            var id = $(this).attr("id");
+                                            var id = $(this).closest("li").attr("id");
                                             readMessage(id);
+                                        })
+
+                                        $(".btn-new-message").click(function(){
+                                            $(".message-title").text("Nuevo mensaje")
+                                            $("#recieved").hide();
+                                            $("#sendMessage").show();
                                         })
 
                                         $(".show-messages, .messages").click(function(){
                                             $("#showMessage").hide();
                                             $("#newMessage").hide();
+                                            $("#sendMessage").hide();
                                             $(".message-title").text("Mensajes")
                                             $("#recieved").show();
                                         })
@@ -730,6 +775,100 @@
                                                 $("#newMessage").show();
                                         })
 
+                                        $(".btn-send-message").click(function(){
+                                            var validate = true;
+                                            if(!$("input[name=from]").val()){
+                                                $(".text-danger-from").text("Campo obligatorio");
+                                                $(".text-danger-from").show();
+                                                validate=false;
+                                            }else{
+                                                $(".text-danger-from").hide();
+                                            }
+                                            if(!$("input[name=subject]").val()){
+                                                $(".text-danger-subject").text("Campo obligatorio");
+                                                $(".text-danger-subject").show();
+                                                validate=false;
+                                            }
+                                            else
+                                                $(".text-danger-subject").hide();
+                                            if(!$(".new-text-message").val()){
+                                                $(".text-danger-message").text("Campo obligatorio");
+                                                $(".text-danger-message").show();
+                                                validate=false;
+                                            }
+                                            else
+                                                $(".text-danger-message").hide();
+                                            if(validate){
+                                                var email = $("input[name=from]").val();
+                                                checkEmail(email);
+                                            }
+                                        })
+
+                                        $(".delete-message").click(function(){
+                                            var id = $(this).attr("id");
+                                            deleteMessage(id);
+                                        })
+
+                                        $(".btn-delete-message").click(function(){
+                                            $(".message-list li").each(function(){
+                                                if($(this).find("input").is(":checked")) {
+                                                    var id = $(this).closest("li").attr("id");
+                                                    deleteMessage(id);
+                                                }
+                                            })
+
+                                        })
+
+                                        function deleteMessage(id){
+                                            var validate = true;
+                                            var port = location.port;
+                                            var uri = "http://localhost:" + port + "/alojamientos/message/"+id+"/delete";
+                                            $.ajax({
+                                                type: "Delete",
+                                                url: uri,
+                                                success: function(data) {
+                                                    $("#showMessage").hide();
+                                                    $("#newMessage").hide();
+                                                    $("#sendMessage").hide();
+                                                    $(".message-title").text("Mensajes")
+                                                    $(".message-list li").each(function(){
+                                                        if($(this).attr("id") == id)
+                                                            $(this).remove();
+                                                    })
+                                                    $("#recieved").show();
+                                                    $(".message-deleted").show();
+                                                    $(".alert").delay(3000).slideUp(200);
+
+                                                }, error: function(){
+                                                    $("#showMessage").hide();
+                                                    $("#newMessage").hide();
+                                                    $("#sendMessage").hide();
+                                                    $(".message-title").text("Mensajes")
+                                                    $(".message-list li").each(function(){
+                                                        if($(this).attr("id") == id)
+                                                            $(this).remove();
+                                                    })
+                                                    $("#recieved").show();
+                                                    $(".message-not-found").show();
+                                                    $(".alert").delay(3000).slideUp(200);
+                                                }
+                                            });
+                                        }
+
+                                        function checkEmail(email){
+                                            var validate = true;
+                                            var port = location.port;
+                                            var uri = "http://localhost:" + port + "/alojamientos/user/check/email/"+email;
+                                            $.get(uri)
+                                                    .done(function(data){
+                                                        $(".text-danger-from").hide();
+                                                        $("#send-message-form").submit();
+                                                    })
+                                                    .fail(function(){
+                                                        $(".text-danger-from").text("No existe ningún usuario registrado con el e-mail introducido");
+                                                        $(".text-danger-from").show();
+                                                    });
+                                        }
                                         function readMessage(id){
                                             var port = location.port;
                                             var uri = "http://localhost:" + port + "/alojamientos/message/read/"+id;
@@ -760,6 +899,7 @@
                                                     $(".message-subject").text(data.subject);
                                                     $(".message-to").text("Mensaje para: "+data.to);
                                                     $(".message-title").text("Ver mensaje")
+                                                    $(".delete-message").attr("id", data.id);
                                                     if(data.type == "pb") {
                                                         var p = "<p class='prebooking-info-message'>Le recordamos que para poder permitir al usuario reservar, debe enviarle las condiciones de la reserva. Acceda a prereservas, y encontrará está preserva con los detalles de la misma. Una vez allí, podrá enviarle las condicione sy permitir así al usuario confirmar la reserva. Si lo desea, también puede comunicarse con el usuario para aclarar cuestiones.</p>";
                                                         $(".message-text").append(p);
@@ -771,6 +911,7 @@
                                                     $(".message-subject").text(data.subject);
                                                     $(".message-to").text("Mensaje para: "+data.to);
                                                     $(".message-title").text("Ver mensaje")
+                                                    $(".delete-message").attr("id", data.id);
                                                     if(data.type == "pb") {
                                                         var p = "<p class='prebooking-info-message'>Le recordamos que para poder permitir al usuario reservar, debe enviarle las condiciones de la reserva. Acceda a prereservas, y encontrará está preserva con los detalles de la misma. Una vez allí, podrá enviarle las condicione sy permitir así al usuario confirmar la reserva</p>";
                                                         $(".message-text").append(p);

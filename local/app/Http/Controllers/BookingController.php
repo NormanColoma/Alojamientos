@@ -48,7 +48,10 @@ class BookingController extends Controller
     public function createBookingPrebooking(Request $request, $id)
     {
         if($request->has("check-in") && $request->has("check-out")){
-
+            if($request->input("check-in")>=$request->input("check-out")){
+                flash()->error("La fecha de salida tiene que ser posterior a la fecha de llegada");
+                return redirect("accommodation/".$id ."/details");
+            }
             $bm = new BookingModel();
             $am = new AccommodationModel();
             $accomm = $am->accommodationByID($id);
@@ -63,7 +66,12 @@ class BookingController extends Controller
             $booking->setPrice($accomm->getPrice()*$booking->getPersons());
             $booking->setOwnerId($am->getOwner($id)->getId());
             if($bm->createBooking($booking)){
-                $this->sendPreBookingEmail($request->input("message"),$owner,$request->input("check-in"), $request->input("check-out"), $request->input("persons"), $id);
+                if(!$request->has("message")){
+                    $message = "Quisiera realizar una reserva para el alojamiento indicado, y en las fechas seleccionadas, ¿podría decirme cuales son las condiciones para el mismo?. Gracias.";
+                }
+                else
+                    $message = $request->input("message");
+                $this->sendPreBookingEmail($message,$owner,$request->input("check-in"), $request->input("check-out"), $request->input("persons"), $id);
                 flash()->overlay("Tu prereserva ha sido realizada correctamente. Por favor accede a tu panel de control y comprúebalo.","Preserva realizada");
                 return redirect("/manage/traveler");
             }
