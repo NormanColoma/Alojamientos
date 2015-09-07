@@ -265,7 +265,7 @@ class UserController extends Controller
             flash()->overlay("Las condiciones han sido enviadas correctamente", "Condiciones enviadas");
             return redirect("manage/owner");
         }catch(\Exception $ex){
-            throw new \Exceptionx($ex->getMessage());
+            throw new \Exception($ex->getMessage());
         }
     }
 
