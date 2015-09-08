@@ -64,6 +64,40 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         return $accommodations;
     }
 
+    public function displayHighlights()
+    {
+        $am = new AccommodationModel();
+        $accomm = null;
+        $accommodations = [];
+        try{
+            $accomm = DB::table('accommodations')->orderBy("created_at","desc")->take(3)->get();
+            if(count($accomm) == 0) {
+                return null;
+            }
+
+            foreach($accomm as $ac) {
+                $a = new Accommodation();
+                $a->setID($ac->id);
+                $a->setBaths($ac->bathrooms);
+                $a->setBeds($ac->beds);
+                $a->setCapacity($ac->capacity);
+                $a->setCity($ac->city);
+                $a->setDesc($ac->desc);
+                $a->setInside($ac->inside);
+                $a->setOutside($ac->outside);
+                $a->setPhotos($am->allPhotos($ac->id));
+                $a->setPrice($ac->price_per_person);
+                $a->setProvince($ac->province);
+                $a->setTitle($ac->title);
+                $a->setInitialDesc($ac->desc);
+                $accommodations [] = $a;
+            }
+        }catch(QueryException $ex){
+            return null;
+        }
+        return $accommodations;
+    }
+
     public function allAccomByDates($city, $c_in, $c_out){
         $am = new AccommodationModel();
         $accomm = null;

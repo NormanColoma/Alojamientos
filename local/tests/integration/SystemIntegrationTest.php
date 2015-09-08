@@ -899,8 +899,82 @@ class SystemIntegrationTest extends TestCase
         $this->assertNotNull($sm->getMessage($id));
         $this->assertEquals(true, $sm->deleteMessage($id));
         $this->assertNull($sm->getMessage($id));
+    }
 
 
+    /*
+     * Obtenemos los pisos destacados
+     *
+     */
+    public function testDisplayHighlights(){
 
+        $this->notSeeInDatabase('accommodations', ['title' => 'Casa rural']);
+
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $owner->setName("Norman");
+        $owner->setEmail("norman@email.com");
+        $owner->setSurname("Coloma");
+        $owner->setPhone("654987321");
+        $owner->setPassword("prueba");
+
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+        $a2 = $a1;
+        $a3 = new Accommodation();
+        $a3->setBaths(2);
+        $a3->setBeds(3);
+        $a3->setCapacity(5);
+        $a3->setCity('Elche');
+        $a3->setDesc('Alojamiento normal.');
+        $a3->setInside('Descripción del interior del alojamiento.');
+        $a3->setOutside('Descripción del exterior del alojamiento.');
+        $a3->setPhotos($arrayPhoto);
+        $a3->setPrice(50);
+        $a3->setProvince('San Vicente');
+        $a3->setTitle('Casa rural');
+        $a4 = $a3;
+        $a4->setCity("Madrid");
+        $a4->setProvince("Madrid");
+        $a5 = $a3;
+        $a5->setCity("Valencia");
+        $a5->setProvince("Valencia");
+        //Testeamos el método createAccom que inserta tanto en la tabla accommodations como en la tabla photos
+        $am->createAccom($a1, $um->getID($owner->getEmail()));
+        $am->createAccom($a2, $um->getID($owner->getEmail()));
+        $am->createAccom($a3, $um->getID($owner->getEmail()));
+        $am->createAccom($a4, $um->getID($owner->getEmail()));
+        $am->createAccom($a5, $um->getID($owner->getEmail()));
+        $sm = new SystemModel();
+        $accoms = $sm->displayHighlights();
+        $this->assertEquals(3, count($accoms));
+        $this->assertEquals("Elche",$accoms[0]->getCity());
+        $this->assertEquals("Valencia",$accoms[2]->getCity());
     }
 }

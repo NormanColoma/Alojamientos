@@ -96,48 +96,21 @@
     <div class="container highlights">
         <h3>Destacados</h3>
         <ul>
-            <li>
-                <div class="accom">
-                    <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
-                    <div class="description">
-                        <span class="city">Alicante</span>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur....</p>
-                        <span class="price">250 €</span>
-                        <span class="hidden-id" hidden="hidden">1</span>
+            @foreach($highlights as $accom)
+                <li>
+                    <div class="accom">
+                        {!! Html::image('/local/resources/assets/img/accoms/' . $accom->getMainImg()->getUrl()) !!}
+                        <div class="description">
+                            <span class="city">{!! $accom->getCity() !!}</span>
+                            <p>{!! $accom->getInitialDesc() !!}</p>
+                        </div>
+                        <div class="show_details">
+                            <span class="price">Desde {!! $accom->getPrice() !!} €</span>
+                            <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$accom->getId()."/details") !!}" class="btn btn-sm btn-success btn-hire">Ver detalles</a>
+                        </div>
                     </div>
-                    <div class="show_details">
-                        <a href="" class="btn btn-sm btn-success btn-hire">Ver detalles</a>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="accom accom-right">
-                    <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
-                    <div class="description">
-                        <span class="city">Alicante</span>
-                        <p>Aquí irá una pequeña descripción sobre el alojamiento</p>
-                        <span class="price">250 €</span>
-                        <span class="hidden-id" hidden="hidden">1</span>
-                    </div>
-                    <div class="show_details">
-                        <a href="" class="btn btn-sm btn-success btn-hire">Ver detalles</a>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="accom accom-last">
-                    <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
-                    <div class="description">
-                        <span class="city">Alicante</span>
-                        <p>Aquí irá una pequeña descripción sobre el alojamiento</p>
-                        <span class="price">250 €</span>
-                        <span class="hidden-id" hidden="hidden">1</span>
-                    </div>
-                    <div class="show_details">
-                        <a href="" class="btn btn-sm btn-success btn-details">Ver detalles</a>
-                    </div>
-                </div>
-            </li>
+                </li>
+            @endforeach
         </ul>
     </div>
 </div>
