@@ -25,7 +25,7 @@ class CreateAccommodationsTable extends Migration
             $table->string('city', 100);
             $table->string('province',100);
             $table->integer('user_id')->unsigned();
-
+            $table->timestamp("created_at")->default(DB::raw('CURRENT_TIMESTAMP'));;
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

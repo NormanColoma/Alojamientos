@@ -44,9 +44,9 @@
             <li>
                 <div>
                     <h3>Menú</h3>
-                        <a class="margin-info-medium">Iniciar sesión</a>
-                        <a class="margin-info">Contacto</a>
-                        <a class="margin-info">Anuncia tu alojamiento</a>
+                        <a class="margin-info-medium" href="{!! URL::to("login") !!}">Iniciar sesión</a>
+                        <a class="margin-info" href="{!! URL::to("contact") !!}">Contacto</a>
+                        <a class="margin-info" href="{!! URL::to('manage/owner#newAccom')!!}">Anuncia tu alojamiento</a>
                     </p>
 
                 </div>

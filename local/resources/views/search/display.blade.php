@@ -24,11 +24,11 @@
                     </div>
                     <div class="form-div form-date">
                         <span class="glyphicon glyphicon-calendar"></span>
-                        <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                        <input class="form-control" data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="check-in" type="text" placeholder="Llegada">
                     </div>
                     <div class="form-div form-date">
                         <span class="glyphicon glyphicon-calendar"></span>
-                        <input class="form-control " data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="avialableDate" type="text" placeholder="Llegada">
+                        <input class="form-control " data-provide="datepicker" data-val="true" data-val-date="El campo Disponible desde debe ser una fecha." data-val-required="El campo Disponible desde es obligatorio." id="avialableDate" name="check-out" type="text" placeholder="Llegada">
                     </div>
                     <div class="form-div form-search">
                         <input type="submit" class="btn btn-primary btn-search-bar" value="Buscar">

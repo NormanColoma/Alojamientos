@@ -211,10 +211,10 @@ a{
 	}
 }
 
-@media screen and (min-width: 0px) and (max-width: 671px) {
+@media screen and (min-width: 0px) and (max-width: 779px) {
 	.footer-info-list{
-		display:none;
-	}
+		 display:none;
+	 }
 
 	.footer-info-list-mobile{
 		display: inherit;
@@ -246,18 +246,34 @@ a{
 /*endregion carousel*/
 
 /*region highlights*/
-.highlights h3{
-	border-bottom: 1px solid rgba(33,33,33,0.1);
+
+.highlights ul{
+	padding-left: 50px;
+}
+.highlights h2, .comentaries h2{
+	color: #5cb85c;
+	font-size: 36px;
+}
+
+.highlights-title, .comentaries-title{
+	width: 33%;
+	margin: 0 auto;
+	margin-bottom: 30px;
+}
+
+.highlights-title p, .comentaries-title p{
+	margin: 0 auto;
+	width: 80%;
 }
 
 .highlights .accom {
-	width: 29.5%;
+	width: 28%;
 	border: 1px solid #dce0e0;
 	border-radius: 2px;
 	float: left;
 	margin-right: 50px;
 	margin-bottom: 40px;
-	height: 425px !important;
+	height: 355px !important;
 	cursor: pointer;
 }
 
@@ -304,16 +320,127 @@ a{
 }
 
 .highlights .accom .show_details {
-	float: right;
+	width: 90%;
 	padding-bottom: 10px;
-	margin-top: 55px;
-	margin-right: 15px;
+	margin: 0 auto;
+	margin-top: -20px;
 }
 
-@media screen and (min-width: 749px) and (max-width: 1003px) {
+.highlights .accom .show_details a{
+	float: right;
+}
+
+.info-app{
+	background-color: #5cb85c;
+}
+
+.info-app{
+	color:white;
+}
+
+.info-app .traveler, .info-app .owner{
+	width: 46%;
+	float:left;
+	margin-bottom: 20px;
+
+}
+
+.info-app .traveler{
+	margin-right: 65px;
+}
+.info-app ul{
+	float:left;
+	margin-top: 20px;
+}
+.info-app ul li{
+	margin-bottom: 20px;
+	float:left;
+}
+
+.info-app ul li p{
+	float: left;
+	width: 90%;
+	margin-left: 10px;
+}
+
+.info-app ul li img{
+	float:left;
+}
+
+.comentaries{
+	margin-bottom: 50px;
+}
+
+.comentaries .carousel{
+	position: inherit;
+}
+
+.comentaries .carousel a{
+	color:white !important;
+}
+
+.comentaries .autor{
+	color: #5cb85c;
+	font-style: italic;
+}
+.comentaries .comment{
+	color: #424242;
+	font-style: italic;
+}
+.comentaries .carousel-control.right, .comentaries .carousel-control.left {
+	background-image: none !important;
+}
+
+.comentaries .carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next, .carousel-control .icon-prev {
+	font-size: 60px;
+	color: #e7e7e7;
+}
+
+.comentaries .carousel-caption {
+	top:175px !important;
+	text-shadow: none !important;
+}
+.comentaries .carousel-indicators{
+	bottom: 100px !important;
+}
+.main-text
+{
+	position: absolute;
+	top: 50px;
+	width: 96.66666666666666%;
+
+}
+
+.main-text h1{
+	color: #5cb85c;
+}
+.btn-min-block
+{
+	min-width: 170px;
+	line-height: 26px;
+}
+.btn-clear
+{
+	color: #FFF;
+	background-color: transparent;
+	border-color: #FFF;
+	margin-right: 15px;
+}
+.btn-clear:hover
+{
+	color: #000;
+	background-color: #FFF;
+}
+
+
+@media screen and (min-width: 749px) and (max-width: 1211px) {
+	.highlights ul{
+		padding-left: 150px;
+
+	}
 	.highlights .accom {
-		width: 100%;
-		height: 485px !important;
+		width: 80%;
+		height: 500px !important;
 	}
 
 	.highlights .accom img {
@@ -323,6 +450,7 @@ a{
 	.highlights .accom .show_details {
 		float: right;
 		padding-bottom: 10px;
+		width: 93.8%;
 		margin-top: 0px;
 		margin-right: 15px;
 	}
@@ -330,11 +458,70 @@ a{
 	.highlights .accom-right{
 		margin-right: 0px;
 	}
+	.highlights-title, .comentaries-title {
+		width: 40%;
+	}
+
+	@media screen and (min-width: 749px) and (max-width: 1003px) {
+		.highlights .accom {
+			width: 100%;
+		}
+
+		.highlights ul{
+			padding-left: 0px;
+
+		}
+
+		.highlights-title, .comentaries-title {
+			width: 53%;
+		}
+
+		.info-app .traveler, .info-app .owner{
+			width: 100% !important;
+		}
+
+		.info-app .traveler{
+			margin-right: 0px !important;
+		}
+		@media screen and (min-width: 749px) and (max-width: 791px) {
+			.highlights-title h2, .highlights-title p{
+				display: none;
+			}
+
+			.highlights-title{
+				height: 20px;
+				float: left;
+			}
+
+			.hidden-xs {
+				display: inherit !important;
+			}
+		}
+	}
+
+	.info-app .traveler, .info-app .owner{
+		width: 49%;
+		float:left;
+		margin-bottom: 20px;
+
+	}
+
+	.info-app .traveler{
+		margin-right: 0px;
+	}
+
+	.info-app ul li p {
+		width: 85%;
+	}
+
 }
 
 
 
 @media screen and (min-width: 440px) and (max-width: 749px) {
+	.highlights ul{
+		padding-left: 0px;
+	}
 	.highlights .accom {
 		width: 100%;
 		height: 490px !important;
@@ -357,9 +544,41 @@ a{
 	.highlights .accom .show_details .btn-success {
 		width: 100%;
 	}
+
+	.highlights .accom .price{
+		position: absolute;
+		margin-top: -375px;
+		color: white;
+		background-color: black;
+		opacity: 0.7;
+		padding: 12px 20px;
+		left:16px;
+		font-weight: 100;
+	}
+
+	.highlights-title h2, .highlights-title p{
+		display: none;
+	}
+
+	.highlights-title{
+		height: 20px;
+		float: left;
+	}
+
+	.info-app{
+		display: none;
+
+	}
+
+	.comentaries{
+		display: none;
+	}
 }
 
 @media screen and (min-width: 360px) and (max-width: 439px) {
+	.highlights ul{
+		padding-left: 0px;
+	}
 	.highlights .accom {
 		width: 100%;
 		height: 445px !important;
@@ -382,9 +601,40 @@ a{
 	.highlights .accom .show_details .btn-success {
 		width: 100%;
 	}
+
+	.highlights .accom .price{
+		position: absolute;
+		margin-top: -375px;
+		color: white;
+		background-color: black;
+		opacity: 0.7;
+		padding: 12px 20px;
+		left:16px;
+		font-weight: 100;
+	}
+
+	.highlights-title h2, .highlights-title p{
+		display: none;
+	}
+
+	.highlights-title{
+		height: 20px;
+		float: left;
+	}
+
+	.info-app{
+		display: none;
+	}
+
+	.comentaries{
+		display: none;
+	}
 }
 
 @media screen and (min-width: 0px) and (max-width: 359px) {
+	.highlights ul{
+		padding-left: 0px;
+	}
 	.highlights .accom {
 		width: 100%;
 		height: 455px !important;
@@ -406,6 +656,34 @@ a{
 
 	.highlights .accom .show_details .btn-success {
 		width: 100%;
+	}
+
+	.highlights .accom .price{
+		position: absolute;
+		margin-top: -375px;
+		color: white;
+		background-color: black;
+		opacity: 0.7;
+		padding: 10px 16px;
+		left:16px;
+		font-weight: 100;
+	}
+
+	.highlights-title h2, .highlights-title p{
+		display: none;
+	}
+
+	.highlights-title{
+		height: 20px;
+		float: left;
+	}
+
+	.info-app{
+		display: none;
+	}
+
+	.comentaries{
+		display: none;
 	}
 }
 /*endregion carousel*/
