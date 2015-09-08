@@ -901,7 +901,7 @@
                                                     $(".message-title").text("Ver mensaje")
                                                     $(".delete-message").attr("id", data.id);
                                                     if(data.type == "pb") {
-                                                        var p = "<p class='prebooking-info-message'>Le recordamos que para poder permitir al usuario reservar, debe enviarle las condiciones de la reserva. Acceda a prereservas, y encontrará está preserva con los detalles de la misma. Una vez allí, podrá enviarle las condicione sy permitir así al usuario confirmar la reserva. Si lo desea, también puede comunicarse con el usuario para aclarar cuestiones.</p>";
+                                                        var p = "<p class='prebooking-info-message'>Le recordamos que para poder permitir al usuario reservar, debe enviarle las condiciones de la reserva. Acceda a prereservas, y encontrará esta prereserva con los detalles de la misma. Una vez allí, podrá enviarle las condiciones y permitir así al usuario confirmar la reserva. Si lo desea, también puede comunicarse con el usuario para aclarar cuestiones.</p>";
                                                         $(".message-text").append(p);
                                                     }
                                                     $("#showMessage").show();
@@ -913,7 +913,7 @@
                                                     $(".message-title").text("Ver mensaje")
                                                     $(".delete-message").attr("id", data.id);
                                                     if(data.type == "pb") {
-                                                        var p = "<p class='prebooking-info-message'>Le recordamos que para poder permitir al usuario reservar, debe enviarle las condiciones de la reserva. Acceda a prereservas, y encontrará está preserva con los detalles de la misma. Una vez allí, podrá enviarle las condicione sy permitir así al usuario confirmar la reserva</p>";
+                                                        var p = "<p class='prebooking-info-message'>Le recordamos que para poder permitir al usuario reservar, debe enviarle las condiciones de la reserva. Acceda a prereservas, y encontrará esta prereserva con los detalles de la misma. Una vez allí, podrá enviarle las condiciones y permitir así al usuario confirmar la reserva</p>";
                                                         $(".message-text").append(p);
                                                     }
                                                     $("#showMessage").show();
