@@ -406,6 +406,19 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
 
     }
 
+    public function deleteScheduleByDate($day){
+
+        try {
+            $deletedRows = DB::table('schedules')->where('day',$day)->delete();
+            if($deletedRows == 0)
+                return false;
+            return true;
+        }catch(QueryException $ex){
+            return false;
+        }
+
+    }
+
 
     public function getOwner($id){
         $owner = null;

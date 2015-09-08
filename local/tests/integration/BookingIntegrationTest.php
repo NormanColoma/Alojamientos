@@ -947,4 +947,79 @@ class BookingIntegrationTest extends TestCase
         $this->SeeInDatabase('schedules', ['day' => '2015-11-28']);
     }
 
+    /**
+     * Eliminamos una reserva en la base de datos por su fecha
+     *
+     * @return void
+     * @group deleteBookByDate
+     */
+    public function testDeleteBookingByDate(){
+        $bm = new BookingModel();
+        $b = new Booking();
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $traveler = new Traveler();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $traveler->setName("Norman");
+        $traveler->setEmail("norman@email.com");
+        $traveler->setSurname("Coloma");
+        $traveler->setPhone("654987321");
+        $traveler->setPassword("prueba");
+
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
+        $um->createUser($traveler);
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        //Testeamos el método createAccom que inserta tanto en la tabla accommodations como en la tabla photos
+        $accom = $am->createAccom($a1, $um->getID($traveler->getEmail()));
+
+        $b->setPersons(3);
+        $b->setPrice(24.00);
+        $b->setPreBooking(false);
+        $b->setCheckIn('25-11-2015');
+        $b->setCheckOut('30-11-2015');
+        $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setOwnerId($um->getID($owner->getEmail()));
+        $b->setAccommId($accom['id']);
+
+        $book_id = $bm->createBooking($b, $um->getID($traveler->getEmail()), $accom['id']);
+
+        $this->SeeInDatabase('bookings', ['persons' => 3]);
+
+        $bm->deleteBooking($book_id);
+
+        $this->notSeeInDatabase('bookings', ['persons' => 3]);
+    }
+
 }

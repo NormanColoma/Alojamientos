@@ -116,11 +116,21 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
     }
     public function deleteBooking($id){
 
+        $am = new AccommodationModel();
         try {
+            $b = $this->showBooking($id);
+            $interval = $b->makeInterval();
+            $days = $interval->getDays();
             $deletedRows = BookingModel::where('id', $id)->delete();
 
             if($deletedRows == 0)
                 return false;
+
+            if($b != null){
+                for($i=0; $i<count($days); $i++){
+                    $am->deleteScheduleByDate($days[$i]);
+                }
+            }
 
             return true;
         }catch(QueryException $ex){
