@@ -20,9 +20,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $sm = new SystemModel();
-        $highlights = $sm->displayHighlights();
-        return view("index", ['highlights' => $highlights]);
+
+        return view("index");
     }
 
     /**
