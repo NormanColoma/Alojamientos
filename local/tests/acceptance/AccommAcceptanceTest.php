@@ -1,18 +1,5 @@
 <?php
 
-/**
- * Created by IntelliJ IDEA.
- * User: Javier
- * Date: 19/08/2015
- * Time: 20:26
- */
-
-/**
- * Created by IntelliJ IDEA.
- * User: Norman
- * Date: 20/08/2015
- * Time: 11:54
- */
 
 use App\Models\AccommodationModel;
 use App\Models\DTO\Accommodation;

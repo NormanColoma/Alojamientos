@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: Javier
- * Date: 01/09/2015
- * Time: 18:16
- */
+
 
 namespace App\Models;
 

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Created by IntelliJ IDEA.
- * User: Javier
- * Date: 18/08/2015
- * Time: 21:18
- */
+
 
 use App\Models\AccommodationModel;
 use App\Models\DTO\Schedule;

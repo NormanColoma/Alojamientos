@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Created by IntelliJ IDEA.
- * User: Javier
- * Date: 01/09/2015
- * Time: 19:00
- */
+
 
 use App\Models\DTO\Booking;
 use App\Models\DTO\PreBooking;

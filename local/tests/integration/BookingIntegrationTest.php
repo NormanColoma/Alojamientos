@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Created by IntelliJ IDEA.
- * User: Javier
- * Date: 01/09/2015
- * Time: 19:32
- */
+
 
 use App\Models\DTO\Owner;
 use App\Models\UserModel;

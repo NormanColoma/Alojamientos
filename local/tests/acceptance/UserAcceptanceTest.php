@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Created by IntelliJ IDEA.
- * User: Norman
- * Date: 14/08/2015
- * Time: 10:49
- */
+
 
 use App\Models\DTO\Admin;
 use App\Models\DTO\Owner;

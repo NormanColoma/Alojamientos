@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Created by IntelliJ IDEA.
- * User: Javier
- * Date: 15/08/2015
- * Time: 20:13
- */
+
 
 use App\Models\DTO\Traveler;
 use App\Models\DTO\Admin;

@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: Javier
- * Date: 12/08/2015
- * Time: 18:08
- */
+
 
 namespace App\Models\DTO;
 

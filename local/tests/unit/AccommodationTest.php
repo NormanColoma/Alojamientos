@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Created by IntelliJ IDEA.
- * User: Javier
- * Date: 18/08/2015
- * Time: 20:28
- */
+
 
 use App\Models\DTO\Accommodation;
 use App\Models\DTO\Photo;
