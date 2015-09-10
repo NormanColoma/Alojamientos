@@ -16,6 +16,7 @@ class CreateCommentariesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('accom_id')->unsigned();
+            $table->integer('stars');
             $table->string('text', 5000);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('accom_id')->references('id')->on('accommodations')->onDelete('cascade');

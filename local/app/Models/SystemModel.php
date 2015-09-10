@@ -263,4 +263,18 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         }
     }
 
+    public function insertCommentary(Commentary $commentary){
+        $message_id = null;
+        try {
+            $message_id = DB::table('commentaries')->insertGetId(
+                ['from' => $message->getFrom(), 'to' => $message->getTo(), 'text' => $message->getText(),
+                    'subject' => $message->getSubject(), 'type' => $message->getType(), 'user_id' => $id_user, 'read' =>$message->isRead()]
+            );
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        return $message_id;
+    }
+
 }
