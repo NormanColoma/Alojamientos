@@ -29,4 +29,5 @@ interface IDAOAccommodation
     public function getSchedule($id);
     public function deleteSchedule($id);
     public function getOwner($id);
+    public function allCommentaries($accom_id);
 }

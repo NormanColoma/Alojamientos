@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\DTO\Admin;
+use App\Models\DTO\Commentary;
 use App\Models\DTO\Owner;
 use App\Models\DTO\Traveler;
 use Illuminate\Database\Eloquent\Model;
@@ -310,4 +311,75 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
 
     }
 
+    public function insertCommentary(Commentary $commentary){
+        $commentary_id = null;
+        try {
+            $commentary_id = DB::table('commentaries')->insertGetId(
+                ['text' => $commentary->getText(), 'stars' => $commentary->getVote(), 'user_id' => $commentary->getUserId(),
+                    'accom_id' => $commentary->getAccomId(), 'created_at' => $commentary->getDate()]
+            );
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        return $commentary_id;
+    }
+
+    public function allCommentaries($traveler_id){
+        $commentaries = [];
+        $commentary = null;
+        try{
+            $commentary = DB::table('commentaries')->select('*')
+                ->where('user_id', $traveler_id)->orderBy("created_at", "asc")
+                ->get();
+
+            if($commentary == null)
+                return null;
+
+            foreach($commentary as $c) {
+                $comm = new Commentary();
+                $comm->setId($c->id);
+                $comm->setAccomId($c->accom_id);
+                $comm->setUserId($c->user_id);
+                $comm->setAuthor($this->userById($c->user_id,"traveler"));
+                $comm->setDate($c->created_at);
+                $comm->setVote($c->stars);
+                $comm->setText($c->text);
+                $commentaries[] = $comm;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        return $commentaries;
+    }
+
+    public function getCommentary($id){
+        $commentaries = [];
+        $commentary = null;
+        try{
+            $commentary = DB::table('commentaries')->select('*')
+                ->where('id', $id)->orderBy("created_at", "asc")
+                ->get();
+
+            if($commentary == null)
+                return null;
+
+            foreach($commentary as $c) {
+                $comm = new Commentary();
+                $comm->setId($c->id);
+                $comm->setAccomId($c->accom_id);
+                $comm->setUserId($c->user_id);
+                $comm->setAuthor($this->userById($c->user_id,"traveler"));
+                $comm->setDate($c->created_at);
+                $comm->setVote($c->stars);
+                $comm->setText($c->text);
+                $commentaries[] = $comm;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        return $commentaries[0];
+    }
 }

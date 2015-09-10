@@ -24,5 +24,7 @@ interface IDAOUser
     public function allPreBookings($user);
     public function getID($email);
     public function insertCommentary(Commentary $commentary);
+    public function getCommentary($id);
+    public function allCommentaries($traveler_id);
 
 }

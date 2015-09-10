@@ -14,6 +14,23 @@ class Commentary
 
     private $id;
     private $accom_id;
+    private $user_id;
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * @param mixed $user_id
+     */
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+    }
     private $author;
     private $text;
     private $vote;
@@ -71,7 +88,7 @@ class Commentary
     /**
      * @param mixed $author
      */
-    public function setAuthor($author)
+    public function setAuthor(Traveler $author)
     {
         $this->author = $author;
     }
