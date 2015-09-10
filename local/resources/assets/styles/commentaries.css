@@ -1,0 +1,33 @@
+.commentaries_container{
+
+}
+
+.commentaries_container .commentary{
+    float:left;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.commentaries_container .commentary .commentary-autor{
+    color: #5cb85c;
+}
+
+.commentaries_container .commentary .commentary-votation{
+    float:left;
+    width: 100%;
+}
+
+.commentaries_container .commentary .commentary-votation ul{
+    float:left;
+    margin-bottom: 20px;
+}
+
+.commentaries_container .commentary .commentary-votation ul li{
+    float:left;
+    width: initial !important;
+}
+
+.commentaries_container .commentary .commentary-date{
+    float:right;
+}
+

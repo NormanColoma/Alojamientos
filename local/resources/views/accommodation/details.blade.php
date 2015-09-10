@@ -5,6 +5,7 @@
     <title>Details page</title>
     <meta name="csrf-token" content="<?= csrf_token() ?>">
     {!! Html::style('/local/resources/assets/styles/details.css') !!}
+    {!! Html::style('/local/resources/assets/styles/commentaries.css') !!}
 </head>
 <body>
 @include("include.header")
@@ -182,9 +183,68 @@
                         </div>
                     </li>
                     <li><h3 class="accommodation-about-info">Comentarios y valoración</h3>
+                        <div class="commentaries_container">
+                            <ul>
+                                <li>
+                                    <div class="commentary">
+                                        <h4 class="commentary-autor">Juan Cano Rivas</h4>
+                                        <div class="commentary-votation">
+                                            <ul>
+                                                <li><span class="glyphicon glyphicon-star"></span></li>
+                                                <li><span class="glyphicon glyphicon-star"></span></li>
+                                                <li><span class="glyphicon glyphicon-star"></span></li>
+                                                <li><span class="glyphicon glyphicon-star"></span></li>
+                                                <li><span class="glyphicon glyphicon-star"></span></li>
+                                            </ul>
+                                            <div class="commentary-date">
+                                                10 Febrero
+                                            </div>
+                                        </div>
+                                        <div class="commentary-text">
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                                                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                                                deserunt mollit anim id est laborum.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="commentary">
+                                        <h4 class="commentary-autor">Juan Cano Rivas</h4>
+                                        <div class="commentary-votation">
+                                            <ul>
+                                                <li><span class="glyphicon glyphicon-star"></span></li>
+                                                <li><span class="glyphicon glyphicon-star"></span></li>
+                                                <li><span class="glyphicon glyphicon-star"></span></li>
+                                                <li><span class="glyphicon glyphicon-star"></span></li>
+                                                <li><span class="glyphicon glyphicon-star"></span></li>
+                                            </ul>
+                                            <div class="commentary-date">
+                                                10 Febrero
+                                            </div>
+                                        </div>
+                                        <div class="commentary-text">
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                                                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                                                deserunt mollit anim id est laborum.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </div>
+
         </div>
         <div class="accommodation-right-bar-side-container">
             <div class="inner-title">
