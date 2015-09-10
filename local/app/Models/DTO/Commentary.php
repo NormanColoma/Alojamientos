@@ -18,7 +18,7 @@ class Commentary
     private $text;
     private $vote;
     private $date;
-    
+
     /**
      * Commentary constructor.
      */
