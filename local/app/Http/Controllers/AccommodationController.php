@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AccommodationModel;
 use App\Models\DTO\Accommodation;
 use App\Models\DTO\Schedule;
+use App\Models\UserModel;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -146,8 +147,11 @@ class AccommodationController extends Controller
     {
         $am = new AccommodationModel();
         $accomm = $am->accommodationByID($id);
-        if($accomm != null)
-            return view("accommodation/details", ["id" => $id, "accomm" => $accomm]);
+        if($accomm != null) {
+            $commentaries = $am->allCommentaries($id);
+            return view("accommodation/details", ["id" => $id, "accomm" => $accomm, 'commentaries' => $commentaries]);
+            return view("accommodation/details", ["id" => $id, "accomm" => $accomm, 'commentaries' => $commentaries]);
+        }
         else
             return view("errors/503");
     }

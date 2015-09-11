@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BookingModel;
 use App\Models\DTO\Admin;
+use App\Models\DTO\Commentary;
 use App\Models\DTO\Message;
 use App\Models\DTO\Owner;
 use App\Models\DTO\Traveler;
@@ -380,5 +381,23 @@ class UserController extends Controller
             return response()->json(['ok' => true, 'message' => 'Email was found'], 200);
         else
             return response()->json(['ok' => false, 'message' => 'Email was not found'], 404);
+    }
+
+
+    public function comment(Request $request){
+        $um = new UserModel();
+        $commentary = new Commentary();
+        $text = "Sin comentario";
+        if($request->has("commentary"))
+            $text = $request->input("commentary");
+        $commentary->setText($text);
+        $commentary->setVote($request->input("stars"));
+        $commentary->setAccomId($request->input("accom-id"));
+        $commentary->setUserId(Auth::user()->id);
+        if($um->insertCommentary($commentary)){
+            return response()->json(['ok' => true, 'message' => 'Commentary was posted'], 200);
+        }else{
+            return response()->json(['ok' => false, 'message' => 'Commentary could not be posted'], 404);
+        }
     }
 }

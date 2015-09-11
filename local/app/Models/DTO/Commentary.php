@@ -130,6 +130,7 @@ class Commentary
      */
     public function getDate()
     {
+
         return $this->date;
     }
 

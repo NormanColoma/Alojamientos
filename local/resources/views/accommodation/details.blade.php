@@ -182,66 +182,40 @@
                                 sufrir modificaciones por parte del propietario en cualquier momento</p>
                         </div>
                     </li>
-                    <li><h3 class="accommodation-about-info">Comentarios y valoración</h3>
+                    @if(count($commentaries) > 0)
+                        <li><h3 class="accommodation-about-info">Comentarios y valoración</h3>
                         <div class="commentaries_container">
                             <ul>
-                                <li>
-                                    <div class="commentary">
-                                        <h4 class="commentary-autor">Juan Cano Rivas</h4>
-                                        <div class="commentary-votation">
-                                            <ul>
-                                                <li><span class="glyphicon glyphicon-star"></span></li>
-                                                <li><span class="glyphicon glyphicon-star"></span></li>
-                                                <li><span class="glyphicon glyphicon-star"></span></li>
-                                                <li><span class="glyphicon glyphicon-star"></span></li>
-                                                <li><span class="glyphicon glyphicon-star"></span></li>
-                                            </ul>
-                                            <div class="commentary-date">
-                                                10 Febrero
+                                @foreach($commentaries as $c)
+                                    <li>
+                                        <div class="commentary">
+                                            <h4 class="commentary-autor">{!! $c->getAuthor()->getName() . " " . $c->getAuthor()->getSurname() !!}</h4>
+                                            <div class="commentary-votation">
+                                                <ul>
+                                                    @for($i=0;$i<5;$i++)
+                                                        @if($i < $c->getVote())
+                                                            <li><span class="glyphicon glyphicon-star gold"></span></li>
+                                                        @else
+                                                            <li><span class="glyphicon glyphicon-star"></span></li>
+                                                        @endif
+                                                    @endfor
+                                                </ul>
+                                                <div class="commentary-date">
+                                                    {!!  date("jS F, Y", strtotime($c->getDate())) !!}
+                                                </div>
+                                            </div>
+                                            <div class="commentary-text">
+                                                <p>
+                                                    {!! $c->getText() !!}
+                                                </p>
                                             </div>
                                         </div>
-                                        <div class="commentary-text">
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                                                deserunt mollit anim id est laborum.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="commentary">
-                                        <h4 class="commentary-autor">Juan Cano Rivas</h4>
-                                        <div class="commentary-votation">
-                                            <ul>
-                                                <li><span class="glyphicon glyphicon-star"></span></li>
-                                                <li><span class="glyphicon glyphicon-star"></span></li>
-                                                <li><span class="glyphicon glyphicon-star"></span></li>
-                                                <li><span class="glyphicon glyphicon-star"></span></li>
-                                                <li><span class="glyphicon glyphicon-star"></span></li>
-                                            </ul>
-                                            <div class="commentary-date">
-                                                10 Febrero
-                                            </div>
-                                        </div>
-                                        <div class="commentary-text">
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                                                deserunt mollit anim id est laborum.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                     </li>
+                    @endif
                 </ul>
             </div>
 

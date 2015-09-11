@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth']], function()
     {
         Route::post("accommodation/{id}/book", "BookingController@createBookingPrebooking");
         Route::get("booking/{id}/confirm", "BookingController@confirmBooking");
+        Route::post("commentary/post", "UserController@comment");
     });
 
     Route::group(['middleware' => ['owner']], function()
