@@ -37,6 +37,7 @@
                           @else
                           <li class="active"><a data-toggle="tab" href="#preBookings" class="prebookings">Mis Prereservas  <span class="glyphicon glyphicon-book" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#bookings" class="bookings">Mis Reservas  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+                              <li><a data-toggle="tab" href="#commentaries" class="commentaries">Mis Valoraciones  <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
                           <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @endif
@@ -575,6 +576,44 @@
                                         <input type="button" value="Ver Reservas" class="btn btn-grey btn-back-bookings">
                                     </div>
                                 </div>
+                                <div id="commentaries" class="tab-pane fade">
+                                    <h3 class="commentaries-title">Valoraciones realizadas en los alojamientos que has estado</h3>
+                                    <p class="commentaries-info">Pulse sobre "Ver detalles" para poder ver la valoración que hiciste sobre el alojamiento</p>
+                                    @if(count($commentaries)>0)
+                                        <ul class="commentaries-list">
+                                            @foreach($commentaries as $c)
+                                                <li>
+                                                    <div class="commentaries-header">
+                                                        <span>Realizaste una valoración del <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$c->getAccomId()."/details") !!}">alojamiento</a> el {!!  date("j/n/Y", strtotime($c->getDate())) !!}</span>
+                                                        <div class="commentaries-options">
+                                                            <a class="btn btn-xs btn-success btn-show-comment" id="{!! $c->getId() !!}">Ver Valoración</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="commentary" id="{!! $c->getId() !!}">
+                                                        <div class="form-group commentary-text">
+                                                            <h3>Tu valoración fue: </h3>
+                                                            <p>"{!! $c->getText() !!}"</p>
+                                                        </div>
+                                                        <div class="form-group commentaries-stars">
+                                                            <ul>
+                                                                @for($i=0;$i<5;$i++)
+                                                                    @if($i < $c->getVote())
+                                                                        <li><span class="glyphicon glyphicon-star gold"></span></li>
+                                                                    @else
+                                                                        <li><span class="glyphicon glyphicon-star"></span></li>
+                                                                    @endif
+                                                                @endfor
+                                                            </ul>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="button" value="Ver Valoraciones" class="btn btn-grey btn-back-commentaries">
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </div>
                                 <script>
                                     $(document).ready(function(){
                                         $(".btn-show-details").click(function(){
@@ -593,6 +632,24 @@
                                             var id = $(this).attr("id");
                                             showCommentary(id);
 
+                                        })
+
+                                        $(".btn-show-comment").click(function(){
+                                            var id = $(this).attr("id");
+                                            $(".commentaries-title").hide();
+                                            $(".commentaries-info").hide();
+                                            $(".commentaries-header").hide();
+                                            $(".commentary").each(function (){
+                                                if($(this).attr("id") == id)
+                                                    $(this).show();
+                                            })
+                                        })
+
+                                        $(".btn-back-commentaries, .commentaries").click(function(){
+                                            $(".commentary").hide();
+                                            $(".commentaries-title").show();
+                                            $(".commentaries-info").show();
+                                            $(".commentaries-header").show();
                                         })
 
                                         $(".btn-back-prebookings, .prebookings").click(function(){

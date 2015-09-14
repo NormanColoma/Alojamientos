@@ -150,7 +150,6 @@ class AccommodationController extends Controller
         if($accomm != null) {
             $commentaries = $am->allCommentaries($id);
             return view("accommodation/details", ["id" => $id, "accomm" => $accomm, 'commentaries' => $commentaries]);
-            return view("accommodation/details", ["id" => $id, "accomm" => $accomm, 'commentaries' => $commentaries]);
         }
         else
             return view("errors/503");

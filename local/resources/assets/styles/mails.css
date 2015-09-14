@@ -114,24 +114,24 @@
     font-size: 13px;
 }
 
-.prebooking-list, .prebooking-user-list, .booking-user-list, .booking-list{
+.prebooking-list, .prebooking-user-list, .booking-user-list, .booking-list, .commentaries-list{
     width:100%;
     float:left;
     margin-top: 20px;
 }
 
-.prebooking-list li, .prebooking-user-list li, .booking-user-list li, .booking-list li{
+.prebooking-list li, .prebooking-user-list li, .booking-user-list li, .booking-list li, .commentaries-list li{
     float:left;
     width:100%;
     margin-bottom: 20px;
 }
 
-.prebooking-list .prebooking-header, .prebooking-user-list .prebooking-header, .booking-user-list .booking-header, .booking-list .booking-header{
+.prebooking-list .prebooking-header, .prebooking-user-list .prebooking-header, .booking-user-list .booking-header, .booking-list .booking-header, .commentaries-list .commentaries-header{
     float:left;
     width: 100%;
 }
 
-.prebooking-header .prebooking-options, .booking-header .booking-options{
+.prebooking-header .prebooking-options, .booking-header .booking-options, .commentaries-header .commentaries-options{
     float:right;
 }
 
@@ -145,6 +145,32 @@
     width:40% !important;
 }
 
+.gold{
+    color: #FFD700 !important;
+}
+
+.commentaries-stars{
+    float:left;
+    width: 100%;
+}
+
+.commentaries-stars ul{
+    float:left;
+    margin-bottom: 20px;
+}
+
+.commentaries-stars ul li{
+    float:left;
+    width: initial !important;
+}
+
+.commentary-text p{
+    font-style: italic;
+}
+
+.commentary{
+    display:none;
+}
 
 @media screen and (min-width: 768px) and (max-width: 1003px) {
     .prebooking-header .prebooking-options, .booking-header .booking-options {
