@@ -4,6 +4,7 @@
 namespace App\Models;
 
 
+use App\Models\DTO\Commentary;
 use App\Models\DTO\Owner;
 use App\Models\DTO\Schedule;
 use App\Models\IDAOAccommodation;
@@ -436,6 +437,37 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
             throw new \Exception($ex->getMessage());
         }
         return $owner;
+    }
+
+
+    public function allCommentaries($accom_id){
+        $commentaries = [];
+        $commentary = null;
+        $um = new UserModel();
+        try{
+            $commentary = DB::table('commentaries')->select('*')
+                ->where('accom_id', $accom_id)->orderBy("created_at", "asc")
+                ->get();
+
+            if($commentary == null)
+                return null;
+
+            foreach($commentary as $c) {
+                $comm = new Commentary();
+                $comm->setId($c->id);
+                $comm->setAccomId($c->accom_id);
+                $comm->setUserId($c->user_id);
+                $comm->setAuthor($um->userById($c->user_id,"traveler"));
+                $comm->setDate($c->created_at);
+                $comm->setVote($c->stars);
+                $comm->setText($c->text);
+                $commentaries[] = $comm;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        return $commentaries;
     }
 
 }

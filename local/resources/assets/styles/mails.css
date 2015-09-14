@@ -81,7 +81,7 @@
 }
 
 
-#newMessage textarea, #conditions textarea, #sendMessage textarea{
+#newMessage textarea, #conditions textarea, #sendMessage textarea, #commentary textarea{
     float: left;
     width: 100%;
     height: 100px;
@@ -91,11 +91,11 @@
 }
 
 #newMessage textarea:hover, #newMessage textarea:focus, #newMessage textarea:active, #conditions textarea:hover, #conditions textarea:focus, #conditions textarea:active,
-#sendMessage textarea:hover, #sendMessage textarea:focus, #sendMessage textarea:active{
+#sendMessage textarea:hover, #sendMessage textarea:focus, #sendMessage textarea:active, #commentary textarea:hover, #commentary textarea:focus, #commentary textarea:active{
     outline: none;
 }
 
-#showMessage, #newMessage, #conditions, #details, #booking-details, #sendMessage{
+#showMessage, #newMessage, #conditions, #details, #booking-details, #sendMessage, #commentary{
     display: none;
     margin-top: 20px;
 }
@@ -114,24 +114,24 @@
     font-size: 13px;
 }
 
-.prebooking-list, .prebooking-user-list, .booking-user-list, .booking-list{
+.prebooking-list, .prebooking-user-list, .booking-user-list, .booking-list, .commentaries-list{
     width:100%;
     float:left;
     margin-top: 20px;
 }
 
-.prebooking-list li, .prebooking-user-list li, .booking-user-list li, .booking-list li{
+.prebooking-list li, .prebooking-user-list li, .booking-user-list li, .booking-list li, .commentaries-list li{
     float:left;
     width:100%;
     margin-bottom: 20px;
 }
 
-.prebooking-list .prebooking-header, .prebooking-user-list .prebooking-header, .booking-user-list .booking-header, .booking-list .booking-header{
+.prebooking-list .prebooking-header, .prebooking-user-list .prebooking-header, .booking-user-list .booking-header, .booking-list .booking-header, .commentaries-list .commentaries-header{
     float:left;
     width: 100%;
 }
 
-.prebooking-header .prebooking-options, .booking-header .booking-options{
+.prebooking-header .prebooking-options, .booking-header .booking-options, .commentaries-header .commentaries-options{
     float:right;
 }
 
@@ -141,6 +141,36 @@
     float:left;
 }
 
+#commentary select{
+    width:40% !important;
+}
+
+.gold{
+    color: #FFD700 !important;
+}
+
+.commentaries-stars{
+    float:left;
+    width: 100%;
+}
+
+.commentaries-stars ul{
+    float:left;
+    margin-bottom: 20px;
+}
+
+.commentaries-stars ul li{
+    float:left;
+    width: initial !important;
+}
+
+.commentary-text p{
+    font-style: italic;
+}
+
+.commentary{
+    display:none;
+}
 
 @media screen and (min-width: 768px) and (max-width: 1003px) {
     .prebooking-header .prebooking-options, .booking-header .booking-options {

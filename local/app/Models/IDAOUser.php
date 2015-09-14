@@ -5,6 +5,7 @@ namespace App\Models;
 
 
 use App\Models\DTO\AbstractUser;
+use App\Models\DTO\Commentary;
 
 interface IDAOUser
 {
@@ -17,5 +18,8 @@ interface IDAOUser
     public function allBookings($user);
     public function allPreBookings($user);
     public function getID($email);
+    public function insertCommentary(Commentary $commentary);
+    public function getCommentary($id);
+    public function allCommentaries($traveler_id);
 
 }

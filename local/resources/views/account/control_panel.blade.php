@@ -37,6 +37,7 @@
                           @else
                           <li class="active"><a data-toggle="tab" href="#preBookings" class="prebookings">Mis Prereservas  <span class="glyphicon glyphicon-book" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#bookings" class="bookings">Mis Reservas  <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+                              <li><a data-toggle="tab" href="#commentaries" class="commentaries">Mis Valoraciones  <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></a></li>
                           <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
                           <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @endif
@@ -497,7 +498,7 @@
                                 </div>
                                 <div id="bookings" class="tab-pane fade">
                                     <h3 class="booking-user-title">Reservas realizadas en AlojaRural</h3>
-                                    <p class="booking-user-options-info">Desde aquí podrás ver los detalles de tus reservas</p>
+                                    <p class="booking-user-options-info">Desde aquí podrás ver los detalles de tus reservas. También podrás valorar aquellos alojamientos en los que has estado.</p>
                                     @if(count($bookings) > 0)
                                         <ul class="booking-user-list">
                                             @foreach($bookings as $b)
@@ -506,6 +507,7 @@
                                                         <span>Reserva confirmada para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$b->getAccommId()."/details") !!}">alojamiento</a>. Pinchando en "Ver detalles" verá los detalles de la misma.</span>
                                                         <div class="booking-options">
                                                             <a class="btn btn-xs btn-success btn-show-booking-details" id="{!! $b->getId() !!}">Ver detalles</a>
+                                                            <a class="btn btn-xs btn-grey btn-show-commentary" id="{!! $b->getAccommId() !!}">Valorar</a>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -515,6 +517,35 @@
                                             <strong>Error!</strong> La reserva no se encuentra disponible, o ya ha sido eliminada por el propietario del alojamiento.
                                         </div>
                                     @endif
+                                    <div id="commentary">
+                                        {!! Form::open(['id' => 'commentary-form']) !!}
+                                        <div class="form-group">
+                                            <label>Valoración</label>
+                                            <select class="form-control" name="stars">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Comentario</label>
+                                            <textarea name="commentary"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" class="accom-id" name="accom-id">
+                                            <input type="submit" class="btn btn-success btn-new-commentary" value="Valorar">
+                                            <input type="button" value="Ver Reservas" class="btn btn-grey btn-back-bookings">
+                                        </div>
+                                        {!! Form::close() !!}
+                                        <div class="alert alert-danger commentary-failed">
+                                            <strong>Error!</strong> No se ha podido publicar su valoración.
+                                        </div>
+                                        <div class="alert alert-success commentary-posted">
+                                            <strong>Valorado!</strong> Su valoración ha sido publicada con éxito.
+                                        </div>
+                                    </div>
                                     <div id="booking-details">
                                         <div class="form-group booking-info">
                                             <h4>Información de la Reserva</h4>
@@ -545,6 +576,44 @@
                                         <input type="button" value="Ver Reservas" class="btn btn-grey btn-back-bookings">
                                     </div>
                                 </div>
+                                <div id="commentaries" class="tab-pane fade">
+                                    <h3 class="commentaries-title">Valoraciones realizadas en los alojamientos que has estado</h3>
+                                    <p class="commentaries-info">Pulse sobre "Ver detalles" para poder ver la valoración que hiciste sobre el alojamiento</p>
+                                    @if(count($commentaries)>0)
+                                        <ul class="commentaries-list">
+                                            @foreach($commentaries as $c)
+                                                <li>
+                                                    <div class="commentaries-header">
+                                                        <span>Realizaste una valoración del <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$c->getAccomId()."/details") !!}">alojamiento</a> el {!!  date("j/n/Y", strtotime($c->getDate())) !!}</span>
+                                                        <div class="commentaries-options">
+                                                            <a class="btn btn-xs btn-success btn-show-comment" id="{!! $c->getId() !!}">Ver Valoración</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="commentary" id="{!! $c->getId() !!}">
+                                                        <div class="form-group commentary-text">
+                                                            <h3>Tu valoración fue: </h3>
+                                                            <p>"{!! $c->getText() !!}"</p>
+                                                        </div>
+                                                        <div class="form-group commentaries-stars">
+                                                            <ul>
+                                                                @for($i=0;$i<5;$i++)
+                                                                    @if($i < $c->getVote())
+                                                                        <li><span class="glyphicon glyphicon-star gold"></span></li>
+                                                                    @else
+                                                                        <li><span class="glyphicon glyphicon-star"></span></li>
+                                                                    @endif
+                                                                @endfor
+                                                            </ul>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="button" value="Ver Valoraciones" class="btn btn-grey btn-back-commentaries">
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </div>
                                 <script>
                                     $(document).ready(function(){
                                         $(".btn-show-details").click(function(){
@@ -559,6 +628,30 @@
 
                                         })
 
+                                        $(".btn-show-commentary").click(function(){
+                                            var id = $(this).attr("id");
+                                            showCommentary(id);
+
+                                        })
+
+                                        $(".btn-show-comment").click(function(){
+                                            var id = $(this).attr("id");
+                                            $(".commentaries-title").hide();
+                                            $(".commentaries-info").hide();
+                                            $(".commentaries-header").hide();
+                                            $(".commentary").each(function (){
+                                                if($(this).attr("id") == id)
+                                                    $(this).show();
+                                            })
+                                        })
+
+                                        $(".btn-back-commentaries, .commentaries").click(function(){
+                                            $(".commentary").hide();
+                                            $(".commentaries-title").show();
+                                            $(".commentaries-info").show();
+                                            $(".commentaries-header").show();
+                                        })
+
                                         $(".btn-back-prebookings, .prebookings").click(function(){
                                             $(".prebooking-user-title").text("Tus prereservas realizadas (una vez que las confirmes pasarán a reservas)");
                                             $(".prebooking-user-options-info").text('Elimine o vea los detalles de sus prereservas');
@@ -570,6 +663,7 @@
                                             $(".booking-user-title").text("Reservas realizadas en AlojaRural");
                                             $(".booking-user-options-info").text('Desde aquí podrás ver los detalles de tus reservas');
                                             $("#booking-details").hide();
+                                            $("#commentary").hide();
                                             $(".booking-user-list").show();
                                         })
 
@@ -578,6 +672,32 @@
                                             deleteBooking(id);
 
                                         })
+
+
+                                        $("#commentary-form").submit(function(){
+                                            var port = location.port;
+                                            var uri = "http://localhost:" + port + "/alojamientos/commentary/post";
+                                            var formData = new FormData($(this)[0]);
+                                            $.ajax({
+                                                url: uri,
+                                                type: 'POST',
+                                                data: formData,
+                                                async: false,
+                                                success: function (data) {
+                                                   $(".commentary-posted").show();
+                                                    $(".alert").delay(3000).slideUp(200);
+
+                                                },error: function(){
+                                                    $(".commentary-failed").show();
+                                                    $(".alert").delay(3000).slideUp(200);
+                                                },
+                                                cache: false,
+                                                contentType: false,
+                                                processData: false
+                                            });
+
+                                            return false;
+                                        });
 
 
                                         function deleteBooking(id){
@@ -655,6 +775,16 @@
 
                                                 }
                                             });
+                                        }
+
+
+                                        function showCommentary(id){
+                                            $(".accom-id").val(id);
+                                            $(".booking-user-title").text("Valorar Alojamiento");
+                                            $(".booking-user-options-info").text("Valora el alojamiento y comparte tu experiencia en AlojaRural, dejando un comentario.");
+                                            $(".btn-new-commentary").attr("id", id);
+                                            $(".booking-user-list").hide();
+                                            $("#commentary").show();
                                         }
 
                                         $(function() {

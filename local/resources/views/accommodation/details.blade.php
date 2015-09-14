@@ -5,6 +5,7 @@
     <title>Details page</title>
     <meta name="csrf-token" content="<?= csrf_token() ?>">
     {!! Html::style('/local/resources/assets/styles/details.css') !!}
+    {!! Html::style('/local/resources/assets/styles/commentaries.css') !!}
 </head>
 <body>
 @include("include.header")
@@ -181,10 +182,43 @@
                                 sufrir modificaciones por parte del propietario en cualquier momento</p>
                         </div>
                     </li>
-                    <li><h3 class="accommodation-about-info">Comentarios y valoración</h3>
+                    @if(count($commentaries) > 0)
+                        <li><h3 class="accommodation-about-info">Comentarios y valoración</h3>
+                        <div class="commentaries_container">
+                            <ul>
+                                @foreach($commentaries as $c)
+                                    <li>
+                                        <div class="commentary">
+                                            <h4 class="commentary-autor">{!! $c->getAuthor()->getName() . " " . $c->getAuthor()->getSurname() !!}</h4>
+                                            <div class="commentary-votation">
+                                                <ul>
+                                                    @for($i=0;$i<5;$i++)
+                                                        @if($i < $c->getVote())
+                                                            <li><span class="glyphicon glyphicon-star gold"></span></li>
+                                                        @else
+                                                            <li><span class="glyphicon glyphicon-star"></span></li>
+                                                        @endif
+                                                    @endfor
+                                                </ul>
+                                                <div class="commentary-date">
+                                                    {!!  date("jS F, Y", strtotime($c->getDate())) !!}
+                                                </div>
+                                            </div>
+                                            <div class="commentary-text">
+                                                <p>
+                                                    {!! $c->getText() !!}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </li>
+                    @endif
                 </ul>
             </div>
+
         </div>
         <div class="accommodation-right-bar-side-container">
             <div class="inner-title">

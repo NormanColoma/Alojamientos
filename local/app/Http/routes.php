@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth']], function()
     {
         Route::post("accommodation/{id}/book", "BookingController@createBookingPrebooking");
         Route::get("booking/{id}/confirm", "BookingController@confirmBooking");
+        Route::post("commentary/post", "UserController@comment");
     });
 
     Route::group(['middleware' => ['owner']], function()
@@ -47,7 +48,8 @@ Route::group(['middleware' => ['auth']], function()
         $inc = $sm->allIncomingMessages(Auth::user()->email);
         $prebookings = $um->allPreBookings(Auth::user()->id);
         $bookings = $um->allBookings(Auth::user()->id);
-        return view("account/control_panel",['incoming' => $inc, 'prebookings' => $prebookings, 'bookings' => $bookings]);
+        $commentaries = $um->allCommentaries(Auth::user()->id);
+        return view("account/control_panel",['incoming' => $inc, 'prebookings' => $prebookings, 'bookings' => $bookings, 'commentaries' => $commentaries]);
     }]);
 
     Route::get('/manage/owner',['middleware' => 'owner', function()

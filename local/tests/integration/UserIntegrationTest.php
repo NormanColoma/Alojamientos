@@ -2,6 +2,7 @@
 
 
 
+use App\Models\DTO\Commentary;
 use App\Models\DTO\Traveler;
 use App\Models\DTO\Admin;
 use App\Models\DTO\Owner;
@@ -469,5 +470,137 @@ class UserIntegrationTest extends TestCase
         $this->seeInDatabase('users', ['email' => 'javier@email.com']);
         $this->assertEquals($traveler, $userModel->getUserByEmail("javier@email.com"));
 
+    }
+
+    public function testInsertCommentary(){
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $traveler = new Traveler();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $traveler->setName("Norman");
+        $traveler->setEmail("norman@email.com");
+        $traveler->setSurname("Coloma");
+        $traveler->setPhone("654987321");
+        $traveler->setPassword("prueba");
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
+        $um->createUser($traveler);
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom = $am->createAccom($a1, $um->getID($traveler->getEmail()));
+
+        $commentary = new Commentary();
+        $commentary->setAccomId($accom['id']);
+        $commentary->setUserId($um->getID($traveler->getEmail()));
+        $commentary->setText("Este es el comentario");
+        $commentary->setVote(3);
+
+        $um->insertCommentary($commentary);
+        $this->seeInDatabase('commentaries', ['text' => $commentary->getText(), 'created_at' => $commentary->getDate(),
+            'user_id' => $commentary->getUserId(), 'accom_id' => $commentary->getAccomId(), 'stars' => $commentary->getVote()]);
+
+    }
+
+
+    public function testGetCommentaries(){
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $traveler = new Traveler();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $traveler->setName("Norman");
+        $traveler->setEmail("norman@email.com");
+        $traveler->setSurname("Coloma");
+        $traveler->setPhone("654987321");
+        $traveler->setPassword("prueba");
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
+        $um->createUser($traveler);
+        $um->createUser($owner);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        $accom = $am->createAccom($a1, $um->getID($traveler->getEmail()));
+
+        $commentary = new Commentary();
+        $commentary->setAccomId($accom['id']);
+        $commentary->setUserId($um->getID($traveler->getEmail()));
+        $commentary->setText("Este es el comentario");
+        $commentary->setVote(3);
+
+        $um->insertCommentary($commentary);
+        $this->seeInDatabase('commentaries', ['text' => $commentary->getText(), 'created_at' => $commentary->getDate(),
+            'user_id' => $commentary->getUserId(), 'accom_id' => $commentary->getAccomId(), 'stars' => $commentary->getVote()]);
+        $commentary = new Commentary();
+        $commentary->setAccomId($accom['id']);
+        $commentary->setUserId($um->getID($traveler->getEmail()));
+        $commentary->setText("Este es el segundo comentario");
+        $commentary->setVote(2);
+        $c_id = $um->insertCommentary($commentary);
+        $this->seeInDatabase('commentaries', ['text' => $commentary->getText(), 'created_at' => $commentary->getDate(),
+            'user_id' => $commentary->getUserId(), 'accom_id' => $commentary->getAccomId(), 'stars' => $commentary->getVote()]);
+        $commentaries = $um->allCommentaries($um->getID($traveler->getEmail()));
+
+        $this->assertEquals(2, count($commentaries));
+        $this->assertEquals($commentaries[0]->getText(), "Este es el comentario");
+        $this->assertEquals($commentaries[1]->getText(), "Este es el segundo comentario");
+        $this->assertEquals($um->getCommentary($c_id)->getText(), "Este es el segundo comentario");
     }
 }

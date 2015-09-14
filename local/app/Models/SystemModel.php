@@ -4,6 +4,7 @@
 namespace App\Models;
 
 
+use App\Models\DTO\Commentary;
 use App\Models\DTO\Message;
 use App\Models\IDAOAccommodation;
 use App\Models\DTO\Accommodation;
