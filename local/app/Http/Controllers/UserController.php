@@ -6,8 +6,10 @@ use App\Models\BookingModel;
 use App\Models\DTO\Admin;
 use App\Models\DTO\Commentary;
 use App\Models\DTO\Message;
+use App\Models\DTO\Note;
 use App\Models\DTO\Owner;
 use App\Models\DTO\Traveler;
+use App\Models\NoteModel;
 use App\Models\SystemModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
@@ -400,4 +402,35 @@ class UserController extends Controller
             return response()->json(['ok' => false, 'message' => 'Commentary could not be posted'], 404);
         }
     }
+
+    public function makeNote(Request $request){
+        $nm = new NoteModel();
+        $note = new Note();
+        $note->setText($request->input('note-text'));
+        $note->setUserId($request->input('user-id'));
+        $note->setOwnerId(Auth::user()->id);
+
+        if($nm->createNote($note)){
+            return response()->json(['ok' => true, 'message' => 'Note was posted'], 201);
+        }else{
+            return response()->json(['ok' => false, 'message' => 'Note could not be posted'], 404);
+        }
+    }
+
+    public function showNotes($id){
+        $nm = new NoteModel();
+        $no = $nm->getNotes($id);
+        if ($no != null){
+            $notes = [];
+            foreach($no as $n){
+                $note = array('id' => $n->getId(), 'owner_id' => $n->getOwnerId(), 'user_id' => $n->getUserId(),
+                    'text' => $n->getText(), 'created_at' => $n->getCreatedAt());
+                $notes [] = $note;
+            }
+            return response()->json(['ok' => true, 'items' => count($notes), 'notes' => $notes], 200);
+        }
+        return response()->json(['ok' => false, 'message' => 'There are no notes for this user'], 404);
+    }
+
+
 }

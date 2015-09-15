@@ -39,6 +39,8 @@ Route::group(['middleware' => ['auth']], function()
     Route::group(['middleware' => ['owner']], function()
     {
         Route::post("booking/{id}/send","UserController@sendConditions");
+        Route::post("note/post", "UserController@makeNote");
+        Route::get("notes/user/{id}", "UserController@showNotes");
     });
 
     Route::get('/manage/traveler',['middleware' => 'traveler', function()

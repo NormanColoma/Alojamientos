@@ -190,8 +190,8 @@
                                             <div class="customers-header">
                                                 <h4>{!! $c->getName() . " " . $c->getSurname()!!}</h4>
                                                 <div class="customers-options">
-                                                    <a class="btn btn-xs btn-success btn-show-note" id="{!! $c->getId() !!}">Ver Notas</a>
-                                                    <a class="btn btn-xs btn-grey btn-add-note">Añadir Nota</a>
+                                                    <a class="btn btn-xs btn-success btn-show-notes" id="{!! $c->getId() !!}">Ver Notas</a>
+                                                    <a class="btn btn-xs btn-grey btn-add-note" id="{!! $c->getId() !!}">Añadir Nota</a>
                                                 </div>
                                             </div>
                                         </li>
@@ -199,10 +199,10 @@
                                 </ul>
                             @endif
                             <div id="new-note">
-                                {!! Form::open([]) !!}
+                                {!! Form::open(['id' => 'notes-form', 'url' => 'note/post']) !!}
                                 <div class="form-group">
                                     <label>Nota</label>
-                                    <textarea name="Note"></textarea>
+                                    <textarea name="note-text" class="note-text"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <input type="hidden" class="about_user" name="user-id">
@@ -210,6 +210,25 @@
                                     <input type="button" value="Ver Notas" class="btn btn-grey btn-back-notes">
                                 </div>
                                 {!! Form::close() !!}
+                            </div>
+                            <div id="show-notes">
+                                <ul class="note-list">
+                                </ul>
+                                <div class="form-group">
+                                    <input type="button" value="Ver Notas" class="btn btn-grey btn-back-notes">
+                                </div>
+                            </div>
+                            <div class="alert alert-success note-inserted">
+                                <strong>Nota añadida!</strong> La nota ha sido añadida correctamente.
+                            </div>
+                            <div class="alert alert-danger note-empty">
+                                <strong>Error!</strong> Debes introducir la nota que quieres añidir.
+                            </div>
+                            <div class="alert alert-danger notes-empty">
+                                <strong>Sin notas!</strong> Todavía no has añadido ninguna nota a este usuario.
+                            </div>
+                            <div class="alert alert-danger note-failed">
+                                <strong>Error!</strong> No se pudo añadir la nota. Por favor, vuelve a intentarlo.
                             </div>
                         </div>
                           <div id="preBookings" class="tab-pane fade">
@@ -356,12 +375,20 @@
                                   })
 
                                   $(".btn-add-note").click(function (){
+                                      var id = $(this).attr("id");
                                       $(".customers-title").text("Nueva nota para "+$(".customers-header h4").text());
                                       $(".customers-options-info").text('Pulse sobre "Añadir Nota" para agregar una nueva nota al usuario especificado');
+                                      $(".about_user").val(id);
                                       $(".customers-list").hide();
                                       $("#new-note").show();
 
                                   })
+
+                                  $(".btn-show-notes").click(function (){
+                                      var id = $(this).attr("id");
+                                      getNotes(id);
+                                  })
+
 
                                   $(".btn-back-prebookings, .prebookings").click(function(){
                                       $(".prebooking-title").text("Prereservas realizadas por los usuarios en sus alojamientos");
@@ -381,6 +408,8 @@
                                       $(".customers-title").text("Clientes");
                                       $(".customers-options-info").text('Pulse sobre "Ver Notas" para ver las notas que añadiste a este usuario, o sobre "Añadir Nota" para añadir una nueva.');
                                       $("#new-note").hide();
+                                      $(".note-list").empty();
+                                      $("#show-notes").hide();
                                       $(".customers-list").show();
                                   })
 
@@ -396,6 +425,7 @@
                                       }
 
                                   })
+
 
                                   function getBooking(id){
                                       var port = location.port;
@@ -428,7 +458,67 @@
                                           }
                                       });
                                   }
+
+                                  $("#notes-form").submit(function(){
+                                      var port = location.port;
+                                      var uri = "http://localhost:" + port + "/alojamientos/note/post";
+                                      if(!$(".note-text").val()){
+                                          $(".note-empty").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }else {
+                                          var formData = new FormData($(this)[0]);
+                                          $.ajax({
+                                              url: uri,
+                                              type: 'POST',
+                                              data: formData,
+                                              async: false,
+                                              success: function (data) {
+                                                  $(".note-inserted").show();
+                                                  $('#notes-form').trigger("reset");
+                                                  $(".alert").delay(3000).slideUp(200);
+
+                                              }, error: function () {
+                                                  $(".note-failed").show();
+                                                  $(".alert").delay(3000).slideUp(200);
+                                              },
+                                              cache: false,
+                                              contentType: false,
+                                              processData: false
+                                          });
+                                      }
+
+                                      return false;
+                                  });
                               })
+
+
+                              function getNotes(id){
+                                  var port = location.port;
+                                  var uri = "http://localhost:" + port + "/alojamientos/notes/user/"+id;
+                                  $.ajax({
+                                      type: "Get",
+                                      url: uri,
+                                      success: function(data) {
+                                          displayNotes(data);
+                                      }, error: function(){
+                                          $("#show-notes").show();
+                                          $(".notes-empty").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }
+                                  });
+                              }
+
+                              function displayNotes(notes){
+                                    for(var i = 0; i< notes.items;i++){
+                                        var li = "<li><div class='note-container'><div class='note-header'><h4>Nota</h4><div class=note-date>creada el "+notes.notes[i].created_at+"<span class='glyphicon glyphicon-remove btn-remove-note'></span></div></div><div class='note-body'><p>"+notes.notes[i].text+"</p></div></div</li>";
+                                        $(".note-list").append(li);
+                                    }
+                                  $(".customers-title").text("Notas añadidas a "+$(".customers-header h4").text());
+                                  $(".customers-options-info").text('Podrás ver y eliminar las notas que añadiste');
+                                  $(".customers-list").hide();
+                                  $(".note-list").show();
+                                  $("#show-notes").show();
+                              }
 
                               function showBooking(id){
                                   var port = location.port;
