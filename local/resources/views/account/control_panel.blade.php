@@ -28,7 +28,7 @@
                           <li><a data-toggle="tab" href="#newAccom" id="btn-add-accom">Añadir alojamiento  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
                               <li><a data-toggle="tab" href="#preBookings" class="prebookings">Prereservas  <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></li>
                               <li><a data-toggle="tab" href="#bookings" class="bookings">Reservas<span class="glyphicon glyphicon-book" aria-hidden="true"></span></a></li>
-                        <li><a data-toggle="tab" href="#pers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+                        <li><a data-toggle="tab" href="#pers" class="customers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
                         <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @elseif(Auth::user()->admin)
@@ -181,7 +181,36 @@
 
                         </div>
                         <div id="pers" class="tab-pane fade">
-                                <h3>Clientes</h3>
+                            <h3 class="customers-title">Clientes</h3>
+                            <p class="customers-options-info">Pulse sobre "Ver Notas" para ver las notas que añadiste a este usuario, o sobre "Añadir Nota" para añadir una nueva.</p>
+                            @if(count($customers) > 0)
+                                <ul class="customers-list">
+                                    @foreach($customers as $c)
+                                        <li>
+                                            <div class="customers-header">
+                                                <h4>{!! $c->getName() . " " . $c->getSurname()!!}</h4>
+                                                <div class="customers-options">
+                                                    <a class="btn btn-xs btn-success btn-show-note" id="{!! $c->getId() !!}">Ver Notas</a>
+                                                    <a class="btn btn-xs btn-grey btn-add-note">Añadir Nota</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                            <div id="new-note">
+                                {!! Form::open([]) !!}
+                                <div class="form-group">
+                                    <label>Nota</label>
+                                    <textarea name="Note"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" class="about_user" name="user-id">
+                                    <input type="submit" class="btn btn-success btn-new-note" value="Añadir Nota">
+                                    <input type="button" value="Ver Notas" class="btn btn-grey btn-back-notes">
+                                </div>
+                                {!! Form::close() !!}
+                            </div>
                         </div>
                           <div id="preBookings" class="tab-pane fade">
                               <h3 class="prebooking-title">Prereservas realizadas por los usuarios en sus alojamientos</h3>
@@ -326,6 +355,14 @@
 
                                   })
 
+                                  $(".btn-add-note").click(function (){
+                                      $(".customers-title").text("Nueva nota para "+$(".customers-header h4").text());
+                                      $(".customers-options-info").text('Pulse sobre "Añadir Nota" para agregar una nueva nota al usuario especificado');
+                                      $(".customers-list").hide();
+                                      $("#new-note").show();
+
+                                  })
+
                                   $(".btn-back-prebookings, .prebookings").click(function(){
                                       $(".prebooking-title").text("Prereservas realizadas por los usuarios en sus alojamientos");
                                       $(".prebooking-options-info").text('Pulse sobre "Ver detalles" para poder verificar primero los datos de la prereserva en cuestión');
@@ -338,6 +375,13 @@
                                       $(".booking-options-info").text('Desde aquí podrás ver los detalles de tus reservas');
                                       $("#booking-details").hide();
                                       $(".booking-list").show();
+                                  })
+
+                                  $(".btn-back-notes, .customers").click(function(){
+                                      $(".customers-title").text("Clientes");
+                                      $(".customers-options-info").text('Pulse sobre "Ver Notas" para ver las notas que añadiste a este usuario, o sobre "Añadir Nota" para añadir una nueva.');
+                                      $("#new-note").hide();
+                                      $(".customers-list").show();
                                   })
 
                                   $(".btn-send-conditions-up").click(function(){

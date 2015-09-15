@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\DTO\Accommodation;
 use App\Models\DTO\Admin;
 use App\Models\DTO\Commentary;
 use App\Models\DTO\Owner;
+use App\Models\DTO\Photo;
 use App\Models\DTO\Traveler;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\DTO\AbstractUser;
@@ -382,4 +384,30 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
 
         return $commentaries[0];
     }
+
+
+    public function getCustomers($id){
+        $customers = [];
+        try {
+            $custom = DB::table('users')->select("email", "name", "surname", "phone", "users.id")
+                ->leftJoin('bookings', 'users.id', '=', 'bookings.user_id')->where('owner_id',$id)->orderBy("surname")
+                ->get();
+            if( $custom != null){
+                foreach($custom as $c){
+                    $customer = new Traveler();
+                    $customer->setEmail($c->email);
+                    $customer->setName($c->name);
+                    $customer->setSurname($c->surname);
+                    $customer->setPhone($c->phone);
+                    $customer->setId($c->id);
+                    $customers [] = $customer;
+                }
+            }
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+        return $customers;
+    }
+
+
 }

@@ -60,7 +60,8 @@ Route::group(['middleware' => ['auth']], function()
         $inc = $sm->allIncomingMessages(Auth::user()->email);
         $prebookings = $um->allPreBookingsByOwner(Auth::user()->id);
         $bookings = $um->allBookingsByOwner(Auth::user()->id);
-        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id), 'incoming' => $inc, 'prebookings' => $prebookings, 'bookings' => $bookings]);
+        $customers = $um->getCustomers(Auth::user()->id);
+        return view("account/control_panel",['accommodations'=>$am->accommodationByOwner(Auth::user()->id), 'incoming' => $inc, 'prebookings' => $prebookings, 'bookings' => $bookings, 'customers' => $customers]);
     }]);
 
     Route::get('/manage/owner/accoms/page/{id}',['middleware' => 'owner', function()

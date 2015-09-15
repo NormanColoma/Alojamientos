@@ -60,7 +60,6 @@ class BookingModel extends Model implements AuthenticatableContract, CanResetPas
             }else{
 
                 $book = DB::table('bookings')
-                    ->where('user_id', '=', $booking->getUserId())
                     ->where('check_out', '>=', $booking->getCheckIn())
                     ->first();
 
