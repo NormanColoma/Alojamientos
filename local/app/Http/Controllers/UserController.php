@@ -396,8 +396,12 @@ class UserController extends Controller
         $commentary->setVote($request->input("stars"));
         $commentary->setAccomId($request->input("accom-id"));
         $commentary->setUserId(Auth::user()->id);
-        if($um->insertCommentary($commentary)){
-            return response()->json(['ok' => true, 'message' => 'Commentary was posted'], 200);
+        $commentary_id = $um->insertCommentary($commentary);
+        if($commentary_id != null){
+            $commentary->setId($commentary_id);
+            $c = array('id' => $commentary->getId(), 'accom_id' => $commentary->getAccomId(), 'text' => $commentary->getText(),
+                'user_id' => $commentary->getUserId(), 'stars' => $commentary->getVote(), 'created_at' => date("j/n/Y", strtotime($commentary->getDate())));
+            return response()->json(['ok' => true, 'message' => 'Commentary was posted', 'commentary' => $c], 200);
         }else{
             return response()->json(['ok' => false, 'message' => 'Commentary could not be posted'], 404);
         }
@@ -430,6 +434,15 @@ class UserController extends Controller
             return response()->json(['ok' => true, 'items' => count($notes), 'notes' => $notes], 200);
         }
         return response()->json(['ok' => false, 'message' => 'There are no notes for this user'], 404);
+    }
+
+    public function removeNote($id){
+        $nm = new NoteModel();
+        if($nm->deleteNote($id)){
+            return response()->json(['ok' => true, 'message' => 'Note was deleted'], 200);
+        }else{
+            return response()->json(['ok' => false, 'message' => 'Note was not found'], 404);
+        }
     }
 
 

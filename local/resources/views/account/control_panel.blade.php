@@ -215,7 +215,10 @@
                                 <ul class="note-list">
                                 </ul>
                                 <div class="form-group">
-                                    <input type="button" value="Ver Notas" class="btn btn-grey btn-back-notes">
+                                    <input type="button" value="Volver" class="btn btn-grey btn-back-notes">
+                                </div>
+                                <div class="alert alert-success note-deleted">
+                                    <strong>Nota eliminada!</strong> La nota ha sido eliminada correctemte.
                                 </div>
                             </div>
                             <div class="alert alert-success note-inserted">
@@ -510,7 +513,7 @@
 
                               function displayNotes(notes){
                                     for(var i = 0; i< notes.items;i++){
-                                        var li = "<li><div class='note-container'><div class='note-header'><h4>Nota</h4><div class=note-date>creada el "+notes.notes[i].created_at+"<span class='glyphicon glyphicon-remove btn-remove-note'></span></div></div><div class='note-body'><p>"+notes.notes[i].text+"</p></div></div</li>";
+                                        var li = "<li id="+notes.notes[i].id+"><div class='note-container'><div class='note-header'><h4>Nota</h4><div class=note-date>creada el "+notes.notes[i].created_at+"<span class='glyphicon glyphicon-remove btn-remove-note' id="+notes.notes[i].id+"></span></div></div><div class='note-body'><p>"+notes.notes[i].text+"</p></div></div</li>";
                                         $(".note-list").append(li);
                                     }
                                   $(".customers-title").text("Notas añadidas a "+$(".customers-header h4").text());
@@ -518,6 +521,29 @@
                                   $(".customers-list").hide();
                                   $(".note-list").show();
                                   $("#show-notes").show();
+                                  $(".btn-remove-note").click(function(){
+                                      var id = $(this).attr("id");
+                                      deleteNote(id);
+                                  })
+                              }
+
+
+                              function deleteNote(id){
+                                  var port = location.port;
+                                  var uri = "http://localhost:" + port + "/alojamientos/notes/user/"+id;
+                                  $.ajax({
+                                      type: "Delete",
+                                      url: uri,
+                                      success: function(data) {
+                                          $(".note-list").find("#"+id).remove();
+                                          $(".note-deleted").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }, error: function(){
+                                          $("#show-notes").show();
+                                          $(".notes-empty").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }
+                                  });
                               }
 
                               function showBooking(id){
@@ -713,8 +739,8 @@
                                 <div id="commentaries" class="tab-pane fade">
                                     <h3 class="commentaries-title">Valoraciones realizadas en los alojamientos que has estado</h3>
                                     <p class="commentaries-info">Pulse sobre "Ver detalles" para poder ver la valoración que hiciste sobre el alojamiento</p>
-                                    @if(count($commentaries)>0)
-                                        <ul class="commentaries-list">
+                                    <ul class="commentaries-list">
+                                        @if(count($commentaries)>0)
                                             @foreach($commentaries as $c)
                                                 <li>
                                                     <div class="commentaries-header">
@@ -745,8 +771,8 @@
                                                     </div>
                                                 </li>
                                             @endforeach
-                                        </ul>
-                                    @endif
+                                        @endif
+                                    </ul>
                                 </div>
                                 <script>
                                     $(document).ready(function(){
@@ -818,7 +844,8 @@
                                                 data: formData,
                                                 async: false,
                                                 success: function (data) {
-                                                   $(".commentary-posted").show();
+                                                    addCommentary(data);
+                                                    $(".commentary-posted").show();
                                                     $(".alert").delay(3000).slideUp(200);
 
                                                 },error: function(){
@@ -832,6 +859,61 @@
 
                                             return false;
                                         });
+
+
+                                        function addCommentary(data){
+                                           var li = "<li>"+
+                                                       "<div class='commentaries-header'>"+
+                                                            "<span>Realizaste una valoración del <a href='http://localhost:8080/alojamientos/accommodation/"+data.commentary.id+"/details'"+">alojamiento</a> el "+data.commentary.created_at+"</span>"+
+                                                            "<div class='commentaries-options'>"+
+                                                                "<a class='btn btn-xs btn-success btn-show-comment' id="+data.commentary.id+">Ver Valoración</a>"+
+                                                            "</div>"+
+                                                       "</div>"+
+                                                       "<div class='commentary' id="+data.commentary.id+">"+
+                                                            "<div class='form-group commentary-text'>"+
+                                                                "<h3>Tu valoración fue: </h3>"+
+                                                                "<p>"+data.commentary.text+"</p>"+
+                                                            "</div>"+
+                                                            "<div class='form-group commentaries-stars'>"+
+                                                                "<ul>"+ addStars(data)+"</ul>"+
+                                                            "</div>"+
+                                                            "<div class='form-group'>"+
+                                                                "<input type='button' value='Ver Valoraciones' class='btn btn-grey btn-back-commentaries'>"+
+                                                            "</div>"+
+                                                        "</div>"+
+                                                    "</li>";
+                                            $(".commentaries-list").append(li);
+
+                                            $(".btn-show-comment").click(function(){
+                                                var id = $(this).attr("id");
+                                                $(".commentaries-title").hide();
+                                                $(".commentaries-info").hide();
+                                                $(".commentaries-header").hide();
+                                                $(".commentary").each(function (){
+                                                    if($(this).attr("id") == id)
+                                                        $(this).show();
+                                                })
+                                            })
+
+                                            $(".btn-back-commentaries, .commentaries").click(function(){
+                                                $(".commentary").hide();
+                                                $(".commentaries-title").show();
+                                                $(".commentaries-info").show();
+                                                $(".commentaries-header").show();
+                                            })
+
+                                        }
+
+                                        function addStars(data){
+                                            var lis = "";
+                                            for(var i=0;i<5;i++) {
+                                                if (i < data.commentary.stars)
+                                                    lis += "<li><span class='glyphicon glyphicon-star gold'></span></li>";
+                                                else
+                                                    lis += "<li><span class='glyphicon glyphicon-star'></span></li>";
+                                            }
+                                            return lis;
+                                        }
 
 
                                         function deleteBooking(id){

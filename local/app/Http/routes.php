@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth']], function()
         Route::post("booking/{id}/send","UserController@sendConditions");
         Route::post("note/post", "UserController@makeNote");
         Route::get("notes/user/{id}", "UserController@showNotes");
+        Route::delete("notes/user/{id}", "UserController@removeNote");
     });
 
     Route::get('/manage/traveler',['middleware' => 'traveler', function()
