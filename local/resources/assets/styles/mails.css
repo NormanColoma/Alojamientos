@@ -81,7 +81,7 @@
 }
 
 
-#newMessage textarea, #conditions textarea, #sendMessage textarea, #commentary textarea{
+#newMessage textarea, #conditions textarea, #sendMessage textarea, #commentary textarea, #new-note textarea{
     float: left;
     width: 100%;
     height: 100px;
@@ -91,11 +91,12 @@
 }
 
 #newMessage textarea:hover, #newMessage textarea:focus, #newMessage textarea:active, #conditions textarea:hover, #conditions textarea:focus, #conditions textarea:active,
-#sendMessage textarea:hover, #sendMessage textarea:focus, #sendMessage textarea:active, #commentary textarea:hover, #commentary textarea:focus, #commentary textarea:active{
+#sendMessage textarea:hover, #sendMessage textarea:focus, #sendMessage textarea:active, #commentary textarea:hover, #commentary textarea:focus, #commentary textarea:active,
+#new-note textarea:hover, #new-note textarea:focus, #new-note textarea:active{
     outline: none;
 }
 
-#showMessage, #newMessage, #conditions, #details, #booking-details, #sendMessage, #commentary{
+#showMessage, #newMessage, #conditions, #details, #booking-details, #sendMessage, #commentary, #new-note, #show-notes{
     display: none;
     margin-top: 20px;
 }
@@ -114,24 +115,24 @@
     font-size: 13px;
 }
 
-.prebooking-list, .prebooking-user-list, .booking-user-list, .booking-list, .commentaries-list{
+.prebooking-list, .prebooking-user-list, .booking-user-list, .booking-list, .commentaries-list, .customers-list{
     width:100%;
     float:left;
     margin-top: 20px;
 }
 
-.prebooking-list li, .prebooking-user-list li, .booking-user-list li, .booking-list li, .commentaries-list li{
+.prebooking-list li, .prebooking-user-list li, .booking-user-list li, .booking-list li, .commentaries-list li, .customers-list li{
     float:left;
     width:100%;
     margin-bottom: 20px;
 }
 
-.prebooking-list .prebooking-header, .prebooking-user-list .prebooking-header, .booking-user-list .booking-header, .booking-list .booking-header, .commentaries-list .commentaries-header{
+.prebooking-list .prebooking-header, .prebooking-user-list .prebooking-header, .booking-user-list .booking-header, .booking-list .booking-header, .commentaries-list .commentaries-header, .customers-list .customers-header{
     float:left;
     width: 100%;
 }
 
-.prebooking-header .prebooking-options, .booking-header .booking-options, .commentaries-header .commentaries-options{
+.prebooking-header .prebooking-options, .booking-header .booking-options, .commentaries-header .commentaries-options, .customers-header .customers-options{
     float:right;
 }
 
@@ -172,6 +173,34 @@
     display:none;
 }
 
+.note-list{
+    display: none;
+}
+
+.note-list li{
+    float:left;
+    width: 100%;
+    margin-bottom: 30px;
+}
+.note-header{
+    float: left;
+    width: 100%;
+}
+.note-header h4{
+    color: #5cb85c;
+    float:left;
+}
+
+.note-header .note-date{
+    float:right;
+    font-size: 12px;
+}
+
+.btn-remove-note{
+    cursor: pointer;
+    color:red;
+    margin-left: 5px;
+}
 @media screen and (min-width: 768px) and (max-width: 1003px) {
     .prebooking-header .prebooking-options, .booking-header .booking-options {
         float:left !important;

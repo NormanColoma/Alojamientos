@@ -28,7 +28,7 @@
                           <li><a data-toggle="tab" href="#newAccom" id="btn-add-accom">Añadir alojamiento  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
                               <li><a data-toggle="tab" href="#preBookings" class="prebookings">Prereservas  <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></li>
                               <li><a data-toggle="tab" href="#bookings" class="bookings">Reservas<span class="glyphicon glyphicon-book" aria-hidden="true"></span></a></li>
-                        <li><a data-toggle="tab" href="#pers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+                        <li><a data-toggle="tab" href="#pers" class="customers">Mis clientes <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
                         <li><a data-toggle="tab" href="#messages" class="messages">Bandeja de entrada <span class="badge">{!! $unread !!}</span></a></li>
                         <li><a data-toggle="tab" href="#account">Mi cuenta<span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                           @elseif(Auth::user()->admin)
@@ -181,7 +181,58 @@
 
                         </div>
                         <div id="pers" class="tab-pane fade">
-                                <h3>Clientes</h3>
+                            <h3 class="customers-title">Clientes</h3>
+                            <p class="customers-options-info">Pulse sobre "Ver Notas" para ver las notas que añadiste a este usuario, o sobre "Añadir Nota" para añadir una nueva.</p>
+                            @if(count($customers) > 0)
+                                <ul class="customers-list">
+                                    @foreach($customers as $c)
+                                        <li>
+                                            <div class="customers-header">
+                                                <h4>{!! $c->getName() . " " . $c->getSurname()!!}</h4>
+                                                <div class="customers-options">
+                                                    <a class="btn btn-xs btn-success btn-show-notes" id="{!! $c->getId() !!}">Ver Notas</a>
+                                                    <a class="btn btn-xs btn-grey btn-add-note" id="{!! $c->getId() !!}">Añadir Nota</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                            <div id="new-note">
+                                {!! Form::open(['id' => 'notes-form', 'url' => 'note/post']) !!}
+                                <div class="form-group">
+                                    <label>Nota</label>
+                                    <textarea name="note-text" class="note-text"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" class="about_user" name="user-id">
+                                    <input type="submit" class="btn btn-success btn-new-note" value="Añadir Nota">
+                                    <input type="button" value="Ver Notas" class="btn btn-grey btn-back-notes">
+                                </div>
+                                {!! Form::close() !!}
+                            </div>
+                            <div id="show-notes">
+                                <ul class="note-list">
+                                </ul>
+                                <div class="form-group">
+                                    <input type="button" value="Volver" class="btn btn-grey btn-back-notes">
+                                </div>
+                                <div class="alert alert-success note-deleted">
+                                    <strong>Nota eliminada!</strong> La nota ha sido eliminada correctemte.
+                                </div>
+                            </div>
+                            <div class="alert alert-success note-inserted">
+                                <strong>Nota añadida!</strong> La nota ha sido añadida correctamente.
+                            </div>
+                            <div class="alert alert-danger note-empty">
+                                <strong>Error!</strong> Debes introducir la nota que quieres añidir.
+                            </div>
+                            <div class="alert alert-danger notes-empty">
+                                <strong>Sin notas!</strong> Todavía no has añadido ninguna nota a este usuario.
+                            </div>
+                            <div class="alert alert-danger note-failed">
+                                <strong>Error!</strong> No se pudo añadir la nota. Por favor, vuelve a intentarlo.
+                            </div>
                         </div>
                           <div id="preBookings" class="tab-pane fade">
                               <h3 class="prebooking-title">Prereservas realizadas por los usuarios en sus alojamientos</h3>
@@ -326,6 +377,22 @@
 
                                   })
 
+                                  $(".btn-add-note").click(function (){
+                                      var id = $(this).attr("id");
+                                      $(".customers-title").text("Nueva nota para "+$(".customers-header h4").text());
+                                      $(".customers-options-info").text('Pulse sobre "Añadir Nota" para agregar una nueva nota al usuario especificado');
+                                      $(".about_user").val(id);
+                                      $(".customers-list").hide();
+                                      $("#new-note").show();
+
+                                  })
+
+                                  $(".btn-show-notes").click(function (){
+                                      var id = $(this).attr("id");
+                                      getNotes(id);
+                                  })
+
+
                                   $(".btn-back-prebookings, .prebookings").click(function(){
                                       $(".prebooking-title").text("Prereservas realizadas por los usuarios en sus alojamientos");
                                       $(".prebooking-options-info").text('Pulse sobre "Ver detalles" para poder verificar primero los datos de la prereserva en cuestión');
@@ -340,6 +407,15 @@
                                       $(".booking-list").show();
                                   })
 
+                                  $(".btn-back-notes, .customers").click(function(){
+                                      $(".customers-title").text("Clientes");
+                                      $(".customers-options-info").text('Pulse sobre "Ver Notas" para ver las notas que añadiste a este usuario, o sobre "Añadir Nota" para añadir una nueva.');
+                                      $("#new-note").hide();
+                                      $(".note-list").empty();
+                                      $("#show-notes").hide();
+                                      $(".customers-list").show();
+                                  })
+
                                   $(".btn-send-conditions-up").click(function(){
                                       var id = $(".btn-send-conditions").attr("id");
                                       var port = location.port;
@@ -352,6 +428,7 @@
                                       }
 
                                   })
+
 
                                   function getBooking(id){
                                       var port = location.port;
@@ -384,7 +461,90 @@
                                           }
                                       });
                                   }
+
+                                  $("#notes-form").submit(function(){
+                                      var port = location.port;
+                                      var uri = "http://localhost:" + port + "/alojamientos/note/post";
+                                      if(!$(".note-text").val()){
+                                          $(".note-empty").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }else {
+                                          var formData = new FormData($(this)[0]);
+                                          $.ajax({
+                                              url: uri,
+                                              type: 'POST',
+                                              data: formData,
+                                              async: false,
+                                              success: function (data) {
+                                                  $(".note-inserted").show();
+                                                  $('#notes-form').trigger("reset");
+                                                  $(".alert").delay(3000).slideUp(200);
+
+                                              }, error: function () {
+                                                  $(".note-failed").show();
+                                                  $(".alert").delay(3000).slideUp(200);
+                                              },
+                                              cache: false,
+                                              contentType: false,
+                                              processData: false
+                                          });
+                                      }
+
+                                      return false;
+                                  });
                               })
+
+
+                              function getNotes(id){
+                                  var port = location.port;
+                                  var uri = "http://localhost:" + port + "/alojamientos/notes/user/"+id;
+                                  $.ajax({
+                                      type: "Get",
+                                      url: uri,
+                                      success: function(data) {
+                                          displayNotes(data);
+                                      }, error: function(){
+                                          $("#show-notes").show();
+                                          $(".notes-empty").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }
+                                  });
+                              }
+
+                              function displayNotes(notes){
+                                    for(var i = 0; i< notes.items;i++){
+                                        var li = "<li id="+notes.notes[i].id+"><div class='note-container'><div class='note-header'><h4>Nota</h4><div class=note-date>creada el "+notes.notes[i].created_at+"<span class='glyphicon glyphicon-remove btn-remove-note' id="+notes.notes[i].id+"></span></div></div><div class='note-body'><p>"+notes.notes[i].text+"</p></div></div</li>";
+                                        $(".note-list").append(li);
+                                    }
+                                  $(".customers-title").text("Notas añadidas a "+$(".customers-header h4").text());
+                                  $(".customers-options-info").text('Podrás ver y eliminar las notas que añadiste');
+                                  $(".customers-list").hide();
+                                  $(".note-list").show();
+                                  $("#show-notes").show();
+                                  $(".btn-remove-note").click(function(){
+                                      var id = $(this).attr("id");
+                                      deleteNote(id);
+                                  })
+                              }
+
+
+                              function deleteNote(id){
+                                  var port = location.port;
+                                  var uri = "http://localhost:" + port + "/alojamientos/notes/user/"+id;
+                                  $.ajax({
+                                      type: "Delete",
+                                      url: uri,
+                                      success: function(data) {
+                                          $(".note-list").find("#"+id).remove();
+                                          $(".note-deleted").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }, error: function(){
+                                          $("#show-notes").show();
+                                          $(".notes-empty").show();
+                                          $(".alert").delay(3000).slideUp(200);
+                                      }
+                                  });
+                              }
 
                               function showBooking(id){
                                   var port = location.port;
@@ -579,8 +739,8 @@
                                 <div id="commentaries" class="tab-pane fade">
                                     <h3 class="commentaries-title">Valoraciones realizadas en los alojamientos que has estado</h3>
                                     <p class="commentaries-info">Pulse sobre "Ver detalles" para poder ver la valoración que hiciste sobre el alojamiento</p>
-                                    @if(count($commentaries)>0)
-                                        <ul class="commentaries-list">
+                                    <ul class="commentaries-list">
+                                        @if(count($commentaries)>0)
                                             @foreach($commentaries as $c)
                                                 <li>
                                                     <div class="commentaries-header">
@@ -611,8 +771,8 @@
                                                     </div>
                                                 </li>
                                             @endforeach
-                                        </ul>
-                                    @endif
+                                        @endif
+                                    </ul>
                                 </div>
                                 <script>
                                     $(document).ready(function(){
@@ -684,7 +844,8 @@
                                                 data: formData,
                                                 async: false,
                                                 success: function (data) {
-                                                   $(".commentary-posted").show();
+                                                    addCommentary(data);
+                                                    $(".commentary-posted").show();
                                                     $(".alert").delay(3000).slideUp(200);
 
                                                 },error: function(){
@@ -698,6 +859,61 @@
 
                                             return false;
                                         });
+
+
+                                        function addCommentary(data){
+                                           var li = "<li>"+
+                                                       "<div class='commentaries-header'>"+
+                                                            "<span>Realizaste una valoración del <a href='http://localhost:8080/alojamientos/accommodation/"+data.commentary.id+"/details'"+">alojamiento</a> el "+data.commentary.created_at+"</span>"+
+                                                            "<div class='commentaries-options'>"+
+                                                                "<a class='btn btn-xs btn-success btn-show-comment' id="+data.commentary.id+">Ver Valoración</a>"+
+                                                            "</div>"+
+                                                       "</div>"+
+                                                       "<div class='commentary' id="+data.commentary.id+">"+
+                                                            "<div class='form-group commentary-text'>"+
+                                                                "<h3>Tu valoración fue: </h3>"+
+                                                                "<p>"+data.commentary.text+"</p>"+
+                                                            "</div>"+
+                                                            "<div class='form-group commentaries-stars'>"+
+                                                                "<ul>"+ addStars(data)+"</ul>"+
+                                                            "</div>"+
+                                                            "<div class='form-group'>"+
+                                                                "<input type='button' value='Ver Valoraciones' class='btn btn-grey btn-back-commentaries'>"+
+                                                            "</div>"+
+                                                        "</div>"+
+                                                    "</li>";
+                                            $(".commentaries-list").append(li);
+
+                                            $(".btn-show-comment").click(function(){
+                                                var id = $(this).attr("id");
+                                                $(".commentaries-title").hide();
+                                                $(".commentaries-info").hide();
+                                                $(".commentaries-header").hide();
+                                                $(".commentary").each(function (){
+                                                    if($(this).attr("id") == id)
+                                                        $(this).show();
+                                                })
+                                            })
+
+                                            $(".btn-back-commentaries, .commentaries").click(function(){
+                                                $(".commentary").hide();
+                                                $(".commentaries-title").show();
+                                                $(".commentaries-info").show();
+                                                $(".commentaries-header").show();
+                                            })
+
+                                        }
+
+                                        function addStars(data){
+                                            var lis = "";
+                                            for(var i=0;i<5;i++) {
+                                                if (i < data.commentary.stars)
+                                                    lis += "<li><span class='glyphicon glyphicon-star gold'></span></li>";
+                                                else
+                                                    lis += "<li><span class='glyphicon glyphicon-star'></span></li>";
+                                            }
+                                            return lis;
+                                        }
 
 
                                         function deleteBooking(id){

@@ -3,9 +3,11 @@
 
 
 use App\Models\DTO\Commentary;
+use App\Models\DTO\Note;
 use App\Models\DTO\Traveler;
 use App\Models\DTO\Admin;
 use App\Models\DTO\Owner;
+use App\Models\NoteModel;
 use App\Models\UserModel;
 use App\Models\AccommodationModel;
 use App\Models\BookingModel;
@@ -602,5 +604,213 @@ class UserIntegrationTest extends TestCase
         $this->assertEquals($commentaries[0]->getText(), "Este es el comentario");
         $this->assertEquals($commentaries[1]->getText(), "Este es el segundo comentario");
         $this->assertEquals($um->getCommentary($c_id)->getText(), "Este es el segundo comentario");
+    }
+
+    public function testGetCustomers(){
+        $bm = new BookingModel();
+        $b = new Booking();
+        $am = new AccommodationModel();
+        $a1 = new Accommodation();
+        $p1 = new Photo();
+        $p2 = new Photo();
+        $traveler = new Traveler();
+        $traveler2 = new Traveler();
+        $owner = new Owner();
+        $um = new UserModel();
+        $arrayPhoto = [];
+
+        $traveler->setName("Norman");
+        $traveler->setEmail("norman@email.com");
+        $traveler->setSurname("Coloma");
+        $traveler->setPhone("654987321");
+        $traveler->setPassword("prueba");
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
+        $um->createUser($traveler);
+        $um->createUser($owner);
+
+        $traveler2->setName("Perico");
+        $traveler2->setEmail("perico@email.com");
+        $traveler2->setSurname("Gómez");
+        $traveler2->setPhone("664785325");
+        $traveler2->setPassword("prueba");
+
+        $um->createUser($traveler2);
+
+        $p1->setUrl('url/photo1');
+        $p1->setMain(1);
+
+        $p2->setUrl('url/photo2');
+        $p2->setMain(0);
+
+        $arrayPhoto [] = $p1;
+        $arrayPhoto [] = $p2;
+
+        $a1->setBaths(2);
+        $a1->setBeds(3);
+        $a1->setCapacity(5);
+        $a1->setCity('Elche');
+        $a1->setDesc('Alojamiento de lujo.');
+        $a1->setInside('Descripción del interior del alojamiento.');
+        $a1->setOutside('Descripción del exterior del alojamiento.');
+        $a1->setPhotos($arrayPhoto);
+        $a1->setPrice(50);
+        $a1->setProvince('Alicante');
+        $a1->setTitle('Casa rural');
+
+        //Testeamos el método createAccom que inserta tanto en la tabla accommodations como en la tabla photos
+        $accom = $am->createAccom($a1, $um->getID($traveler->getEmail()));
+
+        $b->setPersons(3);
+        $b->setPrice(24.00);
+        $b->setPreBooking(false);
+        $b->setCheckIn('25-11-2015');
+        $b->setCheckOut('30-11-2015');
+        $b->setUserId($um->getID($traveler->getEmail()));
+        $b->setAccommId($accom['id']);
+        $b->setOwnerId($um->getID($owner->getEmail()));
+
+        $book = $bm->createBooking($b);
+        $this->SeeInDatabase('bookings', ['persons' => 3]);
+        $this->assertNotNull($book);
+
+        $b->setPersons(4);
+        $b->setPrice(75.00);
+        $b->setPreBooking(false);
+        $b->setCheckIn('1-12-2015');
+        $b->setCheckOut('5-12-2015');
+        $b->setUserId($um->getID($traveler2->getEmail()));
+        $b->setAccommId($accom['id']);
+        $b->setOwnerId($um->getID($owner->getEmail()));
+
+        $book = $bm->createBooking($b);
+        $this->SeeInDatabase('bookings', ['persons' => 4]);
+        $this->assertNotNull($book);
+
+        $customers = $um->getCustomers($um->getID($owner->getEmail()));
+
+        $this->assertEquals(2,count($customers));
+        $this->assertEquals($traveler->getEmail(),$customers[0]->getEmail());
+        $this->assertEquals($traveler2->getEmail(),$customers[1]->getEmail());
+    }
+
+
+    public function testInsertNote(){
+        $traveler = new Traveler();
+        $owner = new Owner();
+        $um = new UserModel();
+        $nm = new NoteModel();
+
+        $traveler->setName("Norman");
+        $traveler->setEmail("norman@email.com");
+        $traveler->setSurname("Coloma");
+        $traveler->setPhone("654987321");
+        $traveler->setPassword("prueba");
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
+        $um->createUser($traveler);
+        $um->createUser($owner);
+
+        $note = new Note();
+        $note->setUserId($um->getID($traveler->getEmail()));
+        $note->setOwnerId($um->getID($owner->getEmail()));
+        $note->setText("Esta es la nota sobre Norman");
+
+        $n = $nm->createNote($note);
+        $this->assertNotNull($n);
+        $this->seeInDatabase('notes', ['text' => $note->getText(), 'created_at' => $note->getCreatedAt(),
+            'user_id' => $note->getOwnerId(), 'about_user' => $note->getUserId()]);
+
+    }
+
+    public function testDeleteNote(){
+        $traveler = new Traveler();
+        $owner = new Owner();
+        $um = new UserModel();
+        $nm = new NoteModel();
+
+        $traveler->setName("Norman");
+        $traveler->setEmail("norman@email.com");
+        $traveler->setSurname("Coloma");
+        $traveler->setPhone("654987321");
+        $traveler->setPassword("prueba");
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
+        $um->createUser($traveler);
+        $um->createUser($owner);
+
+        $note = new Note();
+        $note->setUserId($um->getID($traveler->getEmail()));
+        $note->setOwnerId($um->getID($owner->getEmail()));
+        $note->setText("Esta es la nota sobre Norman");
+
+        $id = $nm->createNote($note);
+        $this->seeInDatabase('notes', ['text' => $note->getText(), 'created_at' => $note->getCreatedAt(),
+            'user_id' => $note->getOwnerId(), 'about_user' => $note->getUserId()]);
+
+        $this->assertEquals(true,$nm->deleteNote($id));
+
+        $this->notSeeInDatabase('notes', ['text' => $note->getText(), 'created_at' => $note->getCreatedAt(),
+            'user_id' => $note->getOwnerId(), 'about_user' => $note->getUserId()]);
+
+    }
+
+
+    public function testGetNotes(){
+        $traveler = new Traveler();
+        $owner = new Owner();
+        $um = new UserModel();
+        $nm = new NoteModel();
+
+        $traveler->setName("Norman");
+        $traveler->setEmail("norman@email.com");
+        $traveler->setSurname("Coloma");
+        $traveler->setPhone("654987321");
+        $traveler->setPassword("prueba");
+        $owner->setName("Juan");
+        $owner->setEmail("paco@email.com");
+        $owner->setSurname("Cano");
+        $owner->setPhone("654987325");
+        $owner->setPassword("prueba2");
+
+        $um->createUser($traveler);
+        $um->createUser($owner);
+
+        $note = new Note();
+        $note->setUserId($um->getID($traveler->getEmail()));
+        $note->setOwnerId($um->getID($owner->getEmail()));
+        $note->setText("Esta es la nota sobre Norman");
+
+        $nm->createNote($note);
+        $this->seeInDatabase('notes', ['text' => $note->getText(), 'created_at' => $note->getCreatedAt(),
+            'user_id' => $note->getOwnerId(), 'about_user' => $note->getUserId()]);
+
+        $note = new Note();
+        $note->setUserId($um->getID($traveler->getEmail()));
+        $note->setOwnerId($um->getID($owner->getEmail()));
+        $note->setText("Esta es la segunda nota sobre Norman");
+        $nm->createNote($note);
+        $this->seeInDatabase('notes', ['text' => $note->getText(), 'created_at' => $note->getCreatedAt(),
+            'user_id' => $note->getOwnerId(), 'about_user' => $note->getUserId()]);
+
+        $notes = $nm->getNotes($um->getID($traveler->getEmail()));
+
+        $this->assertEquals(count($notes),2);
+
+        $this->assertEquals($notes[0]->getText(), "Esta es la nota sobre Norman");
+        $this->assertEquals($notes[1]->getText(), "Esta es la segunda nota sobre Norman");
+
     }
 }
