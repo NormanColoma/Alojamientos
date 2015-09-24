@@ -5,6 +5,9 @@ body{
 	min-height:500px;
 }
 
+.comentaries .carousel-caption{
+	cursor: pointer;
+}
 .container-height{
 	min-height: 450px;
 	margin-bottom: 40px;
@@ -401,7 +404,7 @@ a{
 	text-shadow: none !important;
 }
 .comentaries .carousel-indicators{
-	bottom: 100px !important;
+	bottom: 20px !important;
 }
 .main-text
 {
