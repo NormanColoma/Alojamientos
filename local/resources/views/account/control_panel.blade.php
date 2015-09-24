@@ -742,7 +742,7 @@
                                     <ul class="commentaries-list">
                                         @if(count($commentaries)>0)
                                             @foreach($commentaries as $c)
-                                                <li>
+                                                <li class="commentaries-li">
                                                     <div class="commentaries-header">
                                                         <span>Realizaste una valoración del <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$c->getAccomId()."/details") !!}">alojamiento</a> el {!!  date("j/n/Y", strtotime($c->getDate())) !!}</span>
                                                         <div class="commentaries-options">
@@ -800,13 +800,19 @@
                                             $(".commentaries-info").hide();
                                             $(".commentaries-header").hide();
                                             $(".commentary").each(function (){
-                                                if($(this).attr("id") == id)
+                                                if($(this).attr("id") == id) {
+                                                    $(".commentaries-li").toggleClass("active");
                                                     $(this).show();
+                                                }
                                             })
                                         })
 
                                         $(".btn-back-commentaries, .commentaries").click(function(){
                                             $(".commentary").hide();
+                                            $(".commentaries-li").each(function(){
+                                                if($(this).hasClass("active"))
+                                                    $(this).removeClass("active");
+                                            })
                                             $(".commentaries-title").show();
                                             $(".commentaries-info").show();
                                             $(".commentaries-header").show();
@@ -885,13 +891,16 @@
                                             $(".commentaries-list").append(li);
 
                                             $(".btn-show-comment").click(function(){
+                                                alert("pepe")
                                                 var id = $(this).attr("id");
                                                 $(".commentaries-title").hide();
                                                 $(".commentaries-info").hide();
                                                 $(".commentaries-header").hide();
                                                 $(".commentary").each(function (){
-                                                    if($(this).attr("id") == id)
+                                                    if($(this).attr("id") == id) {
+                                                        $(this).toggleClass("active");
                                                         $(this).show();
+                                                    }
                                                 })
                                             })
 

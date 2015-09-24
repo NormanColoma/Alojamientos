@@ -127,6 +127,11 @@
     margin-bottom: 20px;
 }
 
+.commentaries-list .active{
+    float: none !important;
+    margin-bottom: 0px !important;
+}
+
 .prebooking-list .prebooking-header, .prebooking-user-list .prebooking-header, .booking-user-list .booking-header, .booking-list .booking-header, .commentaries-list .commentaries-header, .customers-list .customers-header{
     float:left;
     width: 100%;
