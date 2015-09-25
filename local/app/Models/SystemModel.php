@@ -259,4 +259,33 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         }
     }
 
+    public function lastCommentaries(){
+        $commentaries = [];
+        $commentary = null;
+        $um = new UserModel();
+        try{
+            $commentary = DB::table('commentaries')->select('*')->orderBy("created_at", "desc")->take(3)
+                ->get();
+
+            if($commentary == null)
+                return null;
+
+            foreach($commentary as $c) {
+                $comm = new Commentary();
+                $comm->setId($c->id);
+                $comm->setAccomId($c->accom_id);
+                $comm->setUserId($c->user_id);
+                $comm->setAuthor($um->userById($c->user_id,"traveler"));
+                $comm->setDate($c->created_at);
+                $comm->setVote($c->stars);
+                $comm->setText($c->text);
+                $commentaries[] = $comm;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        return $commentaries;
+    }
+
 }

@@ -188,34 +188,59 @@
             <div class="row">
                 <div class="col-md-12">
                     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                        </ol>
-                        <div class="carousel-inner">
-                            <div class="item active">
-                                <img src="./local/resources/assets/img/transparent.png" alt="First slide">
-                                <div class="carousel-caption">
-                                    <h3 class="comment">Excelente, con todas las comodidades necesarias para sentirte como en casa.</h3>
-                                    <p class="autor">Juan Francisco López</p>
+                        @if(count($commentaries) == 0)
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="./local/resources/assets/img/transparent.png" alt="First slide">
+                                    <div class="carousel-caption">
+                                        <h3 class="comment">Todavía no se ha realizado ningún comentario</h3>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="item">
-                                <img src="./local/resources/assets/img/transparent.png" alt="Second slide">
-                                <div class="carousel-caption">
-                                    <h3 class="comment">Una experiencia increíble. Los mejores alojamientos rurales que puedes encontrar</h3>
-                                    <p class="autor">Juan Cano Ortiz</p>
-                                </div>
+                        @else
+                            @if(count($commentaries) == 1)
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            </ol>
+                            @elseif(count($commentaries) == 2)
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            </ol>
+                            @else
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                </ol>
+                            @endif
+                            <div class="carousel-inner">
+                                <?php $i = 0; ?>
+                                @foreach($commentaries as $c)
+                                    @if($i == 0)
+                                        <div class="item active">
+                                            <img src="./local/resources/assets/img/transparent.png" alt="First slide">
+                                            <div class="carousel-caption" id="{!! $c->getAccomId() !!}">
+                                                <h3 class="comment">{!! $c->getText() !!}</h3>
+                                                <p class="autor">Juan Francisco López</p>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="item">
+                                            <img src="./local/resources/assets/img/transparent.png" alt="First slide">
+                                            <div class="carousel-caption" id="{!! $c->getAccomId() !!}">
+                                                <h3 class="comment">{!! $c->getText() !!}</h3>
+                                                <p class="autor">Juan Francisco López</p>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <?php $i++; ?>
+                                @endforeach
                             </div>
-                            <div class="item">
-                                <img src="./local/resources/assets/img/transparent.png" alt="Third slide">
-                                <div class="carousel-caption">
-                                    <h3 class="comment">Sin duda alguna, la mejor calidad y precio que puedes encontrar.</h3>
-                                    <p class="autor">Vicente Martínez</p>
-                                </div>
-                            </div>
-                        </div>
+                        @endif
                         <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
                             <span class="glyphicon glyphicon-chevron-left"></span></a><a class="right carousel-control"
                                                                                          href="#carousel-example-generic" data-slide="next"><span class="glyphicon glyphicon-chevron-right">
@@ -229,6 +254,14 @@
                     </div>
                 </div>
             </div>
+            <script>
+                $(".carousel-caption").click(function(){
+                    var id = $(this).attr("id");
+                    var port = location.port;
+                    var uri = "http://localhost:" + port + "/alojamientos/accommodation/"+id+"/details";
+                    window.location = uri;
+                })
+            </script>
         </div>
         <div id="push">
         </div>

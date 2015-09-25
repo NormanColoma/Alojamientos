@@ -21,7 +21,9 @@ class HomeController extends Controller
     public function index()
     {
 
-        return view("index");
+        $sm = new SystemModel();
+        $commentaries = $sm->lastCommentaries();
+        return view("index", ['commentaries' => $commentaries]);
     }
 
     /**
