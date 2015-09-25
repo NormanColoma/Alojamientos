@@ -410,4 +410,19 @@ class UserModel extends Model implements AuthenticatableContract, CanResetPasswo
     }
 
 
+    public function canComment($user_id,$accom_id){
+        $can = null;
+        try {
+            $can = DB::table('commentaries')->select("*")->where('user_id',$user_id)->where('accom_id', $accom_id)
+                ->get();
+            if( $can == null){
+               return true;
+            }
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        return false;
+    }
+
 }

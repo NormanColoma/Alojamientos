@@ -141,6 +141,23 @@
     float:right;
 }
 
+.customers-header h4{
+    float: left;
+    margin: 0;
+}
+
+.customer-info{
+    float:left;
+    width: 50%;
+}
+.customer-phone{
+    margin-left: 15px !important;
+}
+
+.customer-mail{
+    float: left;
+    width: 100%;
+}
 .alert{
     display:none;
     width: 100%;
@@ -237,6 +254,24 @@
         float:left;
         width: 100%;
     }
+
+    .customer-info {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .customers-options{
+        width:100%;
+    }
+    .customers-options .btn{
+        width:100%;
+        margin-bottom: 10px;
+    }
+
+    .customer-mail{
+        float: right;
+        width: initial;
+    }
 }
 
 @media screen and (min-width: 0px) and (max-width: 574px) {
@@ -287,5 +322,23 @@
         float: left;
         margin-left: 5px;
         width: 150px;
+    }
+
+    .customer-info {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .customers-options{
+        width:100%;
+    }
+    .customers-options .btn{
+        width:100%;
+        margin-bottom: 10px;
+    }
+
+    .customer-mail{
+        float: right;
+        width: initial;
     }
 }

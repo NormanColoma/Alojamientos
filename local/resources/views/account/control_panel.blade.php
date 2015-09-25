@@ -188,7 +188,11 @@
                                     @foreach($customers as $c)
                                         <li>
                                             <div class="customers-header">
-                                                <h4>{!! $c->getName() . " " . $c->getSurname()!!}</h4>
+                                                <div class="customer-info">
+                                                    <h4 class="customer-name">{!! $c->getName() . " " . $c->getSurname()!!}</h4>
+                                                    <h4 class="customer-phone">{!! $c->getPhone() !!}</h4>
+                                                    <h6 class="customer-mail">{!! $c->getEmail() !!}</h6>
+                                                </div>
                                                 <div class="customers-options">
                                                     <a class="btn btn-xs btn-success btn-show-notes" id="{!! $c->getId() !!}">Ver Notas</a>
                                                     <a class="btn btn-xs btn-grey btn-add-note" id="{!! $c->getId() !!}">Añadir Nota</a>
@@ -667,7 +671,12 @@
                                                         <span>Reserva confirmada para el <a href="{!! URL::to("http://localhost:8080/alojamientos/accommodation/".$b->getAccommId()."/details") !!}">alojamiento</a>. Pinchando en "Ver detalles" verá los detalles de la misma.</span>
                                                         <div class="booking-options">
                                                             <a class="btn btn-xs btn-success btn-show-booking-details" id="{!! $b->getId() !!}">Ver detalles</a>
-                                                            <a class="btn btn-xs btn-grey btn-show-commentary" id="{!! $b->getAccommId() !!}">Valorar</a>
+                                                            <?php $um = new App\Models\UserModel();
+                                                                  $can = $um->canComment(Auth::user()->id, $b->getAccommId());
+                                                            ?>
+                                                            @if($can)
+                                                                <a class="btn btn-xs btn-grey btn-show-commentary" id="{!! $b->getAccommId() !!}">Valorar</a>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </li>
@@ -889,16 +898,15 @@
                                                         "</div>"+
                                                     "</li>";
                                             $(".commentaries-list").append(li);
+                                            $(".btn-show-commentary").remove();
 
                                             $(".btn-show-comment").click(function(){
-                                                alert("pepe")
                                                 var id = $(this).attr("id");
                                                 $(".commentaries-title").hide();
                                                 $(".commentaries-info").hide();
                                                 $(".commentaries-header").hide();
                                                 $(".commentary").each(function (){
                                                     if($(this).attr("id") == id) {
-                                                        $(this).toggleClass("active");
                                                         $(this).show();
                                                     }
                                                 })
