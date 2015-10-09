@@ -23,7 +23,8 @@ class HomeController extends Controller
 
         $sm = new SystemModel();
         $commentaries = $sm->lastCommentaries();
-        return view("index", ['commentaries' => $commentaries]);
+        $highlights = $sm->displayHighlights();
+        return view("index", ['commentaries' => $commentaries, 'highlights' => $highlights]);
     }
 
     /**

@@ -89,11 +89,13 @@
 
                                     <label class="city-icon">{!! $accomm->getCity() !!}</label>
                                     <div class="accommodation-votes">
-                                        <span class="glyphicon glyphicon-star"></span>
-                                        <span class="glyphicon glyphicon-star"></span>
-                                        <span class="glyphicon glyphicon-star"></span>
-                                        <span class="glyphicon glyphicon-star"></span>
-                                        <span class="glyphicon glyphicon-star-empty"></span>
+                                        @for($i=1;$i<6;$i++)
+                                            @if($i<=$accomm->getStars())
+                                                <span class="glyphicon glyphicon-star"></span>
+                                            @else
+                                                <span class="glyphicon glyphicon-star-empty"></span>
+                                            @endif
+                                        @endfor
                                     </div>
                                 </div>
                                 <a class="btn btn-grey btn-book btn-large" href="{!! Url::to("accommodation/". $accomm->getID() ."/details") !!}">Reservar</a>

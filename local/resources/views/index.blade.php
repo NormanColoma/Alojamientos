@@ -94,51 +94,42 @@
         </form>
     </div>
     <div class="container highlights">
-        <div class="highlights-title">
-            <h2>Para el fin de semana</h2>
-            <p>Descubre los alojamientos más destacos</p>
-        </div>
-        <ul>
-                <li>
-                    <div class="accom">
-                        <img src="./local/resources/assets/img/highlights/highlights-1.jpg">
-                        <div class="description">
-                            <span class="city">Casa Rural El Refugio</span>
-                            <p>Situada en pleno P.N. de la Sierra de Hornachuelos. Dispone de 1200 metros, la mayor parte de ellos corresponden a zona ajardinada.</p>
-                        </div>
-                        <div class="show_details">
-                            <span class="price">Desde  40€/noche</span>
-                            <a href="" class="btn btn-sm btn-success btn-hire">Ver detalles</a>
-                        </div>
-                    </div>
-                </li>
-            <li>
-                <div class="accom">
-                    <img src="./local/resources/assets/img/highlights/highlights-2.JPG">
-                    <div class="description">
-                        <span class="city">Hacienda El Cortijo</span>
-                        <p>Casa llena de encanto y situada en un entorno privilegiado de P.N. de Cazorla, Segura y las Villas y a 30 minutos de las ciudades renacentistas de Úbeda y Baeza.</p>
-                    </div>
-                    <div class="show_details">
-                        <span class="price">Desde  50€/noche</span>
-                        <a href="" class="btn btn-sm btn-success btn-hire">Ver detalles</a>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="accom">
-                    <img src="./local/resources/assets/img/highlights/highlights-3.jpg">
-                    <div class="description">
-                        <span class="city">Casa Rural Mirador de Ronda</span>
-                        <p>Situada en plena naturaleza a sólo 2 Km de la bella ciudad de Ronda. La parcela dispone de 10.000m2 con vistas al famoso Tajo y a las sierras de Ronda.</p>
-                    </div>
-                    <div class="show_details">
-                        <span class="price">Desde  150€/noche</span>
-                        <a href="" class="btn btn-sm btn-success btn-hire">Ver detalles</a>
-                    </div>
-                </div>
-            </li>
-        </ul>
+
+        @if(count($highlights) > 0)
+            <div class="highlights-title">
+                <h2>Para el fin de semana</h2>
+                <p>Descubre los alojamientos más destacos</p>
+            </div>
+            <ul>
+                    @foreach($highlights as $accom)
+                        <?php
+                        $am = new \App\Models\AccommodationModel();
+                        foreach($am->allPhotos($accom->getId()) as $photo){
+                            if($photo->getMain())
+                                $img = $photo->getUrl();
+                        }
+                        ?>
+                        <li>
+                            <div class="accom">
+                                {!! Html::image('/local/resources/assets/img/accoms/'.$img ) !!}
+                                <div class="description">
+                                    <span class="city">{!! $accom->getTitle() !!}</span>
+                                    <p>{!! $accom->getDesc() !!}</p>
+                                </div>
+                                <div class="show_details">
+                                    <span class="price">Desde  {!! $accom->getPrice() !!}€/noche</span>
+                                    <a href="{!! Url::to("accommodation/". $accom->getID() ."/details") !!}" class="btn btn-sm btn-success btn-hire">Ver detalles</a>
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
+            </ul>
+        @else
+            <div class="highlights-title">
+                <h2>Para el fin de semana</h2>
+                <p>Todavía no hay alojamientos destacados</p>
+            </div>
+        @endif
     </div>
     <div class="info-app">
         <div class="container">

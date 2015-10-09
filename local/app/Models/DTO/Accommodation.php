@@ -6,6 +6,21 @@ namespace App\Models\DTO;
 
 class Accommodation
 {
+    /**
+     * @return mixed
+     */
+    public function getStars()
+    {
+        return $this->stars;
+    }
+
+    /**
+     * @param mixed $stars
+     */
+    public function setStars($stars)
+    {
+        $this->stars = $stars;
+    }
     private $id;
     private $title;
     private $desc;
@@ -19,6 +34,7 @@ class Accommodation
     private $province;
     private $photos;
     private $intial_desc;
+    private $stars;
     function __construct() {
         $this->inside = "El propietario aún no ha detallado nada sobre las características interiores del alojamiento.";
         $this->outside = "El propietario aún no ha detallado nada sobre las características exteriores del alojamiento.";

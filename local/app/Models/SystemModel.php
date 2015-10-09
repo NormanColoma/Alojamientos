@@ -52,6 +52,7 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
                 $a->setProvince($ac->province);
                 $a->setTitle($ac->title);
                 $a->setInitialDesc($ac->desc);
+                $a->setStars($am->getStars($ac->id));
                 $accommodations [] = $a;
             }
         }catch(QueryException $ex){
@@ -60,37 +61,26 @@ class SystemModel extends Model implements IDAOSystem, AuthenticatableContract, 
         return $accommodations;
     }
 
-    public function displayHighlights()
-    {
-        $am = new AccommodationModel();
-        $accomm = null;
+    public function displayHighlights(){
+        $voted = null;
         $accommodations = [];
+        $am = new AccommodationModel();
         try{
-            $accomm = DB::table('accommodations')->orderBy("created_at","desc")->take(3)->get();
-            if(count($accomm) == 0) {
-                return null;
-            }
+            $voted = DB::table('commentaries')->select('accom_id', DB::raw('SUM(stars) as most_voted'))
+                ->orderBy('most_voted')->take(3)->get();
 
-            foreach($accomm as $ac) {
-                $a = new Accommodation();
-                $a->setID($ac->id);
-                $a->setBaths($ac->bathrooms);
-                $a->setBeds($ac->beds);
-                $a->setCapacity($ac->capacity);
-                $a->setCity($ac->city);
-                $a->setDesc($ac->desc);
-                $a->setInside($ac->inside);
-                $a->setOutside($ac->outside);
-                $a->setPhotos($am->allPhotos($ac->id));
-                $a->setPrice($ac->price_per_person);
-                $a->setProvince($ac->province);
-                $a->setTitle($ac->title);
-                $a->setInitialDesc($ac->desc);
-                $accommodations [] = $a;
+            if(count($voted) > 0)
+                return null;
+            foreach($voted as $v) {
+                $ac = new Accommodation();
+                $ac = $am->accommodationByID($v->accom_id);
+                $ac->setHightLightsDesc();
+                $accommodations [] = $ac;
             }
         }catch(QueryException $ex){
-            return null;
+            throw new \Exception($ex->getMessage());
         }
+
         return $accommodations;
     }
 
