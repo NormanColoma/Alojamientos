@@ -470,4 +470,25 @@ class AccommodationModel extends Model implements AuthenticatableContract, CanRe
         return $commentaries;
     }
 
+    function getStars($accom_id){
+        $stars = [];
+        $total = 0;
+        try{
+            $stars = DB::table('commentaries')->select('stars')
+                ->where('accom_id', $accom_id)->get();
+
+            if($stars == null)
+                return 0;
+
+            foreach($stars as $s) {
+                $total += $s->stars;
+            }
+            $total = round($total/count($stars));
+        }catch(QueryException $ex){
+            throw new \Exception($ex->getMessage());
+        }
+
+        return $total;
+    }
+
 }
